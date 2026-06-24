@@ -36,6 +36,27 @@ namespace CommanLib.DependencyInjection
                     ValidAudience = jwt.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey))
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"JWT Error: {context.Exception}");
+                        return Task.CompletedTask;
+                    },
+
+                    OnChallenge = context =>
+                    {
+                        Console.WriteLine($"Challenge Error: {context.Error}");
+                        Console.WriteLine($"Description: {context.ErrorDescription}");
+                        return Task.CompletedTask;
+                    },
+
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("TOKEN VALIDATED SUCCESSFULLY");
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
           
