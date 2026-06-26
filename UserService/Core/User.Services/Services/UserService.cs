@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using User.Domain.Contract;
 using User.Domain.Entities;
 using User.ServicesAbstract;
 using User.shared.DTOS;
@@ -14,27 +15,64 @@ using User.shared.DTOS;
 
 namespace User.Services.Services
 {
-    internal class UserService(UserManager<AppUser> userManager,
-        IHttpContextAccessor httpContextAccesso,
-      IMapper mapper) : IUserService
+    internal class UserService(IUserRepo userRepo , IHttpContextAccessor httpContextAccesso, IMapper mapper) : IUserService
     {
+        public async Task blockUserAsync(Guid userId)
+        {
+           var user = await userRepo.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.IsActive = false;
+                await  userRepo.UpdateAsync(user);
+        }
+
+        public async Task DeleteUserAsync(Guid userId)
+        {
+           var user=await userRepo.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            await userRepo.DeleteAsync(user.Id);
+
+
+        }
+
+        public Task<IEnumerable<UserDetailsRespones>> GetAllUserDetailsAsync()
+        {
+            var users = userRepo.GetAllAsync().Result;
+            return Task.FromResult(mapper.Map<IEnumerable<UserDetailsRespones>>(users));
+
+        }
+
         public Task<UserDetailsRespones> GetUserDetailsAsync()
         {
             var user = GetLoggedInUserAsync().Result;
             return Task.FromResult(mapper.Map<UserDetailsRespones>(user));
         }
 
+        public Task unblockUserAsync(Guid userId)
+        {
+            var user = userRepo.GetByIdAsync(userId).Result;
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.IsActive = true;
+            return userRepo.UpdateAsync(user);
+        }
+
         public Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate)
         {
             var user = GetLoggedInUserAsync().Result;
-            mapper.Map(userUpdate, user);
-            var result = userManager.UpdateAsync(user).Result;
-            if (!result.Succeeded)
+            if (user == null)
             {
-                throw new Exception("Failed to update user details");
+                throw new Exception("User not found");
             }
-            return Task.CompletedTask;
-
+            mapper.Map(userUpdate, user);
+            return userRepo.UpdateAsync(user);
 
         }
 
@@ -54,8 +92,7 @@ namespace User.Services.Services
                 throw new UnauthorizedAccessException("User Id not found in token");
             }
 
-            return await userManager.FindByIdAsync(userId)
-                ?? throw new Exception("User not found");
+            return await userRepo.GetByIdAsync(Guid.Parse(userId)) ?? throw new Exception("User not found");
         }
 
     }

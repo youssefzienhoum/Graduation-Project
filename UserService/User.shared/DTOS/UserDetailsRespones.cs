@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace User.shared.DTOS
 {
-    public record UserDetailsRespones(Guid id,string fullName, string picture, string village ,string Region)
+    public record UserDetailsRespones(
+        Guid Id,
+        string FulltName,
+        string pictures,
+        string village,
+        string Region
+        )
     {
     }
 }

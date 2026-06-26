@@ -11,6 +11,13 @@ namespace User.ServicesAbstract
     public interface IUserService
     {
         Task<UserDetailsRespones> GetUserDetailsAsync();
+        Task<IEnumerable<UserDetailsRespones>> GetAllUserDetailsAsync();
         Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate);
+        Task DeleteUserAsync(Guid userId);
+        Task blockUserAsync(Guid userId);
+        Task unblockUserAsync(Guid userId);
+    
+
+
     }
 }

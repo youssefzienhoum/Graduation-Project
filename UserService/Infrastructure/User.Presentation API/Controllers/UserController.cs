@@ -29,6 +29,25 @@ namespace User.Presentation_API.Controllers
             await userService.UpdateUserDetailsAsync(userUpdate);
             return NoContent();
         }
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            await userService.DeleteUserAsync(userId);
+            return NoContent();
+        }
+        public async Task<IActionResult> BlockUser(Guid userId)
+        {
+            await userService.blockUserAsync(userId);
+            return NoContent();
+        }
+
+        public async Task<IActionResult> UnblockUser(Guid userId)
+        {
+            await userService.unblockUserAsync(userId);
+            return NoContent();
+        }
+
+
+      
 
     }
 }

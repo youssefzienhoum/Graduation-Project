@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using User.Domain.Contract;
 using User.Domain.Entities;
 using User.Persistence.Context;
+using User.Persistence.Repository;
 
 namespace User.Persistence.DependancyInjection
 {
@@ -18,7 +20,7 @@ namespace User.Persistence.DependancyInjection
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("SQLConnection")));
 
-
+            services.AddScoped<IUserRepo, UserRepo>();
 
             ConfigureIdentity(services, configuration);
             return services;

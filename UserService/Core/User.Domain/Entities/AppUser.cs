@@ -26,7 +26,7 @@ namespace User.Domain.Entities
             = new List<RefreshToken>();
 
 
-    }
+        }
 
     }
 
