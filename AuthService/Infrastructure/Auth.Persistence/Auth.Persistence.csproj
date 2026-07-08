@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>4
-	      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
-
-	      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
+	      
+	     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
 <PackageReference Include="StackExchange.Redis" Version="3.0.0" />
   </ItemGroup>
 
