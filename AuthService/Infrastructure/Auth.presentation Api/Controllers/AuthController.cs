@@ -28,6 +28,12 @@ namespace Auth.presentation_Api.Controllers
             return Ok(result);
 
         }
+        [HttpPost("loginwithemail")]
+        public async Task<IActionResult> LoginWithEmail([FromBody] LoginWithEmail loginWithEmail)
+        {
+            var result = await authService.LoginWithEmailAsync(loginWithEmail);
+            return Ok(result);
+        }
         [HttpPost("verify OTP")]
         public async Task<IActionResult> VerifyOTP([FromBody] VerifyOTPRequest verifyOTPRequest)
         {

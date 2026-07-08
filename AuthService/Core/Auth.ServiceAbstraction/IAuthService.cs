@@ -12,6 +12,7 @@ namespace Auth.ServiceAbstraction
     {
         Task<OTPResponse> RegisterAsync(RegisterRequest registerRequest);
         Task<OTPResponse> LoginAsync(LoginRequest loginRequest);
+        Task<LoginWithEmailResponse> LoginWithEmailAsync(LoginWithEmail loginWithEmail);
         Task<UserResponse> VerifyOTPAsync(VerifyOTPRequest verifyOTPRequest);
         Task LogoutAsync(string refreshToken);
 

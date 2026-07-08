@@ -31,15 +31,31 @@ namespace Auth.Service
             {
                 throw new Exception("User not found");
             }
+
             var result = await otpService.SendOtpAsync(loginRequest.PhoneNumber);
             return result;
 
         }
 
+        public async Task<LoginWithEmailResponse> LoginWithEmailAsync(LoginWithEmail loginWithEmail)
+        {
+            
+            var user = await userManager.FindByEmailAsync(loginWithEmail.Email);
+            //if (user == null)
+            //    throw new Exception("invalid email or password");
+            //var result = await userManager.CheckPasswordAsync(user,loginWithEmail.Password);
+            //if(!result)
+            //    throw new Exception("invalid email or password");
+            var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
+            var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
+            return new LoginWithEmailResponse(
+                FulltName : user.FulltName, refreshToken: refreshtoken.Token,accessToken:accessToken ,email :user.Email
+            );
+        }
+
         public async Task LogoutAsync(string refreshToken)
         {
             await tokenService.RevokeRefreshTokenAsync(refreshToken);
-
 
         }
 
@@ -55,8 +71,9 @@ namespace Auth.Service
             var user = new AppUser
             {
                 FulltName = registerRequest.FullName,
-                UserName = registerRequest.PhoneNumber,
+                UserName = registerRequest.FullName,
                 PhoneNumber = registerRequest.PhoneNumber,
+                Email = registerRequest.email,
                 Address = new Address
                 {
                     Village = registerRequest.village,

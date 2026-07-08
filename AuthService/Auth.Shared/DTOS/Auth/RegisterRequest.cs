@@ -11,6 +11,8 @@ namespace Auth.Shared.DTOS.Auth
        string village,
        string? picture,
        string Region,
+       string email,
+       string password,
         string PhoneNumber
         )
     {

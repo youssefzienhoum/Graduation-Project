@@ -72,8 +72,12 @@ internal class DbInitializer(
     private async Task SeedAdminAsync()
     {
         const string adminPhone = "+201120936540";
+        const string adminEmail = "Admin@gmail.com";
+        const string Password = "12345";
 
         var admin = await userManager.Users
+            .FirstOrDefaultAsync(x => x.PhoneNumber == adminPhone);
+        var admin_2 = await userManager.Users
             .FirstOrDefaultAsync(x => x.PhoneNumber == adminPhone);
 
         if (admin is not null)
@@ -84,6 +88,17 @@ internal class DbInitializer(
             FulltName = "Admin User",
             UserName = adminPhone,
             PhoneNumber = adminPhone,
+            Email=adminEmail,
+            IsActive = true,
+            IsVerified = true
+        };
+
+        admin_2 = new AppUser
+        {
+            FulltName = "Admin User2",
+            UserName = adminPhone,
+            PhoneNumber = adminPhone,
+            Email = adminEmail,
             IsActive = true,
             IsVerified = true
         };
