@@ -23,18 +23,18 @@ namespace Auth.Persistence.Context.Configrations
                 .IsRequired()
                 .HasMaxLength(255);
 
-            builder.Property(x => x.IsVerified)
-                 .HasDefaultValue(false);
-
-            builder.Property(x => x.IsActive)
-                .HasDefaultValue(true);
+            builder.Property(x => x.Status)
+                 .HasConversion<string>()
+                 .HasMaxLength(20)
+                 .HasDefaultValue(UserStatus.Pending)
+                 .IsRequired();
 
             builder.Property(x => x.CreatedAt)
                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.Property(x => x.PhoneNumber)
                 .IsRequired()
-                .HasMaxLength(15);
+                .HasMaxLength(16);
 
             builder.HasIndex(x => x.PhoneNumber)
                .IsUnique(); 

@@ -41,11 +41,11 @@ namespace Auth.Service
         {
             
             var user = await userManager.FindByEmailAsync(loginWithEmail.Email);
-            //if (user == null)
-            //    throw new Exception("invalid email or password");
-            //var result = await userManager.CheckPasswordAsync(user,loginWithEmail.Password);
-            //if(!result)
-            //    throw new Exception("invalid email or password");
+            if (user == null)
+                throw new Exception("invalid email or password");
+            var result = await userManager.CheckPasswordAsync(user, loginWithEmail.Password);
+            if (!result)
+                throw new Exception("invalid email or password");
             var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
             var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
             return new LoginWithEmailResponse(
