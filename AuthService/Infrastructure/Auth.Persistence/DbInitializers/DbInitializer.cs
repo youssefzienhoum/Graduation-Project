@@ -89,8 +89,8 @@ internal class DbInitializer(
             UserName = adminPhone,
             PhoneNumber = adminPhone,
             Email=adminEmail,
-            IsActive = true,
-            IsVerified = true
+           
+            
         };
 
         admin_2 = new AppUser
@@ -99,8 +99,7 @@ internal class DbInitializer(
             UserName = adminPhone,
             PhoneNumber = adminPhone,
             Email = adminEmail,
-            IsActive = true,
-            IsVerified = true
+            
         };
 
         var result = await userManager.CreateAsync( admin);
