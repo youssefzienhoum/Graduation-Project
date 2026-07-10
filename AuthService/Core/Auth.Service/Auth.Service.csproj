@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MimeKit" Version="4.5.0" />
     <PackageReference Include="Twilio" Version="7.14.9" />
   </ItemGroup>
 
@@ -15,6 +25,10 @@
     <ProjectReference Include="..\..\Auth.Shared\Auth.Shared.csproj" />
     <ProjectReference Include="..\Auth.ServiceAbstraction\Auth.ServiceAbstraction.csproj" />
     <ProjectReference Include="..\User.Domain\Auth.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EmailService\" />
   </ItemGroup>
 
 </Project>

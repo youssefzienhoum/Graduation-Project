@@ -34,6 +34,19 @@ namespace Auth.presentation_Api.Controllers
             var result = await authService.LoginWithEmailAsync(loginWithEmail);
             return Ok(result);
         }
+
+        [HttpPost("forgetpassword")]
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPassowrdDto forgetPassowrdDto)
+        {
+            await authService.ForgetPasswordasync(forgetPassowrdDto);
+            return Ok();
+        }
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            await authService.ResetPasswordAsync(resetPasswordDto);
+            return Ok();
+        }
         [HttpPost("verify OTP")]
         public async Task<IActionResult> VerifyOTP([FromBody] VerifyOTPRequest verifyOTPRequest)
         {

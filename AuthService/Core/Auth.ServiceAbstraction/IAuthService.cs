@@ -15,6 +15,8 @@ namespace Auth.ServiceAbstraction
         Task<LoginWithEmailResponse> LoginWithEmailAsync(LoginWithEmail loginWithEmail);
         Task<UserResponse> VerifyOTPAsync(VerifyOTPRequest verifyOTPRequest);
         Task LogoutAsync(string refreshToken);
+        Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+        Task ForgetPasswordasync(ForgetPassowrdDto passowrdDto);
 
     }
 }

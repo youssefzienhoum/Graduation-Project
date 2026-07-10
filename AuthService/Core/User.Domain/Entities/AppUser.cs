@@ -11,8 +11,7 @@ namespace Auth.Domain.Entities
         {
         public string FulltName { get; set; } = string.Empty;
         public Address Address { get; set; }
-
-            public bool IsVerified { get; set; } = false;
+        public bool IsVerified { get; set; } = false;
 
             public bool IsActive { get; set; } = true;
             public string pictures { get; set; }= string.Empty;

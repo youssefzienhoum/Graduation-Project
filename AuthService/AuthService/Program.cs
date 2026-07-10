@@ -1,11 +1,12 @@
 using Auth.Domain.Contractts;
 using Auth.Persistence.DependencyInjection;
+using Auth.Service;
+using Auth.Service.DependanceInjection;
+using CommanLib.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using Auth.Service.DependanceInjection;
 using System.Text;
-using CommanLib.DependencyInjection;
 namespace Auth_Services
 {
     public class Program
@@ -22,8 +23,10 @@ namespace Auth_Services
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
 
-            builder.Services.AddTokenService(builder.Configuration);    
+            builder.Services.AddTokenService(builder.Configuration);
             builder.Services.AddServices();
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSetting"));
+
             //builder.Services.AddTokenService(builder.Configuration);
 
             //builder.Services.Configure<JwtOption>(builder.Configuration.GetSection(JwtOption.SectionName));

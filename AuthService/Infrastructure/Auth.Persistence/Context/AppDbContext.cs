@@ -30,7 +30,7 @@ namespace Auth.Persistence.Context
             modelBuilder.Ignore<IdentityUserToken<Guid>>();
             modelBuilder.Ignore<IdentityRoleClaim<Guid>>();
             modelBuilder.Ignore<IdentityUserLogin<Guid>>();
-            
+          
             modelBuilder.ApplyConfigurationsFromAssembly
                 (Assembly.GetExecutingAssembly());
         }

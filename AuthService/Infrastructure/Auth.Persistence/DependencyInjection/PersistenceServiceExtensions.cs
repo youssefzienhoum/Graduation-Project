@@ -52,7 +52,12 @@ namespace Auth.Persistence.DependencyInjection
                 options.Password.RequireUppercase = false;
                 options.User.RequireUniqueEmail = false;
             })
-                .AddRoles<AppRole>().AddEntityFrameworkStores<AppDbContext>();
+                .AddRoles<AppRole>().AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(opt=>
+            {
+                opt.TokenLifespan = TimeSpan.FromHours(2);
+            });
 
         }
     }

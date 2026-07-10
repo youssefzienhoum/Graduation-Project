@@ -4,6 +4,8 @@ using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.Auth;
 using Auth.Shared.DTOS.OTP;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,10 +22,41 @@ namespace Auth.Service
     public class AuthService(
     UserManager<AppUser> userManager
     , IOTPService otpService
-     , ITokenService tokenService) : IAuthService
+     , ITokenService tokenService
+        , IEmailService _emailsender) : IAuthService
     {
+        public async Task ForgetPasswordasync(ForgetPassowrdDto passowrdDto)
+        {
+            var user = await userManager.FindByEmailAsync(passowrdDto.Email!);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var param = new Dictionary<string, string?> 
+            { 
+                {"token", token }, 
+                { "email", passowrdDto.Email! } 
+            };
+            var callBack = QueryHelpers.AddQueryString(passowrdDto.ClinetUrl!, param);
+            var message = new Message(user.Email, "Reset Password", callBack,null);
+            await _emailsender.SendEmailAsync(user.Email!, "Reset Password", callBack, null!);
+        }
 
+        public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await userManager.FindByEmailAsync(resetPasswordDto.Email!);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            var result = await userManager.ResetPasswordAsync(user, resetPasswordDto.token!, resetPasswordDto.Password!);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Password reset failed");
+            }
 
+        }
         public async Task<OTPResponse> LoginAsync(LoginRequest loginRequest)
         {
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == loginRequest.PhoneNumber);
@@ -40,11 +73,11 @@ namespace Auth.Service
         public async Task<LoginWithEmailResponse> LoginWithEmailAsync(LoginWithEmail loginWithEmail)
         {
             
-            var user = await userManager.FindByEmailAsync(loginWithEmail.Email);
-            //if (user == null)
-            //    throw new Exception("invalid email or password");
-            //var result = await userManager.CheckPasswordAsync(user,loginWithEmail.Password);
-            //if(!result)
+            var user = await userManager.FindByEmailAsync(loginWithEmail.Email!);
+            if (user == null)
+                throw new Exception("invalid email or password");
+            //var result = await userManager.CheckPasswordAsync(user, LoginWithEmail.Password);
+            //if (!result)
             //    throw new Exception("invalid email or password");
             var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
             var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
