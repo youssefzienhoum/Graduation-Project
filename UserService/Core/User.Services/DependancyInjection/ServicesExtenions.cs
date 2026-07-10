@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,16 @@ namespace User.Services.DependencyInjection
         {
             services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Mapping.UserProfile).Assembly));
             services.AddScoped<IUserService, UserService>();
-            
+            services.AddMassTransit(x => x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("localhost", "/", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+            }));
+
+
             return services;
         }
     }

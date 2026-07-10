@@ -51,7 +51,7 @@ namespace User.Presentation_API.Controllers
         }
 
         [HttpPut("Approved/{userId}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnblockUser(Guid userId)
         {
             await userService.ApprovedUserAsync(userId);
