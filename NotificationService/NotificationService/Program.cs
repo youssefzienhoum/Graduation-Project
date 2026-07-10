@@ -24,6 +24,7 @@ namespace NotificationService
             {
                 x.AddConsumer<SendOtpConsumer>();
                 x.AddConsumer<ResetPasswordConsumer>();
+                x.AddConsumer<AccountPendingConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CommanLib.EventNotification.EmailEvent;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -15,22 +17,22 @@ using User.shared.DTOS;
 
 namespace User.Services.Services
 {
-    internal class UserService(IUserRepo userRepo , IHttpContextAccessor httpContextAccesso, IMapper mapper) : IUserService
+    internal class UserService(IUserRepo userRepo, IHttpContextAccessor httpContextAccesso, IMapper mapper,IPublishEndpoint publish) : IUserService
     {
-        public async Task blockUserAsync(Guid userId)
+        public async Task BlockUserAsync(Guid userId)
         {
-           var user = await userRepo.GetByIdAsync(userId);
+            var user = await userRepo.GetByIdAsync(userId);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
-         user.Status= UserStatus.Suspended;
-            await  userRepo.UpdateAsync(user);
+            user.Status = UserStatus.Suspended;
+            await userRepo.UpdateAsync(user);
         }
 
         public async Task DeleteUserAsync(Guid userId)
         {
-           var user=await userRepo.GetByIdAsync(userId);
+            var user = await userRepo.GetByIdAsync(userId);
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -53,17 +55,6 @@ namespace User.Services.Services
             return Task.FromResult(mapper.Map<UserDetailsResponse>(user));
         }
 
-        public async Task unblockUserAsync(Guid userId)
-        {
-            var user = await userRepo.GetByIdAsync(userId);
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
-         user.Status= UserStatus.Approved;
-            await  userRepo.UpdateAsync(user);
-
-        }
 
         public async Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate)
         {
@@ -110,5 +101,19 @@ namespace User.Services.Services
             return await userRepo.GetByIdAsync(Guid.Parse(userId)) ?? throw new Exception("User not found");
         }
 
+        public async Task ApprovedUserAsync(Guid userId)
+        {
+            var user = await userRepo.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.Status = UserStatus.Approved;
+            await userRepo.UpdateAsync(user);
+            await publish.Publish(new AccountEvent(user.Email, user.FulltName));
+
+
+
+        }
     }
 }

@@ -42,19 +42,19 @@ namespace User.Presentation_API.Controllers
 
 
 
-        [HttpPut("unblock/{userId}")]
+        [HttpPut("Block/{userId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> BlockUser(Guid userId)
         {
-            await userService.blockUserAsync(userId);
+            await userService.BlockUserAsync(userId);
             return NoContent();
         }
 
-        [HttpPut("block/{userId}")]
+        [HttpPut("Approved/{userId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnblockUser(Guid userId)
         {
-            await userService.unblockUserAsync(userId);
+            await userService.ApprovedUserAsync(userId);
             return NoContent();
         }
 

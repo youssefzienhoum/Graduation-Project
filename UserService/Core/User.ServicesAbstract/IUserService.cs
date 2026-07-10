@@ -14,8 +14,9 @@ namespace User.ServicesAbstract
         Task<IEnumerable<UserDetailsResponse>> GetAllUserDetailsAsync();
         Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate);
         Task DeleteUserAsync(Guid userId);
-        Task blockUserAsync(Guid userId);
-        Task unblockUserAsync(Guid userId);
+        Task BlockUserAsync(Guid userId);
+       
+        Task ApprovedUserAsync(Guid userId);
 
     
 

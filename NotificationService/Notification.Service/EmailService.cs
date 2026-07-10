@@ -55,11 +55,10 @@ namespace Notification.Service
             email.Body = builder.ToMessageBody();
             email.From.Add(new MailboxAddress(_mailSettings.Username, _mailSettings.Email));
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            smtp.Connect(_mailSettings.SmtpServer, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Username, _mailSettings.Password);
-            smtp.SendAsync(email);
-            smtp.Disconnect(true);
-            smtp.Dispose();
+            await smtp.ConnectAsync(_mailSettings.SmtpServer, _mailSettings.Port, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_mailSettings.Username, _mailSettings.Password);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
 
 
         }

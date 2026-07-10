@@ -180,11 +180,11 @@ namespace Auth.Service
             return userResponse;
         }
 
-        public async Task CreateAccountExpert(RegisterRequest registerRequest)
+        public async Task CreateAccountExpertAsync(RegisterRequest registerRequest)
         {
             var existingUser = await userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == registerRequest.PhoneNumber || u.Email == registerRequest.email);
 
-            if (existingUser == null)
+            if (existingUser != null)
             {
                 if (existingUser.PhoneNumber == registerRequest.PhoneNumber)
                     throw new Exception("Phone number is already registered.");
@@ -195,7 +195,7 @@ namespace Auth.Service
             var user = new AppUser
             {
                 FulltName = registerRequest.FullName,
-                UserName = registerRequest.FullName,
+                UserName = registerRequest.PhoneNumber,
                 Status=UserStatus.Pending,
                 PhoneNumber = registerRequest.PhoneNumber,
                 Email = registerRequest.email,
@@ -210,13 +210,11 @@ namespace Auth.Service
 
             if (!result.Succeeded)
             {
-                throw new Exception("User creation failed");
+                var errors = string.Join(" | ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                throw new Exception($"User creation failed: {errors}");
             }
             await userManager.AddToRoleAsync(user, "Expert");
-
-
-
-
+            await publish.Publish(new AccountEvent(user.Email, user.FulltName));
 
         }
     }

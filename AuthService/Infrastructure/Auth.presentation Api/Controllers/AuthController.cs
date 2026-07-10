@@ -53,11 +53,22 @@ namespace Auth.presentation_Api.Controllers
             var result = await authService.VerifyOTPAsync(verifyOTPRequest);
             return Ok(result);
         }
+        [HttpPost("CreateExpert")]
+        public async Task<IActionResult> CreateExpert([FromBody]  RegisterRequest registerRequest)
+        {
+                await authService.CreateAccountExpertAsync(registerRequest);
+                return Ok();
+
+
+        }
+
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] string refreshToken)
         {
             await authService.LogoutAsync(refreshToken);
             return Ok();
         }
+
+
     }
 }

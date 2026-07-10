@@ -17,7 +17,7 @@ namespace Auth.ServiceAbstraction
         Task LogoutAsync(string refreshToken);
         Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
         Task ForgetPasswordasync(ForgetPassowrdDto passowrdDto);
-        Task CreateAccountExpert(RegisterRequest registerRequest);
+        Task CreateAccountExpertAsync(RegisterRequest registerRequest);
 
     }
 }

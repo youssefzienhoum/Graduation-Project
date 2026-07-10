@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EmailService\**" />
+    <EmbeddedResource Remove="EmailService\**" />
+    <None Remove="EmailService\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.5.0" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
@@ -26,10 +32,6 @@
     <ProjectReference Include="..\..\Auth.Shared\Auth.Shared.csproj" />
     <ProjectReference Include="..\Auth.ServiceAbstraction\Auth.ServiceAbstraction.csproj" />
     <ProjectReference Include="..\User.Domain\Auth.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EmailService\" />
   </ItemGroup>
 
 </Project>
