@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace User.shared.DTOS
 {
-    public  record UserUpdateRequest(string fullName, string picture, string village, string Region)
-    {
-    }
+    public record UserUpdateRequest(
+    string? FullName,
+    string? Picture,
+    string? Village,
+    string? Region,
+    string? PhoneNumber,
+    string? Email
+);
 }

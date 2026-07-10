@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Auth.Shared.DTOS.Auth
 {
-    public record LoginWithEmailResponse(string FulltName, string? refreshToken, string? accessToken ,string email)
+    public record LoginWithEmailResponse(string FulltName,
+        string? refreshToken,
+        string? accessToken ,
+        string email)
     {}
 }

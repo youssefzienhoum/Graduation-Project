@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Auth.Shared.DTOS.Auth
 {
     public  record RegisterRequest(
-        string FullName,
+       string FullName,
        string village,
        string? picture,
        string Region,
        string email,
        string password,
-        string PhoneNumber
+       string PhoneNumber
         )
     {
     }

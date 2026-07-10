@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace User.shared.DTOS
 {
-    public record UserDetailsRespones(
+    public record UserDetailsResponse(
         Guid Id,
-        string FulltName,
-        string pictures,
+        string FulLName,
+        string Email,
+        string PhoneNumber,
+        string Picture,
         string village,
         string Region
         )

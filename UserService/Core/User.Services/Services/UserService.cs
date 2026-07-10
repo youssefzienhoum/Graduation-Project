@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+
+
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +24,8 @@ namespace User.Services.Services
             {
                 throw new Exception("User not found");
             }
-            user.IsActive = false;
-                await  userRepo.UpdateAsync(user);
+         user.Status= UserStatus.Suspended;
+            await  userRepo.UpdateAsync(user);
         }
 
         public async Task DeleteUserAsync(Guid userId)
@@ -40,40 +40,55 @@ namespace User.Services.Services
 
         }
 
-        public Task<IEnumerable<UserDetailsRespones>> GetAllUserDetailsAsync()
+        public Task<IEnumerable<UserDetailsResponse>> GetAllUserDetailsAsync()
         {
             var users = userRepo.GetAllAsync().Result;
-            return Task.FromResult(mapper.Map<IEnumerable<UserDetailsRespones>>(users));
+            return Task.FromResult(mapper.Map<IEnumerable<UserDetailsResponse>>(users));
 
         }
 
-        public Task<UserDetailsRespones> GetUserDetailsAsync()
+        public Task<UserDetailsResponse> GetUserDetailsAsync()
         {
             var user = GetLoggedInUserAsync().Result;
-            return Task.FromResult(mapper.Map<UserDetailsRespones>(user));
+            return Task.FromResult(mapper.Map<UserDetailsResponse>(user));
         }
 
-        public Task unblockUserAsync(Guid userId)
+        public async Task unblockUserAsync(Guid userId)
         {
-            var user = userRepo.GetByIdAsync(userId).Result;
+            var user = await userRepo.GetByIdAsync(userId);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
-            user.IsActive = true;
-            return userRepo.UpdateAsync(user);
+         user.Status= UserStatus.Approved;
+            await  userRepo.UpdateAsync(user);
+
         }
 
-        public Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate)
+        public async Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate)
         {
-            var user = GetLoggedInUserAsync().Result;
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
+            var user = await GetLoggedInUserAsync();
+
+            if (user is null)
+                throw new KeyNotFoundException("User not found.");
+
             mapper.Map(userUpdate, user);
-            return userRepo.UpdateAsync(user);
 
+            if (user.Address != null)
+            {
+                user.Address.Village = userUpdate.Village ?? user.Address.Village;
+                user.Address.Region = userUpdate.Region ?? user.Address.Region;
+            }
+            else
+            {
+                user.Address = new Address
+                {
+                    Village = userUpdate.Village,
+                    Region = userUpdate.Region
+                };
+            }
+
+            await userRepo.UpdateAsync(user);
         }
 
         private async Task<AppUser> GetLoggedInUserAsync()

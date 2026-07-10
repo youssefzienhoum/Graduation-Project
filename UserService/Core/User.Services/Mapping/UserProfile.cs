@@ -9,18 +9,41 @@ using User.shared.DTOS;
 
 namespace User.Services.Mapping
 {
-    internal class UserProfile : Profile
+    public  class UserProfile : Profile
     {
         public UserProfile()
         {
-            CreateMap<AppUser, UserDetailsRespones>().
-                ForMember(p => p.village, o => o.MapFrom(s => s.Address.Village))
-                .ForMember(p => p.Region, o => o.MapFrom(s => s.Address.Region));
+            CreateMap<AppUser, UserDetailsResponse>()
+               .ForMember(dest => dest.village,
+                   opt => opt.MapFrom(src => src.Address.Village))
+               .ForMember(dest => dest.Region,
+                   opt => opt.MapFrom(src => src.Address.Region));
 
-            CreateMap<UserDetailsRespones, AppUser>()
-                .ForMember(p => p.Address, o => o.MapFrom(s => new Address { Village = s.village, Region = s.Region }));
-            CreateMap<AppUser, UserUpdateRequest>();
-            CreateMap<UserUpdateRequest, AppUser>();
+
+            // UserUpdateRequest -> Address
+            CreateMap<UserUpdateRequest, Address>()
+                .ForMember(dest => dest.Village,
+                    opt => opt.MapFrom(src => src.Village))
+                .ForMember(dest => dest.Region,
+                    opt => opt.MapFrom(src => src.Region));
+
+
+            // UserUpdateRequest -> AppUser
+            CreateMap<UserUpdateRequest, AppUser>()
+                .ForMember(dest => dest.Address,
+                    opt => opt.MapFrom(src => src))
+                .ForAllMembers(opt =>
+                    opt.Condition((src, dest, srcMember) => srcMember != null));
+
+
+            // Optional: Address -> DTO if needed
+            CreateMap<Address, UserDetailsResponse>()
+                .ForMember(dest => dest.village,
+                    opt => opt.MapFrom(src => src.Village))
+                .ForMember(dest => dest.Region,
+                    opt => opt.MapFrom(src => src.Region));
+
+
 
 
 

@@ -22,6 +22,16 @@ namespace User.Presentation_API.Controllers
             var userDetails = await userService.GetUserDetailsAsync();
             return Ok(userDetails);
         }
+
+
+        [HttpGet("all")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUserDetails()
+        {
+            var allUserDetails = await userService.GetAllUserDetailsAsync();
+            return Ok(allUserDetails);
+        }
+
         [HttpPut("update")]
         [Authorize]
         public async Task<IActionResult> UpdateUserDetails([FromBody] UserUpdateRequest userUpdate)
@@ -29,23 +39,35 @@ namespace User.Presentation_API.Controllers
             await userService.UpdateUserDetailsAsync(userUpdate);
             return NoContent();
         }
-        public async Task<IActionResult> DeleteUser(Guid userId)
-        {
-            await userService.DeleteUserAsync(userId);
-            return NoContent();
-        }
+
+
+
+        [HttpPut("unblock/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> BlockUser(Guid userId)
         {
             await userService.blockUserAsync(userId);
             return NoContent();
         }
 
+        [HttpPut("block/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnblockUser(Guid userId)
         {
             await userService.unblockUserAsync(userId);
             return NoContent();
         }
 
+
+        [HttpDelete("{userId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            await userService.DeleteUserAsync(userId);
+            return NoContent();
+        }
+
+     
 
       
 
