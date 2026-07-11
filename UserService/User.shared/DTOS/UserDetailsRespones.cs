@@ -8,7 +8,7 @@ namespace User.shared.DTOS
 {
     public record UserDetailsResponse(
         Guid Id,
-        string FulltName,
+        string FullName,
         string Email,
         string PhoneNumber,
         string Picture,

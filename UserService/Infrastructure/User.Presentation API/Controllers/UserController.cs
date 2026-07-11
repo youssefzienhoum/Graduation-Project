@@ -51,15 +51,15 @@ namespace User.Presentation_API.Controllers
         }
 
         [HttpPut("Approved/{userId}")]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UnblockUser(Guid userId)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult>AprrovedUser(Guid userId)
         {
             await userService.ApprovedUserAsync(userId);
             return NoContent();
         }
 
 
-        [HttpDelete("{userId}")]
+        [HttpDelete("Delete/{userId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid userId)
         {

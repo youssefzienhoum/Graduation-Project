@@ -9,7 +9,7 @@ namespace User.Domain.Entities
 {
         public class AppUser : IdentityUser<Guid>
         {
-        public string FulltName { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
         public Address Address { get; set; }
 
 

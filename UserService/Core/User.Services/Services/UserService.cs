@@ -111,7 +111,7 @@ namespace User.Services.Services
             user.Status = UserStatus.Approved;
             await userRepo.UpdateAsync(user);
             await userRepo.SaveChangesAsync();
-            await publish.Publish(new AccountEvent(user.Email, user.FulltName));
+            await publish.Publish(new AccountEvent(user.Email, user.FullName));
 
 
 

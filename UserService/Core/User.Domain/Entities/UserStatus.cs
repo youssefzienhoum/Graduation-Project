@@ -8,9 +8,9 @@ namespace User.Domain.Entities
 {
     public enum UserStatus
     {
-        Pending,
-        Approved,
-        Rejected,
-        Suspended
+        Approved = 1,
+        Pending = 2,
+        Rejected = 3,
+        Suspended = 4
     }
 }

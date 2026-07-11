@@ -95,7 +95,7 @@ namespace Auth.Service
             var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
 
             return new LoginWithEmailResponse(
-                FulltName: user.FulltName, refreshToken: refreshtoken.Token, accessToken: accessToken, email: user.Email
+                FulltName: user.FullName, refreshToken: refreshtoken.Token, accessToken: accessToken, email: user.Email
             );
         }
 
@@ -120,7 +120,7 @@ namespace Auth.Service
 
             var user = new AppUser
             {
-                FulltName = registerRequest.FullName,
+                FullName = registerRequest.FullName,
                 UserName = registerRequest.FullName,
                 PhoneNumber = registerRequest.PhoneNumber,
                 Email = registerRequest.email,
@@ -174,7 +174,7 @@ namespace Auth.Service
             var userResponse = new UserResponse(
             accesstoken: accesstoken,
             refershtoken: refreshtoken.Token,
-            FullName: user.FulltName,
+            FullName: user.FullName,
             message: "OTP verified successfully"
     );
 
@@ -195,7 +195,7 @@ namespace Auth.Service
             }
             var user = new AppUser
             {
-                FulltName = registerRequest.FullName,
+                FullName = registerRequest.FullName,
                 UserName = registerRequest.PhoneNumber,
                 Status = UserStatus.Pending,
                 PhoneNumber = registerRequest.PhoneNumber,
@@ -215,7 +215,7 @@ namespace Auth.Service
                 throw new Exception($"User creation failed: {errors}");
             }
             await userManager.AddToRoleAsync(user, "Expert");
-            await publish.Publish(new AccountEvent(user.Email, user.FulltName));
+            await publish.Publish(new AccountEvent(user.Email, user.FullName));
 
         }
 
@@ -232,7 +232,7 @@ namespace Auth.Service
             var accesstoken =tokenService.GenerateAccessToken(await userManager.FindByIdAsync(token.UserId.ToString()), await userManager.GetRolesAsync(await userManager.FindByIdAsync(token.UserId.ToString())));
             await tokenService.RevokeRefreshTokenAsync(request.RefreshToken);
             return new LoginWithEmailResponse(
-                FulltName: (await userManager.FindByIdAsync(token.UserId.ToString())).FulltName,
+                FulltName: (await userManager.FindByIdAsync(token.UserId.ToString())).FullName,
                 refreshToken: (await refreshtoken).Token,
                 accessToken: accesstoken,
                 email: (await userManager.FindByIdAsync(token.UserId.ToString())).Email

@@ -73,19 +73,18 @@ internal class DbInitializer(
     {
         const string adminPhone = "+201120936540";
         const string adminEmail = "Admin@gmail.com";
-        const string Password = "12345";
+        const string Password = "P@ssword123";
 
         var admin = await userManager.Users
             .FirstOrDefaultAsync(x => x.PhoneNumber == adminPhone);
-        var admin_2 = await userManager.Users
-            .FirstOrDefaultAsync(x => x.PhoneNumber == adminPhone);
+    
 
         if (admin is not null)
             return;
 
         admin = new AppUser
         {
-            FulltName = "Admin User",
+            FullName = "Admin User",
             UserName = adminPhone,
             PhoneNumber = adminPhone,
             Email=adminEmail,
@@ -93,16 +92,9 @@ internal class DbInitializer(
             
         };
 
-        admin_2 = new AppUser
-        {
-            FulltName = "Admin User2",
-            UserName = adminPhone,
-            PhoneNumber = adminPhone,
-            Email = adminEmail,
-            
-        };
+    
 
-        var result = await userManager.CreateAsync( admin);
+        var result = await userManager.CreateAsync( admin, Password);
 
         if (!result.Succeeded)
         {

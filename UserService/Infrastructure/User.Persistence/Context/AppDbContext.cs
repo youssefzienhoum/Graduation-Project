@@ -10,8 +10,8 @@ namespace User.Persistence.Context
         IdentityDbContext<AppUser, AppRole, Guid>(options)
 
     {
-        
+        public DbSet<Address> Addresses { get; set; }
 
-       
+
     }
 }
