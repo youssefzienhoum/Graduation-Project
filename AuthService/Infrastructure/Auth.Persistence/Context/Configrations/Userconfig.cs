@@ -25,7 +25,7 @@ namespace Auth.Persistence.Context.Configrations
 
             builder.Property(x => x.Status)
                  .HasMaxLength(20)
-                 .HasDefaultValue(UserStatus.Pending)
+                 .HasDefaultValue(UserStatus.Approved)
                  .IsRequired();
 
             builder.Property(x => x.CreatedAt)

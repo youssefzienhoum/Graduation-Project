@@ -18,6 +18,7 @@ namespace User.Services.Mapping
                    opt => opt.MapFrom(src => src.Address.Village))
                .ForMember(dest => dest.Region,
                    opt => opt.MapFrom(src => src.Address.Region));
+            
 
 
             // UserUpdateRequest -> Address
@@ -25,7 +26,10 @@ namespace User.Services.Mapping
                 .ForMember(dest => dest.Village,
                     opt => opt.MapFrom(src => src.Village))
                 .ForMember(dest => dest.Region,
-                    opt => opt.MapFrom(src => src.Region));
+                    opt => opt.MapFrom(src => src.Region))
+                .ForMember(dest => dest.Id,
+                    opt => opt.Ignore()); // Ignore Id to prevent overwriting
+            
 
 
             // UserUpdateRequest -> AppUser
@@ -36,12 +40,7 @@ namespace User.Services.Mapping
                     opt.Condition((src, dest, srcMember) => srcMember != null));
 
 
-            // Optional: Address -> DTO if needed
-            CreateMap<Address, UserDetailsResponse>()
-                .ForMember(dest => dest.village,
-                    opt => opt.MapFrom(src => src.Village))
-                .ForMember(dest => dest.Region,
-                    opt => opt.MapFrom(src => src.Region));
+           
 
 
 

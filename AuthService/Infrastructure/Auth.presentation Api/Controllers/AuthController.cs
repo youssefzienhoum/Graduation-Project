@@ -1,6 +1,7 @@
 ﻿using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.Auth;
 using Auth.Shared.DTOS.OTP;
+using Auth.Shared.DTOS.Token;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,39 +16,39 @@ namespace Auth.presentation_Api.Controllers
     [Route("api/[controller]")]
     public class AuthController(IAuthService authService) : ControllerBase
     {
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody]RegisterRequest registerRequest)
         {
             var result = await authService.RegisterAsync(registerRequest);
             return Ok(result);
         }
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var result = await authService.LoginAsync(loginRequest);
             return Ok(result);
 
         }
-        [HttpPost("loginwithemail")]
+        [HttpPost("LoginWithEmail")]
         public async Task<IActionResult> LoginWithEmail([FromBody] LoginWithEmail loginWithEmail)
         {
             var result = await authService.LoginWithEmailAsync(loginWithEmail);
             return Ok(result);
         }
 
-        [HttpPost("forgetpassword")]
+        [HttpPost("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([FromBody] ForgetPassowrdDto forgetPassowrdDto)
         {
             await authService.ForgetPasswordasync(forgetPassowrdDto);
             return Ok();
         }
-        [HttpPost("resetpassword")]
+        [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
         {
             await authService.ResetPasswordAsync(resetPasswordDto);
             return Ok();
         }
-        [HttpPost("verify OTP")]
+        [HttpPost("Verify-OTP")]
         public async Task<IActionResult> VerifyOTP([FromBody] VerifyOTPRequest verifyOTPRequest)
         {
             var result = await authService.VerifyOTPAsync(verifyOTPRequest);
@@ -62,11 +63,19 @@ namespace Auth.presentation_Api.Controllers
 
         }
 
-        [HttpPost("logout")]
+        [HttpPost("Logout")]
         public async Task<IActionResult> Logout([FromBody] string refreshToken)
         {
             await authService.LogoutAsync(refreshToken);
             return Ok();
+        }
+        [HttpPost("Refresh-Token")]
+        public async Task<IActionResult> RefreshToken( RefreshTokenRequest request)
+        {
+            var result = await authService.RefreshTokenAsync(request);
+        
+
+            return Ok(result);
         }
 
 

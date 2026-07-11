@@ -8,7 +8,7 @@ namespace User.shared.DTOS
 {
     public record UserDetailsResponse(
         Guid Id,
-        string FulLName,
+        string FulltName,
         string Email,
         string PhoneNumber,
         string Picture,
@@ -16,5 +16,6 @@ namespace User.shared.DTOS
         string Region
         )
     {
+        public UserDetailsResponse() : this(Guid.Empty, "", "", "", "", "", "") { }
     }
 }

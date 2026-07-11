@@ -3,6 +3,7 @@ using Auth.Domain.Entities;
 using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.Auth;
 using Auth.Shared.DTOS.OTP;
+using Auth.Shared.DTOS.Token;
 using CommanLib.EventNotification.EmailEvent;
 using MassTransit;
 using MassTransit.Transports;
@@ -36,14 +37,14 @@ namespace Auth.Service
                 throw new Exception("User not found");
             }
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
-            var param = new Dictionary<string, string?> 
-            { 
-                {"token", token }, 
-                { "email", passowrdDto.Email! } 
+            var param = new Dictionary<string, string?>
+            {
+                {"token", token },
+                { "email", passowrdDto.Email! }
             };
             var callBack = QueryHelpers.AddQueryString(passowrdDto.ClinetUrl!, param);
-            var message = new Message(user.Email, "Reset Password", callBack,null);
-            await publish.Publish(new ResetPasswordEvent( user.Email, callBack));
+            var message = new Message(user.Email, "Reset Password", callBack, null);
+            await publish.Publish(new ResetPasswordEvent(user.Email, callBack));
         }
 
         public async Task ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
@@ -75,7 +76,7 @@ namespace Auth.Service
 
         public async Task<LoginWithEmailResponse> LoginWithEmailAsync(LoginWithEmail loginWithEmail)
         {
-            
+
             var user = await userManager.FindByEmailAsync(loginWithEmail.Email);
 
             if (user == null)
@@ -86,15 +87,15 @@ namespace Auth.Service
             if (!isPasswordValid)
                 throw new Exception("invalid email or password");
 
-            if (!(user.Status==UserStatus.Approved))
+            if (!(user.Status == UserStatus.Approved))
                 throw new Exception("User is not approved");
-            
+
             var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
 
             var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
 
             return new LoginWithEmailResponse(
-                FulltName : user.FulltName, refreshToken: refreshtoken.Token,accessToken:accessToken ,email :user.Email
+                FulltName: user.FulltName, refreshToken: refreshtoken.Token, accessToken: accessToken, email: user.Email
             );
         }
 
@@ -123,7 +124,7 @@ namespace Auth.Service
                 UserName = registerRequest.FullName,
                 PhoneNumber = registerRequest.PhoneNumber,
                 Email = registerRequest.email,
-               
+
                 Address = new Address
                 {
                     Village = registerRequest.village,
@@ -133,7 +134,7 @@ namespace Auth.Service
             };
 
 
-            var result = await userManager.CreateAsync(user,registerRequest.password);
+            var result = await userManager.CreateAsync(user, registerRequest.password);
 
             if (!result.Succeeded)
             {
@@ -196,7 +197,7 @@ namespace Auth.Service
             {
                 FulltName = registerRequest.FullName,
                 UserName = registerRequest.PhoneNumber,
-                Status=UserStatus.Pending,
+                Status = UserStatus.Pending,
                 PhoneNumber = registerRequest.PhoneNumber,
                 Email = registerRequest.email,
                 Address = new Address
@@ -215,6 +216,30 @@ namespace Auth.Service
             }
             await userManager.AddToRoleAsync(user, "Expert");
             await publish.Publish(new AccountEvent(user.Email, user.FulltName));
+
+        }
+
+
+        public async Task<LoginWithEmailResponse> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            var token=await tokenService.GetByRefreshTokenAsync (request.RefreshToken);
+            if(token==null || token.RevokedAt!=null || token.ExpiresAt<DateTime.UtcNow)
+            {
+                throw new Exception("Invalid refresh token");
+            }
+
+            var refreshtoken = tokenService.CreateRefreshTokenAsync(token.UserId);
+            var accesstoken =tokenService.GenerateAccessToken(await userManager.FindByIdAsync(token.UserId.ToString()), await userManager.GetRolesAsync(await userManager.FindByIdAsync(token.UserId.ToString())));
+            await tokenService.RevokeRefreshTokenAsync(request.RefreshToken);
+            return new LoginWithEmailResponse(
+                FulltName: (await userManager.FindByIdAsync(token.UserId.ToString())).FulltName,
+                refreshToken: (await refreshtoken).Token,
+                accessToken: accesstoken,
+                email: (await userManager.FindByIdAsync(token.UserId.ToString())).Email
+                );
+
+
+
 
         }
     }

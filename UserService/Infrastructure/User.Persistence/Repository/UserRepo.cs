@@ -34,7 +34,7 @@ namespace User.Persistence.Repository
 
         public async Task<AppUser?> GetByIdAsync(Guid id)
         { 
-            return await appDb.Set<AppUser>()
+            return await appDb.Set<AppUser>().Include(u=> u.Address)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
         }

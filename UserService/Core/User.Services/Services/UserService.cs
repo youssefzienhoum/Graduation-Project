@@ -17,7 +17,7 @@ using User.shared.DTOS;
 
 namespace User.Services.Services
 {
-    internal class UserService(IUserRepo userRepo, IHttpContextAccessor httpContextAccesso, IMapper mapper,IPublishEndpoint publish) : IUserService
+    internal class UserService(IUserRepo userRepo, IHttpContextAccessor httpContextAccesso, IMapper mapper, IPublishEndpoint publish) : IUserService
     {
         public async Task BlockUserAsync(Guid userId)
         {
@@ -116,5 +116,6 @@ namespace User.Services.Services
 
 
             ;
+        }
     }
 }
