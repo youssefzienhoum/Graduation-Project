@@ -1,4 +1,4 @@
-﻿namespace Report.Presistence
+﻿namespace Report.Persistence
 {
     public class Class1
     {
