@@ -67,6 +67,7 @@ namespace Auth_Services
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles(); // serves wwwroot/uploads/* (profile pictures) as static content
             app.UseAuthentication();
             app.UseAuthorization();
 
