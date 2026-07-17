@@ -15,6 +15,7 @@ namespace Report.Domain.Entities
         public string? ModelVersion { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public Problem Problem { get; set; }
         public Guid ReportId { get; set; }
         public Report Report { get; set; } = null!;
     }

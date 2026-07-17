@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Report.Domain\Report.Domain.csproj" />
     <ProjectReference Include="..\..\Core\Report.Service\Report.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Context\Migrations\" />
+    <Folder Include="Context\Configration\" />
+    <Folder Include="DependencyInjection\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
   </ItemGroup>
 
 </Project>
