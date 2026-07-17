@@ -1,4 +1,4 @@
-﻿using Auth.Domain.Contractts;
+﻿using Auth.Domain.Contracts;
 using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.OTP;
 using CommanLib.EventNotification.SmsEvent;

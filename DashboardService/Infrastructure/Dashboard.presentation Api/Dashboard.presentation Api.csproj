@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Dashboard.presentation_Api</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Report.ServiceAbstraction\Report.ServiceAbstraction.csproj" />
+    <ProjectReference Include="..\..\Core\Dashboard.ServiceAbstraction\Dashboard.ServiceAbstraction.csproj" />
   </ItemGroup>
 
   <ItemGroup>

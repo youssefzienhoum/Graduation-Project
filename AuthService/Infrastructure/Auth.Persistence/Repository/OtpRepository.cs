@@ -1,4 +1,4 @@
-﻿using Auth.Domain.Contractts;
+﻿using Auth.Domain.Contracts;
 using StackExchange.Redis;
 
 namespace Auth.Persistence.Repositories;

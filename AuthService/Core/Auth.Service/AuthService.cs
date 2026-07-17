@@ -1,4 +1,4 @@
-﻿using Auth.Domain.Contractts;
+﻿using Auth.Domain.Contracts;
 using Auth.Domain.Entities;
 using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.Auth;

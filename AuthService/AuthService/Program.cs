@@ -1,4 +1,4 @@
-using Auth.Domain.Contractts;
+using Auth.Domain.Contracts;
 using Auth.Persistence.DependencyInjection;
 using Auth.Service;
 using Auth.Service.DependanceInjection;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Auth.Domain.Contractts
+namespace Auth.Domain.Contracts
 {
     public interface ITokenService
     { 

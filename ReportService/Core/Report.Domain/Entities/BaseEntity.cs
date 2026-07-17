@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Auth.Domain.Contractts
+namespace Report.Domain.Entities
 {
-    public interface IDbInitializer
+    public  class BaseEntity<T>
     {
-        Task InitializeAsync();
-      
+        public T Id { get; set; }
     }
 }
