@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Auth.Shared.DTOS.Auth
     public  record RegisterRequest(
        string FullName,
        string village,
-       string? picture,
+       IFormFile? picture,
        string Region,
        string email,
        string password,

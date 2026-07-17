@@ -7,6 +7,8 @@ using Auth.Shared.DTOS.Token;
 using CommanLib.EventNotification.EmailEvent;
 using MassTransit;
 using MassTransit.Transports;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
@@ -27,8 +29,59 @@ namespace Auth.Service
     UserManager<AppUser> userManager
     , IOTPService otpService
      , ITokenService tokenService
-        , IPublishEndpoint publish) : IAuthService
+        , IPublishEndpoint publish
+        , IWebHostEnvironment webHostEnvironment) : IAuthService
     {
+        /// <summary>
+        /// Content-type -> file extension allow-list. Deriving the extension
+        /// from the declared MIME type (rather than trusting whatever
+        /// filename the client sends) is what actually lets PNG/SVG/WebP
+        /// pictures keep their real format instead of silently becoming
+        /// ".jpg", and it doubles as the upload's security boundary: only
+        /// these content types are ever written to disk.
+        /// </summary>
+        private static readonly Dictionary<string, string> AllowedPictureTypes = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["image/jpeg"] = ".jpg",
+            ["image/jpg"] = ".jpg",
+            ["image/png"] = ".png",
+            ["image/webp"] = ".webp",
+            ["image/svg+xml"] = ".svg",
+        };
+
+        /// <summary>
+        /// Saves an uploaded profile picture to wwwroot/uploads and returns a
+        /// relative path (e.g. "/uploads/&lt;guid&gt;.png") that can be stored
+        /// on the user record and later served as a static file. Returns an
+        /// empty string when no picture was uploaded.
+        /// </summary>
+        private async Task<string> SavePictureAsync(IFormFile? picture)
+        {
+            if (picture == null || picture.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            if (!AllowedPictureTypes.TryGetValue(picture.ContentType, out var extension))
+            {
+                throw new Exception(
+                    $"Unsupported picture type '{picture.ContentType}'. Allowed types: jpg, png, webp, svg.");
+            }
+
+            var uploadsRoot = Path.Combine(webHostEnvironment.WebRootPath ?? "wwwroot", "uploads");
+            Directory.CreateDirectory(uploadsRoot);
+
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(uploadsRoot, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await picture.CopyToAsync(stream);
+            }
+
+            return $"/uploads/{fileName}";
+        }
+
         public async Task ForgetPasswordasync(ForgetPassowrdDto passowrdDto)
         {
             var user = await userManager.FindByEmailAsync(passowrdDto.Email!);
@@ -107,9 +160,11 @@ namespace Auth.Service
 
         public async Task<OTPResponse> RegisterAsync(RegisterRequest registerRequest)
         {
-            var existingUser = await userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == registerRequest.PhoneNumber || u.Email == registerRequest.email);
+            var existingUser = await userManager.Users.FirstOrDefaultAsync(
+                u => u.PhoneNumber == registerRequest.PhoneNumber ||
+                     u.Email == registerRequest.email);
 
-            if (existingUser == null)
+            if (existingUser != null)
             {
                 if (existingUser.PhoneNumber == registerRequest.PhoneNumber)
                     throw new Exception("Phone number is already registered.");
@@ -118,31 +173,44 @@ namespace Auth.Service
                     throw new Exception("Email is already registered.");
             }
 
+            var pictureUrl = await SavePictureAsync(registerRequest.picture);
+
             var user = new AppUser
             {
                 FullName = registerRequest.FullName,
-                UserName = registerRequest.FullName,
+                UserName = registerRequest.email, // Changed from FullName
                 PhoneNumber = registerRequest.PhoneNumber,
                 Email = registerRequest.email,
-
                 Address = new Address
                 {
                     Village = registerRequest.village,
                     Region = registerRequest.Region
                 },
-                pictures = registerRequest.picture ?? string.Empty
+                pictures = pictureUrl
             };
-
 
             var result = await userManager.CreateAsync(user, registerRequest.password);
 
             if (!result.Succeeded)
             {
-                throw new Exception("User creation failed");
+                var errors = string.Join(" | ",
+                    result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+
+                throw new Exception($"User creation failed: {errors}");
             }
-            await userManager.AddToRoleAsync(user, "Farmer");
+
+            var roleResult = await userManager.AddToRoleAsync(user, "Farmer");
+
+            if (!roleResult.Succeeded)
+            {
+                var errors = string.Join(" | ",
+                    roleResult.Errors.Select(e => $"{e.Code}: {e.Description}"));
+
+                throw new Exception($"Failed to add role: {errors}");
+            }
 
             var otp = await otpService.SendOtpAsync(registerRequest.PhoneNumber);
+
             return otp;
         }
 
@@ -193,6 +261,9 @@ namespace Auth.Service
                 if (existingUser.Email == registerRequest.email)
                     throw new Exception("Email is already registered.");
             }
+
+            var pictureUrl = await SavePictureAsync(registerRequest.picture);
+
             var user = new AppUser
             {
                 FullName = registerRequest.FullName,
@@ -205,7 +276,7 @@ namespace Auth.Service
                     Village = registerRequest.village,
                     Region = registerRequest.Region
                 },
-                pictures = registerRequest.picture ?? string.Empty
+                pictures = pictureUrl
             };
             var result = await userManager.CreateAsync(user, registerRequest.password);
 
@@ -216,20 +287,19 @@ namespace Auth.Service
             }
             await userManager.AddToRoleAsync(user, "Expert");
             await publish.Publish(new AccountEvent(user.Email, user.FullName));
-
         }
 
 
         public async Task<LoginWithEmailResponse> RefreshTokenAsync(RefreshTokenRequest request)
         {
-            var token=await tokenService.GetByRefreshTokenAsync (request.RefreshToken);
-            if(token==null || token.RevokedAt!=null || token.ExpiresAt<DateTime.UtcNow)
+            var token = await tokenService.GetByRefreshTokenAsync(request.RefreshToken);
+            if (token == null || token.RevokedAt != null || token.ExpiresAt < DateTime.UtcNow)
             {
                 throw new Exception("Invalid refresh token");
             }
 
             var refreshtoken = tokenService.CreateRefreshTokenAsync(token.UserId);
-            var accesstoken =tokenService.GenerateAccessToken(await userManager.FindByIdAsync(token.UserId.ToString()), await userManager.GetRolesAsync(await userManager.FindByIdAsync(token.UserId.ToString())));
+            var accesstoken = tokenService.GenerateAccessToken(await userManager.FindByIdAsync(token.UserId.ToString()), await userManager.GetRolesAsync(await userManager.FindByIdAsync(token.UserId.ToString())));
             await tokenService.RevokeRefreshTokenAsync(request.RefreshToken);
             return new LoginWithEmailResponse(
                 FulltName: (await userManager.FindByIdAsync(token.UserId.ToString())).FullName,
@@ -237,10 +307,6 @@ namespace Auth.Service
                 accessToken: accesstoken,
                 email: (await userManager.FindByIdAsync(token.UserId.ToString())).Email
                 );
-
-
-
-
         }
     }
 }
