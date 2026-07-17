@@ -37,9 +37,9 @@ namespace Auth.presentation_Api.Controllers
         }
 
         [HttpPost("ForgetPassword")]
-        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPassowrdDto forgetPassowrdDto)
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPassowrdDto forgetPasswordDto)
         {
-            await authService.ForgetPasswordasync(forgetPassowrdDto);
+            await authService.ForgetPasswordasync(forgetPasswordDto);
             return Ok();
         }
         [HttpPost("ResetPassword")]

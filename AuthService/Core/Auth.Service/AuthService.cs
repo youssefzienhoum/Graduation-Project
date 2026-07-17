@@ -32,14 +32,7 @@ namespace Auth.Service
         , IPublishEndpoint publish
         , IWebHostEnvironment webHostEnvironment) : IAuthService
     {
-        /// <summary>
-        /// Content-type -> file extension allow-list. Deriving the extension
-        /// from the declared MIME type (rather than trusting whatever
-        /// filename the client sends) is what actually lets PNG/SVG/WebP
-        /// pictures keep their real format instead of silently becoming
-        /// ".jpg", and it doubles as the upload's security boundary: only
-        /// these content types are ever written to disk.
-        /// </summary>
+      
         private static readonly Dictionary<string, string> AllowedPictureTypes = new(StringComparer.OrdinalIgnoreCase)
         {
             ["image/jpeg"] = ".jpg",
@@ -49,12 +42,7 @@ namespace Auth.Service
             ["image/svg+xml"] = ".svg",
         };
 
-        /// <summary>
-        /// Saves an uploaded profile picture to wwwroot/uploads and returns a
-        /// relative path (e.g. "/uploads/&lt;guid&gt;.png") that can be stored
-        /// on the user record and later served as a static file. Returns an
-        /// empty string when no picture was uploaded.
-        /// </summary>
+       
         private async Task<string> SavePictureAsync(IFormFile? picture)
         {
             if (picture == null || picture.Length == 0)
