@@ -9,7 +9,7 @@ namespace Report.Domain.Entities
     public class ReportAttachment : BaseEntity<Guid>
     {
         public ReportAttachmentType Type { get; set; }
-        public Uri Url { get; set; } = null!;
+        public string Url { get; set; } = null!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public Guid ReportId { get; set; }

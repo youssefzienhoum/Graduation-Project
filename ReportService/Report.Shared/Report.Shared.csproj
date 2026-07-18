@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Core\Report.Domain\Report.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOS\" />
+  </ItemGroup>
+
 </Project>

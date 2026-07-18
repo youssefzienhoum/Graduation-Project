@@ -1,26 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Report.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
+
+
+
 
 namespace Report.Persistence.Context
 {
-    public  class ReportDbContext(DbContextOptions<ReportDbContext> options) : DbContext (options)
+    public class ReportDbContext(DbContextOptions<ReportDbContext> options) : DbContext(options)
     {
-     
-
-
+        public DbSet<Domain.Entities.Report> Reports { get; set; } = null!;
+        public DbSet<ReportAttachment> ReportAttachments { get; set; } = null!;
+        public DbSet<AiAnalysis> AiAnalyses { get; set; } = null!;
+        public DbSet<GPSLocation> GPSLocations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly
-               (Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
-
-    }
+   }
 }

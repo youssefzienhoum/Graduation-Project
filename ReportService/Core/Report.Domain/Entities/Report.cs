@@ -14,18 +14,16 @@ namespace Report.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
         public Guid ReporterId { get; set; }  // user from auth context  frammmer
+        public Guid? IssueId { get; set; }
 
 
         public AiAnalysis? Analysis { get; set; }
 
         public ICollection<ReportAttachment> Attachments { get; set; } = new List<ReportAttachment>();
 
-
+        
         public GPSLocation? Location { get; set; }
-
-
-
-
+        public Guid? LocationId { get; set; }
 
 
         }

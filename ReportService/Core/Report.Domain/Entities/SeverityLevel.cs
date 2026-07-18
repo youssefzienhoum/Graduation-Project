@@ -8,9 +8,15 @@ namespace Report.Domain.Entities
 {
     public  enum SeverityLevel
     {
-        Low,
-        Medium,
-        High,
-        Critical
+        Unknown = 0,
+        Negligible = 1,
+        VeryMinor = 2,
+        Minor = 3,
+        Low = 4,
+        Medium = 5,
+        High = 6,
+        VeryHigh = 7,
+        Critical = 8,
+        VeryCritical = 9
     }
 }
