@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Domain.Entities
+namespace Report.Domain.Entities.Report
 {
-    public enum  ReportStatus
+    public  class BaseEntity<T>
     {
-        Pending,
-        Analyzed, 
-        Escalated,
-        Dismissed
+        public T Id { get; set; }
     }
 }

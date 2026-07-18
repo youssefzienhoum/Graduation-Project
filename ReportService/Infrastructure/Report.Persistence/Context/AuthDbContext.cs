@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Report.Domain.Entities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;

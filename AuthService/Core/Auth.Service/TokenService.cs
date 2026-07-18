@@ -1,4 +1,4 @@
-﻿using Auth.Domain.Contractts;
+﻿using Auth.Domain.Contracts;
 using Auth.Domain.Entities;
 using CommanLib;
 using Microsoft.Extensions.Configuration;

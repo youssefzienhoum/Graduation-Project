@@ -1,4 +1,5 @@
-﻿using Auth.Domain.Contractts;
+﻿using Auth.Domain.Contracts;
+using Auth.Domain.Contracts;
 using Auth.ServiceAbstraction;
 using MassTransit;
 using Microsoft.AspNetCore.Identity.UI.Services;

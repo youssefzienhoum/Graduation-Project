@@ -13,6 +13,7 @@ namespace Report.Persistence.DependencyInjection
             {
                 options.UseSqlServer(configuration.GetConnectionString("SQLConnection"));
             });
+            //services.AddDbContext<>
 
        
 

@@ -13,11 +13,11 @@
 
   <ItemGroup>
     <Folder Include="Context\Migrations\" />
-    <Folder Include="Context\Configration\" />
     <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
   </ItemGroup>
 

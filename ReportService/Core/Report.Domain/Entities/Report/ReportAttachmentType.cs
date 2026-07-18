@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Domain.Entities
+namespace Report.Domain.Entities.Report
 {
-    public  class BaseEntity<T>
+    public  enum ReportAttachmentType
     {
-        public T Id { get; set; }
+        Photo,
+        Voice
     }
 }

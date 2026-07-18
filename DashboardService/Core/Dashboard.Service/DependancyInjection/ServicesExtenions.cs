@@ -1,4 +1,4 @@
-﻿using MassTransit;
+﻿
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using Dashboard.Service;
 using Dashboard.Service.Services;
 using Dashboard.ServicesAbstract;
 
+using MassTransit;
 
 
 namespace Dashboard.Service.DependancyInjection;
@@ -18,17 +19,17 @@ namespace Dashboard.Service.DependancyInjection;
         {
             services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Dashboard.Services.Mapping.UserProfile).Assembly));
             services.AddScoped<IUserService, UserService>();
-            services.AddMassTransit(x => x.UsingRabbitMq((context, cfg) =>
+        services.AddMassTransit(x => x.UsingRabbitMq((context, cfg) =>
+        {
+            cfg.Host("localhost", "/", h =>
             {
-                cfg.Host("localhost", "/", h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                });
-            }));
+                h.Username("guest");
+                h.Password("guest");
+            });
+        }));
 
 
-            return services;
+        return services;
         }
     }
 
