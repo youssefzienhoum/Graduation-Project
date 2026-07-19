@@ -1,13 +1,14 @@
 ﻿using Report.Domain.Entities;
+using Report.Domain.Entities.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Domain.Entities
+namespace Report.Domain.Entities.Report
 {
-    public class Report: BaseEntity<Guid>
+    public class Report : BaseEntity<Guid>
     {
         public string? Description { get; set; }
         public ReportStatus Status { get; set; } = ReportStatus.Pending;
