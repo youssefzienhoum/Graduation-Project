@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Media.ServiceAbstruction\Media.ServiceAbstruction.csproj" />
+    <PackageReference Include="Minio" Version="7.0.0" />
+  </ItemGroup>
+
+  
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Media.Settings\Media.Settings.csproj" />
+    <ProjectReference Include="..\Media.ServiceAbstruction\Media.ServiceAbstraction.csproj" />
   </ItemGroup>
 
 </Project>
