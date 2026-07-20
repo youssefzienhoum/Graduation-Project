@@ -13,14 +13,14 @@ namespace MediaStorageService.Controllers
             var result = await storageService.UploadFileAsync(file, folder, cancellationToken);
             return Ok(result);
         }
-        [HttpDelete("{objectName}")]
-        public async Task<IActionResult> DeleteFile(string objectName, CancellationToken cancellationToken)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFile([FromQuery] string objectName, CancellationToken cancellationToken)
         {
             await storageService.DeleteAsync(objectName, cancellationToken);
             return NoContent();
         }
-        [HttpGet("download/{objectName}")]
-        public async Task<IActionResult> DownloadFile(string objectName, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<IActionResult> DownloadFile([FromQuery]string objectName, CancellationToken cancellationToken)
         {
             var stream = await storageService.DownloadAsync(objectName, cancellationToken);
             return File(stream, "application/octet-stream", objectName);

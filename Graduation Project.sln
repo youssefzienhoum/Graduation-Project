@@ -115,6 +115,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Media.Settings", "MediaStorageService\Infrastructure\Media.Settings\Media.Settings.csproj", "{4B3BE66D-A0C7-4702-B081-6A475B6712E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{B44D9B66-DDB9-4318-9150-C5EBE2308F21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report.Client", "ReportService\Clients\Report.Client\Report.Client.csproj", "{1374DE85-9D5E-4BD6-B74A-D5C265B01218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -277,6 +281,10 @@ Global
 		{4B3BE66D-A0C7-4702-B081-6A475B6712E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B3BE66D-A0C7-4702-B081-6A475B6712E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B3BE66D-A0C7-4702-B081-6A475B6712E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1374DE85-9D5E-4BD6-B74A-D5C265B01218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1374DE85-9D5E-4BD6-B74A-D5C265B01218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1374DE85-9D5E-4BD6-B74A-D5C265B01218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1374DE85-9D5E-4BD6-B74A-D5C265B01218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -331,6 +339,8 @@ Global
 		{59942949-E5BB-49E9-B1C4-1F6816CA7821} = {9970ED6C-C989-4C7E-BCB0-578B722374BE}
 		{A0C0700C-907D-486F-A9C6-CBED24616EC2} = {84FEA8D9-A998-48C3-B932-00C0186269AB}
 		{4B3BE66D-A0C7-4702-B081-6A475B6712E8} = {A0C0700C-907D-486F-A9C6-CBED24616EC2}
+		{B44D9B66-DDB9-4318-9150-C5EBE2308F21} = {AF73A90B-5397-4638-A23A-48BF20237345}
+		{1374DE85-9D5E-4BD6-B74A-D5C265B01218} = {B44D9B66-DDB9-4318-9150-C5EBE2308F21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A91ABF6F-0405-4FDA-8572-E36B7430C967}

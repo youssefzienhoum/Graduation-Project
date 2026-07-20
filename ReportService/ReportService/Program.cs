@@ -1,4 +1,5 @@
-
+using CommanLib.DependencyInjection;
+using Report.Client.DependencyInjection;
 using Report.Persistence.DependencyInjection;
 
 namespace ReportService
@@ -16,6 +17,8 @@ namespace ReportService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
+            builder.Services.AddTokenService(builder.Configuration);
+            builder.Services.AddReportClient(builder.Configuration);
 
             var app = builder.Build();
 

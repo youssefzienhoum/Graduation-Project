@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Report.ServiceAbstraction\Report.ServiceAbstraction.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\..\Core\Report.ServiceAbstraction\Report.ServiceAbstraction.csproj" />
   </ItemGroup>
 
 </Project>
