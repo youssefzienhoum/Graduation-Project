@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using Report.Client.AbstractServices;
+
 using Report.Client.AbstructServices;
 using System;
 using System.Collections.Generic;

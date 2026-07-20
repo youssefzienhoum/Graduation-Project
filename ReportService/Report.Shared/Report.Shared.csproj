@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Report.Domain\Report.Domain.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOS\Report\" />
+    <ProjectReference Include="..\Core\Report.Domain\Report.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Client.AbstractServices
+namespace Report.Client.AbstructServices
 {
     public interface IStorageClient
     {
@@ -18,7 +18,7 @@ namespace Report.Client.AbstractServices
       [AliasAs("file")] StreamPart file,
       [AliasAs("folder")] string folder);
 
-        [Delete("/api/storage/{objectName}")]
+        [Delete("/api/storage")]
         Task DeleteAsync(string objectName);
         [Get("/api/storage/download")]
         Task<Stream> DownloadAsync([AliasAs("objectName")] string objectName);
