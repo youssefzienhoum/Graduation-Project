@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dashboard.shared.DTOS;
+using Dashboard.Shared.Result;
 
 
 namespace Dashboard.ServicesAbstract
 {
     public interface IUserService
     {
-        Task<UserDetailsResponse> GetUserDetailsAsync();
-        Task<IEnumerable<UserDetailsResponse>> GetAllUserDetailsAsync();
-        Task UpdateUserDetailsAsync(UserUpdateRequest userUpdate);
-        Task DeleteUserAsync(Guid userId);
-        Task BlockUserAsync(Guid userId);
-       
-        Task ApprovedUserAsync(Guid userId);
+        Task<Result<UserDetailsResponse>> GetUserDetailsAsync();
+        Task<Result<IEnumerable<UserDetailsResponse>>> GetAllUserDetailsAsync();
+        Task<Result> UpdateUserDetailsAsync(UserUpdateRequest userUpdate);
+        Task<Result> DeleteUserAsync(Guid userId);
+        Task<Result> BlockUserAsync(Guid userId);
+        Task<Result> ApprovedUserAsync(Guid userId);
 
     
 

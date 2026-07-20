@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Auth.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,10 @@ namespace Dashboard.shared.DTOS
         string PhoneNumber,
         string Picture,
         string village,
+        UserStatus Status,
         string Region
         )
     {
-        public UserDetailsResponse() : this(Guid.Empty, "", "", "", "", "", "") { }
+        public UserDetailsResponse() : this(Guid.Empty, "", "", "", "","" , UserStatus.Approved, "") { }
     }
 }
