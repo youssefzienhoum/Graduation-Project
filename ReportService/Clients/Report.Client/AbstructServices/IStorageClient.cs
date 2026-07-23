@@ -16,7 +16,8 @@ namespace Report.Client.AbstructServices
         [Post("/api/storage/upload")]
         Task<UploadFileResponse> UploadAsync(
       [AliasAs("file")] StreamPart file,
-      [AliasAs("folder")] string folder);
+       [Query]
+        string folder);
 
         [Delete("/api/storage")]
         Task DeleteAsync(string objectName);
