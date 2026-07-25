@@ -12,7 +12,7 @@ using Report.Persistence.Context;
 namespace Report.Persistence.Context.Migrations
 {
     [DbContext(typeof(ReportDbContext))]
-    [Migration("20260718125616_intial")]
+    [Migration("20260725185755_intial")]
     partial class intial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Report.Persistence.Context.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Report.Domain.Entities.AiAnalysis", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.AiAnalysis", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,23 +78,26 @@ namespace Report.Persistence.Context.Migrations
                     b.ToTable("AiAnalyses", (string)null);
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.GPSLocation", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.GPSLocation", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("GPSLocations", (string)null);
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.Report", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.Report", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,9 +109,6 @@ namespace Report.Persistence.Context.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<Guid?>("IssueId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("uniqueidentifier");
@@ -126,10 +126,14 @@ namespace Report.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId")
+                        .IsUnique()
+                        .HasFilter("[LocationId] IS NOT NULL");
+
                     b.ToTable("Reports", (string)null);
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.ReportAttachment", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.ReportAttachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,31 +162,30 @@ namespace Report.Persistence.Context.Migrations
                     b.ToTable("ReportAttachments", (string)null);
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.AiAnalysis", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.AiAnalysis", b =>
                 {
-                    b.HasOne("Report.Domain.Entities.Report", "Report")
+                    b.HasOne("Report.Domain.Entities.Report.Report", "Report")
                         .WithOne("Analysis")
-                        .HasForeignKey("Report.Domain.Entities.AiAnalysis", "ReportId")
+                        .HasForeignKey("Report.Domain.Entities.Report.AiAnalysis", "ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Report");
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.GPSLocation", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.Report", b =>
                 {
-                    b.HasOne("Report.Domain.Entities.Report", "Report")
-                        .WithOne("Location")
-                        .HasForeignKey("Report.Domain.Entities.GPSLocation", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Report.Domain.Entities.Report.GPSLocation", "Location")
+                        .WithOne("Report")
+                        .HasForeignKey("Report.Domain.Entities.Report.Report", "LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("Report");
+                    b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.ReportAttachment", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.ReportAttachment", b =>
                 {
-                    b.HasOne("Report.Domain.Entities.Report", "Report")
+                    b.HasOne("Report.Domain.Entities.Report.Report", "Report")
                         .WithMany("Attachments")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -191,13 +194,17 @@ namespace Report.Persistence.Context.Migrations
                     b.Navigation("Report");
                 });
 
-            modelBuilder.Entity("Report.Domain.Entities.Report", b =>
+            modelBuilder.Entity("Report.Domain.Entities.Report.GPSLocation", b =>
+                {
+                    b.Navigation("Report")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Report.Domain.Entities.Report.Report", b =>
                 {
                     b.Navigation("Analysis");
 
                     b.Navigation("Attachments");
-
-                    b.Navigation("Location");
                 });
 #pragma warning restore 612, 618
         }

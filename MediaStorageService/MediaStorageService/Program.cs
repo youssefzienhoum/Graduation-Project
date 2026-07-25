@@ -14,12 +14,11 @@ namespace MediaStorageService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-           
+
             builder.Services.Configure<MinioSettings>(
                 builder.Configuration.GetSection("MinioSettings"));
             builder.Services.AddSingleton<IMinioClient>(sp =>
@@ -28,7 +27,8 @@ namespace MediaStorageService
 
                 var client = new MinioClient()
                     .WithEndpoint(settings.Endpoint)
-                    .WithCredentials(settings.AccessKey, settings.SecretKey);
+                    .WithCredentials(settings.AccessKey, settings.SecretKey)
+                    .WithRegion("us-east-1");   // added — fixes AccessDenied caused by missing region in signature
 
                 if (settings.UseSSL)
                 {
@@ -38,7 +38,6 @@ namespace MediaStorageService
                 return client.Build();
             });
             builder.Services.AddScoped<IStorageService, MinioStorageService>();
-
 
             var app = builder.Build();
 
@@ -50,9 +49,7 @@ namespace MediaStorageService
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -21,7 +21,7 @@ namespace Report.Client.AbstructServices
 
         [Delete("/api/storage")]
         Task DeleteAsync(string objectName);
-        [Get("/api/storage/download")]
+        [Get("/api/storage")]
         Task<Stream> DownloadAsync([AliasAs("objectName")] string objectName);
 
 

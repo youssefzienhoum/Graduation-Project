@@ -8,8 +8,9 @@ namespace Report.Domain.Entities.Report
 {
     public class GPSLocation : BaseEntity<Guid>
     {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+       
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
 
         public Report Report { get; set; } = null!;
     }

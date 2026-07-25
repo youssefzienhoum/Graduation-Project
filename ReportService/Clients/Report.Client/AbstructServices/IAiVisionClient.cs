@@ -12,7 +12,7 @@ namespace Report.Client.AbstructServices
     public  interface IAiVisionClient
     {
         [Multipart]
-        [Post("/predict")]
+        [Post("/api/v1/predict")]
         Task<AiPredictionResponse> PredictAsync(
         [AliasAs("file")] StreamPart image);
     }

@@ -37,21 +37,26 @@ namespace Report.Service.Services
             var fileName = photoAttachment.Url.Split('/').LastOrDefault() ?? "photo.jpg";
             var prediction = await aiVisionClient.PredictAsync(new StreamPart(photoStream, fileName));
 
-            var severity = AiAnalysisMapper.MapSeverity(prediction.Severity);
+            if (prediction.Status != "success")
+            {
+                throw new InvalidOperationException(
+                    prediction.Message ?? "The vision service couldn't produce a confident diagnosis for this photo.");
+            }
 
             report.Analysis = new AiAnalysis
             {
-                ProblemName = prediction.Problem,
-                ProblemArabic = prediction.ProblemArabic,
-                Confidence = prediction.Confidence,
-                Severity = severity,
-                Recommendation = prediction.Recommendation,
+                ProblemName = prediction.ProblemCode ?? string.Empty,
+                ProblemArabic = prediction.Problem,
+                Confidence = AiAnalysisMapper.ParseConfidence(prediction.Confidence),
+                Severity = AiAnalysisMapper.MapSeverity(prediction.Severity),
+                Recommendation = prediction.Recommendation ?? string.Empty,
                 Explanation = prediction.Explanation,
-                RepairSteps = prediction.RepairSteps,
-                ModelVersion = prediction.ModelVersion ?? string.Empty,
+                RepairSteps = prediction.RepairSteps ?? new List<string>(),
+                ModelVersion = string.Empty, // vision-service doesn't return this currently
             };
             report.Status = ReportStatus.Analyzed;
             report.UpdatedAt = DateTime.UtcNow;
+
 
             await unitOfWork.ReportRepo.UpdateAsync(report);
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -69,15 +74,15 @@ namespace Report.Service.Services
                 Description = request.Description,
                 ReporterId = reporterId,
             };
-
-            if (request.Latitude.HasValue && request.Longitude.HasValue)
+            if (request.Longitude is not null && request.Latitude is not null )
             {
                 report.Location = new GPSLocation
                 {
-                    Latitude = request.Latitude.Value,
-                    Longitude = request.Longitude.Value,
+                    Latitude = request.Latitude,
+                    Longitude = request.Longitude,
                 };
             }
+
 
             if (request.photo is not null)
             {
@@ -95,8 +100,8 @@ namespace Report.Service.Services
 
             await unitOfWork.ReportRepo.AddAsync(report);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+          return await AnalyzeReportAsync(report.Id, cancellationToken);
 
-            return mapper.Map<ReportDetailsResponse>(report);
 
         }
 

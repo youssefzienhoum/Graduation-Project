@@ -73,20 +73,27 @@ namespace Media.Service
 
         public async Task<UploadFileResponse> UploadFileAsync(IFormFile file, string folder, CancellationToken cancellationToken = default)
         {
+            var bucketExists = await client.BucketExistsAsync(
+                  new BucketExistsArgs().WithBucket(settings.BucketName), cancellationToken);
+            if (!bucketExists)
+            {
+                await client.MakeBucketAsync(
+                    new MakeBucketArgs().WithBucket(settings.BucketName), cancellationToken);
+            }
+
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var objectName = $"{folder}/{fileName}";
             using var stream = file.OpenReadStream();
             await client.PutObjectAsync(
-            new PutObjectArgs()
-                .WithBucket(settings.BucketName)
-                .WithObject(objectName)
-                .WithStreamData(stream)
-                .WithObjectSize(stream.Length)
-                .WithContentType(file.ContentType),
-            cancellationToken);
+                new PutObjectArgs()
+                    .WithBucket(settings.BucketName)
+                    .WithObject(objectName)
+                    .WithStreamData(stream)
+                    .WithObjectSize(stream.Length)
+                    .WithContentType(file.ContentType),
+                cancellationToken);
+
             return new UploadFileResponse(fileName, objectName, $"{settings.Endpoint}/{settings.BucketName}/{objectName}");
-
-
         }
     }
 }

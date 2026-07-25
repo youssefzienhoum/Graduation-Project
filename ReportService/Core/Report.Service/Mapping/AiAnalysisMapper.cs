@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Report.Service.Mapping
 {
-    public static  class AiAnalysisMapper
+    public static class AiAnalysisMapper
     {
 
         private static readonly Dictionary<string, SeverityLevel> ArabicSeverityMap = new()
@@ -36,7 +36,7 @@ namespace Report.Service.Mapping
             ["حرجة جداً"] = SeverityLevel.VeryCritical
         };
 
-      
+
         public static SeverityLevel MapSeverity(string? severity)
         {
             if (string.IsNullOrWhiteSpace(severity))
@@ -51,5 +51,12 @@ namespace Report.Service.Mapping
                 ? value
                 : SeverityLevel.Unknown;
         }
+    
+    public static double ParseConfidence(string? confidence)
+        {
+            if (string.IsNullOrWhiteSpace(confidence)) return 0;
+            return double.TryParse(confidence.TrimEnd('%'), System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out var value) ? value : 0;
+        }
     }
-}
+   }

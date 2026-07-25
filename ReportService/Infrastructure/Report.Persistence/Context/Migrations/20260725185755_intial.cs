@@ -12,6 +12,19 @@ namespace Report.Persistence.Context.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "GPSLocations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GPSLocations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -21,12 +34,17 @@ namespace Report.Persistence.Context.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ReporterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_GPSLocations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "GPSLocations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,25 +69,6 @@ namespace Report.Persistence.Context.Migrations
                     table.ForeignKey(
                         name: "FK_AiAnalyses_Reports_ReportId",
                         column: x => x.ReportId,
-                        principalTable: "Reports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GPSLocations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GPSLocations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GPSLocations_Reports_Id",
-                        column: x => x.Id,
                         principalTable: "Reports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -106,6 +105,13 @@ namespace Report.Persistence.Context.Migrations
                 name: "IX_ReportAttachments_ReportId",
                 table: "ReportAttachments",
                 column: "ReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_LocationId",
+                table: "Reports",
+                column: "LocationId",
+                unique: true,
+                filter: "[LocationId] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -115,13 +121,13 @@ namespace Report.Persistence.Context.Migrations
                 name: "AiAnalyses");
 
             migrationBuilder.DropTable(
-                name: "GPSLocations");
-
-            migrationBuilder.DropTable(
                 name: "ReportAttachments");
 
             migrationBuilder.DropTable(
                 name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "GPSLocations");
         }
     }
 }

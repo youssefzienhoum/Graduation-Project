@@ -4,23 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>bf4dbb26-2268-41cb-9007-9218614b1e93</UserSecretsId>
+    <UserSecretsId>bba99ac7-db6b-48c7-93b3-c1ee38e79c1a</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Dashboard.Persistance\Dashboard.Persistence.csproj" />
-    <ProjectReference Include="..\Infrastructure\Dashboard.presentation Api\Dashboard.presentation Api.csproj" />
   </ItemGroup>
 
 </Project>

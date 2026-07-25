@@ -39,10 +39,11 @@ namespace Report.Persistence.Context.Configuration
                 .HasForeignKey<AiAnalysis>(a => a.ReportId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+        
             builder.HasOne(r => r.Location)
                 .WithOne(l => l.Report)
-                .HasForeignKey<GPSLocation>(l => l.Id)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey < Domain.Entities.Report.Report > (r => r.LocationId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(r => r.Attachments)
                 .WithOne(a => a.Report)

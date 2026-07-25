@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace Report.Shared.DTOS.Report
 {
     public  record  CreateReportRequest(IFormFile photo, string? Description,
-        double? Latitude,
-        double? Longitude)
+        string? Latitude,
+        string? Longitude)
     {
     }
 }

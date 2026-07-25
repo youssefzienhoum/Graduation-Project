@@ -16,7 +16,7 @@ namespace Report.Domain.Entities.Report
         public DateTime? UpdatedAt { get; set; }
 
         public Guid ReporterId { get; set; }  // user from auth context  frammmer
-        public Guid? IssueId { get; set; }
+
 
 
         public AiAnalysis? Analysis { get; set; }

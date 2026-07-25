@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 
 namespace Report.Shared.DTOS.Report
 {
-    public  record  ReportDetailsResponse(string? Description,
-        string Status,
-        DateTime CreatedAt,
-        DateTime? UpdatedAt,
-        Guid ReporterId,
-        double? Latitude,
-        double? Longitude,
-        List<ReportAttachmentResponse> Attachments
+    public  record  ReportDetailsResponse(
+     Guid Id,
+    string? Description,
+    string Status,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt,
+    Guid ReporterId,
+    double? Latitude,
+    double? Longitude,
+    List<ReportAttachmentResponse> Attachments,
+    AiAnalysisResponse? Analysis
      )
     {
     }

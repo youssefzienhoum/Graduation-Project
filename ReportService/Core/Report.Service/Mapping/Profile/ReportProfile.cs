@@ -11,23 +11,26 @@ namespace Report.Service.Mapping.Profile
         public ReportProfile()
         {
             CreateMap<Report.Domain.Entities.Report.Report, ReportDetailsResponse>()
+                .ForCtorParam("Id",
+                    opt => opt.MapFrom(src => src.Id))
                 .ForCtorParam("Status",
                     opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForCtorParam("Latitude",
-                    opt => opt.MapFrom(src => src.Location != null ? (double?)src.Location.Latitude : null))
+                    opt => opt.MapFrom(src => src.Location != null ? (string?)src.Location.Latitude : null))
                 .ForCtorParam("Longitude",
-                    opt => opt.MapFrom(src => src.Location != null ? (double?)src.Location.Longitude : null))
+                    opt => opt.MapFrom(src => src.Location != null ? (string?)src.Location.Longitude : null))
                 .ForCtorParam("Attachments",
-                    opt => opt.MapFrom(src => src.Attachments));
-              
+                    opt => opt.MapFrom(src => src.Attachments))
+                .ForCtorParam("Analysis",
+                    opt => opt.MapFrom(src => src.Analysis));
 
             CreateMap<ReportAttachment, ReportAttachmentResponse>()
                 .ForCtorParam("Type",
                     opt => opt.MapFrom(src => src.Type.ToString()));
 
-            //CreateMap<AiAnalysis, AiPredictionResponse>()
-            //    .ForCtorParam("Severity",
-            //        opt => opt.MapFrom(src => src.Severity.ToString()));
+            CreateMap<AiAnalysis, AiAnalysisResponse>()
+                .ForCtorParam("Severity",
+                    opt => opt.MapFrom(src => src.Severity.ToString()));
         }
     }
 }
