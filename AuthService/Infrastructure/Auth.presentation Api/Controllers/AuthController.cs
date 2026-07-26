@@ -22,6 +22,15 @@ namespace Auth.presentation_Api.Controllers
             var result = await authService.RegisterAsync(registerRequest);
             return Ok(result);
         }
+        [HttpPost("firebase-login")]
+        public async Task<IActionResult> FirebaseLogin(
+        FireBaseLoginDto dto)
+        {
+            var result =
+                await authService.FireBaseLoginAsync(dto);
+
+            return Ok(result);
+        }
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {

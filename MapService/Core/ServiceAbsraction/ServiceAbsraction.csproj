@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CommanLib\CommanLib\CommanLib.csproj" />
-    <ProjectReference Include="..\..\Dashboard.Shared\Dashboard.Shared.csproj" />
+    <ProjectReference Include="..\..\Map.Shared\Map.Shared.csproj" />
   </ItemGroup>
 
 </Project>

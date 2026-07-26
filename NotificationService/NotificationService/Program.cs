@@ -1,3 +1,6 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+
 
 using MassTransit;
 using Notification.Consumer;
@@ -43,13 +46,17 @@ namespace NotificationService
 
                 });
             });
-
+            
 
             builder.Services.AddScoped<ISmsService, TwilioSmsService>();
             builder.Services.Configure<MailSettings>(builder.Configuration .GetSection("MailSettings"));
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IFireBaseService, FireBaseService>();
 
-
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile("Firebase/firebase-adminsdk.json")
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CommanLib\CommanLib\CommanLib.csproj" />
-    <ProjectReference Include="..\..\Dashboard.Shared\Dashboard.Shared.csproj" />
+    <ProjectReference Include="..\Core\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

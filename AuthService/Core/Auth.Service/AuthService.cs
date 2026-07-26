@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Notification.Service;
+using FirebaseAdmin.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +24,12 @@ using Twilio.Http;
 using Twilio.TwiML.Messaging;
 using Twilio.Types;
 using static System.Net.WebRequestMethods;
+using Notification.ServicesAbstract;
 
 namespace Auth.Service
 {
     public class AuthService(
+        IFireBaseService FireBaseService,
     UserManager<AppUser> userManager
     , IOTPService otpService
      , ITokenService tokenService
@@ -42,7 +46,6 @@ namespace Auth.Service
             ["image/svg+xml"] = ".svg",
         };
 
-       
         private async Task<string> SavePictureAsync(IFormFile? picture)
         {
             if (picture == null || picture.Length == 0)
@@ -295,6 +298,42 @@ namespace Auth.Service
                 accessToken: accesstoken,
                 email: (await userManager.FindByIdAsync(token.UserId.ToString())).Email
                 );
+        }
+
+        public async Task<LoginWithFireBaseResponseDto> FireBaseLoginAsync(FireBaseLoginDto request)
+        {
+            var firebaseUser =
+                            await FireBaseService.VerifyTokenAsync(request.IdToken);
+
+            var user = await userManager.Users
+                .FirstOrDefaultAsync(x =>
+                    x.PhoneNumber == firebaseUser.PhoneNumber);
+
+            if (user == null)
+            {
+                user = new AppUser
+                {
+                    UserName = firebaseUser.PhoneNumber,
+                    PhoneNumber = firebaseUser.PhoneNumber,
+                    PhoneNumberConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(user);
+
+                if (!result.Succeeded)
+                    throw new Exception("Cannot create user.");
+            }
+
+            var jwt = await tokenService.CreateRefreshTokenAsync(user.Id);
+            var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
+            var result2 = new LoginWithFireBaseResponseDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = jwt.Token,
+                AccessTokenExpiration = DateTime.UtcNow,
+                RefreshTokenExpiration = jwt.ExpiresAt
+            };
+            return result2;
         }
     }
 }

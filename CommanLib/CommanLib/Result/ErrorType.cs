@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dashboard.Shared.Result
+namespace CommanLib.Result.Result
 {
     public enum ErrorType
     {

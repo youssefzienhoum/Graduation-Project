@@ -3,6 +3,10 @@ using Auth.Persistence.DependencyInjection;
 using Auth.Service;
 using Auth.Service.DependanceInjection;
 using CommanLib.DependencyInjection;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -13,9 +17,17 @@ namespace Auth_Services
     {
         public static async Task Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
+            var firebasePath = Path.Combine(
+                builder.Environment.ContentRootPath,
+                "Firebase",
+                "F:\\Graduation_Projecct\\AuthService\\AuthService\\FireBase\\graduation-project-3c67f-firebase-adminsdk-fbsvc-b88880ea28.json");
 
-
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(firebasePath)
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,6 +36,10 @@ namespace Auth_Services
             builder.Services.AddPersistenceServices(builder.Configuration);
 
             builder.Services.AddTokenService(builder.Configuration);
+            //FirebaseApp.Create(new AppOptions
+            //{
+            //    Credential = GoogleCredential.FromFile("F:\\Graduation_Project\\AuthService\\AuthService\\Firebase\\firebase-adminsdk.json")
+            //});
             builder.Services.AddServices();
             //builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSetting"));
 
@@ -49,6 +65,7 @@ namespace Auth_Services
             //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey))
             //    };
             //});
+          
 
             var app = builder.Build();
 

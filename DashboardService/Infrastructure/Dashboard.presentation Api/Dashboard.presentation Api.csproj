@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Dashboard.ServiceAbstraction\Dashboard.ServiceAbstraction.csproj" />
+    <ProjectReference Include="..\..\Core\Dashboard.Service\Dashboard.Service.csproj" />
   </ItemGroup>
 
 </Project>
