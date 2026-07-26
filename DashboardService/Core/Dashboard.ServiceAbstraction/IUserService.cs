@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommanLib.Result;
 using Dashboard.shared.DTOS;
-using Dashboard.Shared.Result;
 
 
 namespace Dashboard.ServicesAbstract
