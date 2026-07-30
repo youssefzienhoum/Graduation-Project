@@ -21,7 +21,7 @@ namespace Auth_Services
             var builder = WebApplication.CreateBuilder(args);
             var firebasePath = Path.Combine(
                 builder.Environment.ContentRootPath,
-                "Firebase",
+                "FireBase",
                 "graduation-project-3c67f-firebase-adminsdk-fbsvc-b88880ea28.json");
 
             FirebaseApp.Create(new AppOptions

@@ -394,8 +394,8 @@ namespace Auth.Service
             {
                 AccessToken = accessToken,
                 RefreshToken = jwt.Token,
-                AccessTokenExpiration = DateTime.UtcNow, // see note below
-                RefreshTokenExpiration = jwt.ExpiresAt
+                AccessTokenExpiration = DateTime.UtcNow.AddDays(2), // see note below
+                RefreshTokenExpiration = jwt.ExpiresAt.AddDays(2)
             };
         }
     }
