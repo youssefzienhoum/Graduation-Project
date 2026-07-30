@@ -12,34 +12,34 @@ namespace Notification.Service
     {
         public async Task<FirebaseUserInfo> VerifyTokenAsync(string idToken)
         {
-            //if (string.IsNullOrEmpty(idToken))
-            //{
-            //    throw new ArgumentException("ID token cannot be null or empty.", nameof(idToken));
-            //}
-            //FirebaseToken decodedToken;
-            //try
-            //{
-            //    decodedToken = await FirebaseAuth.DefaultInstance
-            //                                     .VerifyIdTokenAsync(idToken);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new UnauthorizedAccessException("Invalid Firebase Token.", ex);
-            //}
-
-            //var userInfo = new FirebaseUserInfo
-            //{
-            //    Uid = decodedToken.Uid,
-            //    PhoneNumber = decodedToken.Claims.ContainsKey("phone_number") ? decodedToken.Claims["phone_number"].ToString() : string.Empty,
-            //};
-            //return userInfo;
-            await Task.CompletedTask;
-
-            return new FirebaseUserInfo
+            if (string.IsNullOrEmpty(idToken))
             {
-                Uid = Guid.NewGuid().ToString(),
-                PhoneNumber = "+201012345678"
+                throw new ArgumentException("ID token cannot be null or empty.", nameof(idToken));
+            }
+            FirebaseToken decodedToken;
+            try
+            {
+                decodedToken = await FirebaseAuth.DefaultInstance
+                                                 .VerifyIdTokenAsync(idToken);
+            }
+            catch (Exception ex)
+            {
+                throw new UnauthorizedAccessException("Invalid Firebase Token.", ex);
+            }
+
+            var userInfo = new FirebaseUserInfo
+            {
+                Uid = decodedToken.Uid,
+                PhoneNumber = decodedToken.Claims.ContainsKey("phone_number") ? decodedToken.Claims["phone_number"].ToString() : string.Empty,
             };
+            return userInfo;
+            //await Task.CompletedTask;
+
+            //return new FirebaseUserInfo
+            //{
+            //    Uid = Guid.NewGuid().ToString(),
+            //    PhoneNumber = "+201012345678"
+            //};
         }
     }
 }
