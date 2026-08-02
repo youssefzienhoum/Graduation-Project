@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Context\Migrations\" />
-    <Folder Include="DependencyInjection\" />
     <Folder Include="UnitOfWork\" />
     <Folder Include="Repository\" />
   </ItemGroup>

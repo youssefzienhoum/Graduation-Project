@@ -1,9 +1,9 @@
-﻿using Dashboard.Shared.Result;
+﻿//using Dashboard.Shared.Result;
 
-namespace ServiceAbsraction
-{
-    public class Class1
-    {
-        Task<Result>
-    }
-}
+//namespace ServiceAbsraction
+//{
+//    public class Class1
+//    {
+//        Task<Result>
+//    }
+//}
