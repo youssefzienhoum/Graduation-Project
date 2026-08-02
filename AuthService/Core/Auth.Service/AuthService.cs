@@ -25,6 +25,7 @@ using Twilio.TwiML.Messaging;
 using Twilio.Types;
 using static System.Net.WebRequestMethods;
 using Notification.ServicesAbstract;
+using Auth.Shared.DTOS.FireBase;
 
 namespace Auth.Service
 {
@@ -149,96 +150,99 @@ namespace Auth.Service
 
         }
 
-        public async Task<OTPResponse> RegisterAsync(RegisterRequest registerRequest)
+        public async Task<LoginWithFireBaseResponseDto> RegisterAsync(RegisterRequest registerRequest)
         {
-            var existingUser = await userManager.Users.FirstOrDefaultAsync(
-                u => u.PhoneNumber == registerRequest.PhoneNumber ||
-                     u.Email == registerRequest.email);
+            //var existingUser = await userManager.Users.FirstOrDefaultAsync(
+            //    u => u.PhoneNumber == registerRequest.PhoneNumber ||
+            //         u.Email == registerRequest.email);
 
-            if (existingUser != null)
-            {
-                if (existingUser.PhoneNumber == registerRequest.PhoneNumber)
-                    throw new Exception("Phone number is already registered.");
+            //if (existingUser != null)
+            //{
+            //    if (existingUser.PhoneNumber == registerRequest.PhoneNumber)
+            //        throw new Exception("Phone number is already registered.");
 
-                if (existingUser.Email == registerRequest.email)
-                    throw new Exception("Email is already registered.");
-            }
+            //    if (existingUser.Email == registerRequest.email)
+            //        throw new Exception("Email is already registered.");
+            //}
 
-            var pictureUrl = await SavePictureAsync(registerRequest.picture);
+            //var pictureUrl = await SavePictureAsync(registerRequest.picture);
 
-            var user = new AppUser
-            {
-                FullName = registerRequest.FullName,
-                UserName = registerRequest.email, // Changed from FullName
-                PhoneNumber = registerRequest.PhoneNumber,
-                Email = registerRequest.email,
-                Address = new Address
-                {
-                    Village = registerRequest.village,
-                    Region = registerRequest.Region
-                },
-                pictures = pictureUrl
-            };
+            //var user = new AppUser
+            //{
+            //    FullName = registerRequest.FullName,
+            //    UserName = registerRequest.email, // Changed from FullName
+            //    PhoneNumber = registerRequest.PhoneNumber,
+            //    Email = registerRequest.email,
+            //    Address = new Address
+            //    {
+            //        Village = registerRequest.village,
+            //        Region = registerRequest.Region
+            //    },
+            //    pictures = pictureUrl
+            //};
 
-            var result = await userManager.CreateAsync(user, registerRequest.password);
+            //var result = await userManager.CreateAsync(user, registerRequest.password);
 
-            if (!result.Succeeded)
-            {
-                var errors = string.Join(" | ",
-                    result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+            //if (!result.Succeeded)
+            //{
+            //    var errors = string.Join(" | ",
+            //        result.Errors.Select(e => $"{e.Code}: {e.Description}"));
 
-                throw new Exception($"User creation failed: {errors}");
-            }
+            //    throw new Exception($"User creation failed: {errors}");
+            //}
 
-            var roleResult = await userManager.AddToRoleAsync(user, "Farmer");
+            //var roleResult = await userManager.AddToRoleAsync(user, "Farmer");
 
-            if (!roleResult.Succeeded)
-            {
-                var errors = string.Join(" | ",
-                    roleResult.Errors.Select(e => $"{e.Code}: {e.Description}"));
+            //if (!roleResult.Succeeded)
+            //{
+            //    var errors = string.Join(" | ",
+            //        roleResult.Errors.Select(e => $"{e.Code}: {e.Description}"));
 
-                throw new Exception($"Failed to add role: {errors}");
-            }
+            //    throw new Exception($"Failed to add role: {errors}");
+            //}
 
-            var otp = await otpService.SendOtpAsync(registerRequest.PhoneNumber);
+            //var otp = await otpService.SendOtpAsync(registerRequest.PhoneNumber);
 
-            return otp;
+
+            //return otp;
+            var user = CreateUserFromFirebaseAsync(registerRequest);
+            return await BuildLoginResponseAsync(await user);
         }
 
-        public async Task<UserResponse> VerifyOTPAsync(VerifyOTPRequest verifyOTPRequest)
-        {
-            var result = await otpService.ValidateOtpAsync(verifyOTPRequest);
-            if (!result)
-            {
-                throw new Exception("Invalid OTP");
-            }
+    //    public async Task<UserResponse> VerifyOTPAsync(VerifyOTPRequest verifyOTPRequest)
+    //    {
+    //        var result = await otpService.ValidateOtpAsync(verifyOTPRequest);
+    //        if (!result)
+    //        {
+    //            throw new Exception("Invalid OTP");
+    //        }
 
-            var user = userManager.Users.FirstOrDefault(x => x.PhoneNumber == verifyOTPRequest.phonenumber);
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
+    //        var user = userManager.Users.FirstOrDefault(x => x.PhoneNumber == verifyOTPRequest.phonenumber);
+    //        if (user == null)
+    //        {
+    //            throw new Exception("User not found");
+    //        }
 
-            var roles = await userManager.GetRolesAsync(user);
-            if (!roles.Any())
-            {
-                await userManager.AddToRoleAsync(user, "Farmer");
-            }
+    //        var roles = await userManager.GetRolesAsync(user);
+    //        if (!roles.Any())
+    //        {
+    //            await userManager.AddToRoleAsync(user, "Farmer");
+    //        }
 
-            var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
+    //        var refreshtoken = await tokenService.CreateRefreshTokenAsync(user.Id);
 
 
-            var accesstoken = tokenService.GenerateAccessToken(user, roles);
+    //        var accesstoken = tokenService.GenerateAccessToken(user, roles);
 
-            var userResponse = new UserResponse(
-            accesstoken: accesstoken,
-            refershtoken: refreshtoken.Token,
-            FullName: user.FullName,
-            message: "OTP verified successfully"
-    );
+    //        var userResponse = new UserResponse(
+    //        accesstoken: accesstoken,
+    //        refershtoken: refreshtoken.Token,
+    //        FullName: user.FullName,
+    //        message: "OTP verified successfully"
+    //);
 
-            return userResponse;
-        }
+    //        return userResponse;
+    //    }
 
         public async Task CreateAccountExpertAsync(RegisterRequest registerRequest)
         {
@@ -302,12 +306,15 @@ namespace Auth.Service
 
         public async Task<LoginWithFireBaseResponseDto> FireBaseLoginAsync(FireBaseLoginDto request)
         {
-            var firebaseUser =
-                            await FireBaseService.VerifyTokenAsync(request.IdToken);
+            var user =  GetUserFromFirebaseAsync(request.IdToken);
+            return await BuildLoginResponseAsync(await user);
+        }
+        private async Task<AppUser> GetUserFromFirebaseAsync(string idToken)
+        {
+            var firebaseUser = await FireBaseService.VerifyTokenAsync(idToken);
 
             var user = await userManager.Users
-                .FirstOrDefaultAsync(x =>
-                    x.PhoneNumber == firebaseUser.PhoneNumber);
+                .FirstOrDefaultAsync(x => x.PhoneNumber == firebaseUser.PhoneNumber);
 
             if (user == null)
             {
@@ -319,21 +326,77 @@ namespace Auth.Service
                 };
 
                 var result = await userManager.CreateAsync(user);
-
                 if (!result.Succeeded)
-                    throw new Exception("Cannot create user.");
+                    throw new Exception(
+                        "Cannot create user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
+            return user;
+        }
+        private async Task<AppUser> CreateUserFromFirebaseAsync(RegisterRequest registerRequest)
+        {
+            var firebaseUser = await FireBaseService.VerifyTokenAsync(registerRequest.IdToken);
+
+            // Trust the phone number from the verified Firebase token, not the client-submitted one
+            var phoneNumber = firebaseUser.PhoneNumber;
+
+            var existingUser = await userManager.Users.FirstOrDefaultAsync(
+                u => u.PhoneNumber == phoneNumber || u.Email == registerRequest.email);
+
+            if (existingUser != null)
+            {
+                if (existingUser.PhoneNumber == phoneNumber)
+                    throw new Exception("Phone number is already registered.");
+                if (existingUser.Email == registerRequest.email)
+                    throw new Exception("Email is already registered.");
+            }
+
+            var pictureUrl = await SavePictureAsync(registerRequest.picture);
+
+            var user = new AppUser
+            {
+                FullName = registerRequest.FullName,
+                UserName = registerRequest.email,
+                PhoneNumber = phoneNumber,
+                PhoneNumberConfirmed = true, // verified via Firebase
+                Email = registerRequest.email,
+                Address = new Address
+                {
+                    Village = registerRequest.village,
+                    Region = registerRequest.Region
+                },
+                pictures = pictureUrl
+            };
+
+            var result = await userManager.CreateAsync(user, registerRequest.password);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(" | ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                throw new Exception($"User creation failed: {errors}");
+            }
+
+            var roleResult = await userManager.AddToRoleAsync(user, "Farmer");
+            if (!roleResult.Succeeded)
+            {
+                var errors = string.Join(" | ", roleResult.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                throw new Exception($"Failed to add role: {errors}");
+            }
+
+            return user;
+        }
+
+        private async Task<LoginWithFireBaseResponseDto> BuildLoginResponseAsync(AppUser user)
+        {
             var jwt = await tokenService.CreateRefreshTokenAsync(user.Id);
             var accessToken = tokenService.GenerateAccessToken(user, await userManager.GetRolesAsync(user));
-            var result2 = new LoginWithFireBaseResponseDto
+
+            return new LoginWithFireBaseResponseDto
             {
                 AccessToken = accessToken,
                 RefreshToken = jwt.Token,
-                AccessTokenExpiration = DateTime.UtcNow,
-                RefreshTokenExpiration = jwt.ExpiresAt
+                AccessTokenExpiration = DateTime.UtcNow.AddDays(2), // see note below
+                RefreshTokenExpiration = jwt.ExpiresAt.AddDays(2)
             };
-            return result2;
         }
     }
 }

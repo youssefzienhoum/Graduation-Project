@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Auth.Shared.DTOS.Auth
+namespace Auth.Shared.DTOS.FireBase
 {
     public class FireBaseLoginDto
     {

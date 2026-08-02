@@ -1,5 +1,6 @@
 ﻿using Auth.ServiceAbstraction;
 using Auth.Shared.DTOS.Auth;
+using Auth.Shared.DTOS.FireBase;
 using Auth.Shared.DTOS.OTP;
 using Auth.Shared.DTOS.Token;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace Auth.presentation_Api.Controllers
     public class AuthController(IAuthService authService) : ControllerBase
     {
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterRequest registerRequest)
+        public async Task<IActionResult> Register([FromForm]RegisterRequest registerRequest)
         {
             var result = await authService.RegisterAsync(registerRequest);
             return Ok(result);
@@ -57,14 +58,14 @@ namespace Auth.presentation_Api.Controllers
             await authService.ResetPasswordAsync(resetPasswordDto);
             return Ok();
         }
-        [HttpPost("Verify-OTP")]
-        public async Task<IActionResult> VerifyOTP([FromBody] VerifyOTPRequest verifyOTPRequest)
-        {
-            var result = await authService.VerifyOTPAsync(verifyOTPRequest);
-            return Ok(result);
-        }
+        //[HttpPost("Verify-OTP")]
+        //public async Task<IActionResult> VerifyOTP([FromBody] VerifyOTPRequest verifyOTPRequest)
+        //{
+        //    var result = await authService.VerifyOTPAsync(verifyOTPRequest);
+        //    return Ok(result);
+        //}
         [HttpPost("CreateExpert")]
-        public async Task<IActionResult> CreateExpert([FromBody]  RegisterRequest registerRequest)
+        public async Task<IActionResult> CreateExpert([FromForm]  RegisterRequest registerRequest)
         {
                 await authService.CreateAccountExpertAsync(registerRequest);
                 return Ok();

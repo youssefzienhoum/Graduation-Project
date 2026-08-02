@@ -33,6 +33,13 @@ namespace Notification.Service
                 PhoneNumber = decodedToken.Claims.ContainsKey("phone_number") ? decodedToken.Claims["phone_number"].ToString() : string.Empty,
             };
             return userInfo;
+            //await Task.CompletedTask;
+
+            //return new FirebaseUserInfo
+            //{
+            //    Uid = Guid.NewGuid().ToString(),
+            //    PhoneNumber = "+201012345678"
+            //};
         }
     }
 }
