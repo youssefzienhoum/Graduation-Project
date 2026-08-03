@@ -2,10 +2,6 @@
 using Report.Domain.Entities.Report;
 using System.Reflection;
 
-
-
-
-
 namespace Report.Persistence.Context
 {
     public class ReportDbContext(DbContextOptions<ReportDbContext> options) : DbContext(options)
