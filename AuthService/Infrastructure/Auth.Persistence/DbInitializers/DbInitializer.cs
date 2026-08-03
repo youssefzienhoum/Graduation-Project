@@ -24,6 +24,7 @@ internal class DbInitializer(
         await SeedRolesAsync();
         await SeedPermissionsAsync();
         await SeedAdminAsync();
+        await SeedFarmerAsync();
     }
 
     private async Task SeedRolesAsync()
@@ -105,5 +106,50 @@ internal class DbInitializer(
         }
 
         await userManager.AddToRoleAsync(admin, "Admin");
+    }
+
+    private async Task SeedFarmerAsync()
+    {
+        const string farmerPhone = "+201060874564";
+        const string farmerEmail = "mohamedelsawymh06@gmail.com";
+        const string farmerFullName = "Mohamed Elsawy";
+        const string password = "P@ssw0rd2026";
+
+        // TODO: Region/Village weren't provided — filled in as empty for now.
+        // Update these two if you have real values for this farmer.
+        const string region = "";
+        const string village = "";
+
+        var farmer = await userManager.Users
+            .FirstOrDefaultAsync(x => x.PhoneNumber == farmerPhone);
+
+        if (farmer is not null)
+            return;
+
+        farmer = new AppUser
+        {
+            FullName = farmerFullName,
+            UserName = farmerPhone,
+            PhoneNumber = farmerPhone,
+            Email = farmerEmail,
+            pictures = string.Empty, // no image provided
+            Address = new Address
+            {
+                Region = region,
+                Village = village,
+            },
+        };
+
+        var result = await userManager.CreateAsync(farmer, password);
+
+        if (!result.Succeeded)
+        {
+            logger.LogError(
+                string.Join(", ", result.Errors.Select(x => x.Description)));
+
+            return;
+        }
+
+        await userManager.AddToRoleAsync(farmer, "Farmer");
     }
 }
