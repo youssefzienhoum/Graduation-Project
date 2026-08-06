@@ -17,7 +17,7 @@ namespace Issue.Persistence.Context.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.20")
+                .HasAnnotation("ProductVersion", "8.0.26")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -102,6 +102,9 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("ReportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReporterId")
                         .HasColumnType("uniqueidentifier");

@@ -1,4 +1,7 @@
 
+using Map.Persistence.DedpendeancyInjection;
+using Map.Service.DependanceInjection;
+
 namespace Map
 {
     public class Program
@@ -10,6 +13,8 @@ namespace Map
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddPersistenceServices(builder.Configuration);
+            builder.Services.AddServices();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

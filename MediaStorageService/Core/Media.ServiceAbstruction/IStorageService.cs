@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Media.ServiceAbstraction
 {
+
     public interface IStorageService
     {
         Task <UploadFileResponse> UploadFileAsync(IFormFile file,string folder, CancellationToken cancellationToken = default);

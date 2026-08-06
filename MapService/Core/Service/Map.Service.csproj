@@ -8,12 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CommanLib\CommanLib\CommanLib.csproj" />
-    <ProjectReference Include="..\..\Core\ServiceAbsraction\ServiceAbsraction.csproj" />
-    <ProjectReference Include="..\..\Core\Service\Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\ServiceAbsraction\Map.ServiceAbsraction.csproj" />
   </ItemGroup>
 
 </Project>

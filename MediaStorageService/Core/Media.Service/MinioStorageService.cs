@@ -1,5 +1,4 @@
-﻿
-using Media.ServiceAbstraction;
+﻿using Media.ServiceAbstraction;
 using Media.Settings;
 using Media.Shared.DTOS;
 using Microsoft.AspNetCore.Http;

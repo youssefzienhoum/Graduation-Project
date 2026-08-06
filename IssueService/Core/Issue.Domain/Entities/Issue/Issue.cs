@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Issue.Domain.Entities.Report;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +20,8 @@ namespace Issue.Domain.Entities.Issue
         public Guid? AssignedExpertId { get; set; } // expert assigned to the issue
         public RepairSchedule? RepairSchedule { get; set; }
         public IssueFeedback? Feedback { get; set; }
+
+        public Guid ReportId { get; set; }
 
         public ICollection<ExpertReviews> ExpertReviews { get; set; } = new List<ExpertReviews>();
         public ICollection<ResolutionActions> ResolutionActions { get; set; } = new List<ResolutionActions>();

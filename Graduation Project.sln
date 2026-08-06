@@ -105,15 +105,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B196C8A7-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructrue", "Infrastructrue", "{5500F20E-7F2C-4257-A81D-F51A1EDA089D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "MapService\Core\Domain\Domain.csproj", "{CCC9D1F0-624C-43C4-ACB2-FD5899E06483}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map.Domain", "MapService\Core\Domain\Map.Domain.csproj", "{CCC9D1F0-624C-43C4-ACB2-FD5899E06483}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "MapService\Core\Service\Service.csproj", "{F36EC2E1-7258-4D36-AA7F-952D1968F5C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map.Service", "MapService\Core\Service\Map.Service.csproj", "{F36EC2E1-7258-4D36-AA7F-952D1968F5C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAbsraction", "MapService\Core\ServiceAbsraction\ServiceAbsraction.csproj", "{75BC8610-3935-4798-A6ED-81D662716CDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map.ServiceAbsraction", "MapService\Core\ServiceAbsraction\Map.ServiceAbsraction.csproj", "{75BC8610-3935-4798-A6ED-81D662716CDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "MapService\Infrastructure\Presentation\Presentation.csproj", "{0F2F6626-00AA-4D9B-AD14-A0111AF49992}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map.Presentation", "MapService\Infrastructure\Presentation\Map.Presentation.csproj", "{0F2F6626-00AA-4D9B-AD14-A0111AF49992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "MapService\Infrastructure\Presestence\Persistence.csproj", "{B9843462-EC9C-4828-BE46-DFFA1F2DDB32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map.Persistence", "MapService\Infrastructure\Presestence\Map.Persistence.csproj", "{B9843462-EC9C-4828-BE46-DFFA1F2DDB32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map", "MapService\Map\Map.csproj", "{F59E222A-FB70-4C64-A161-02770ED05274}"
 EndProject
