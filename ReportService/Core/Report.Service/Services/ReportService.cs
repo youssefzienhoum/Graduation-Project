@@ -65,7 +65,7 @@ namespace Report.Service.Services
 
         }
 
-        public async Task<ReportDetailsResponse> CreateReportAsync(CreateReportRequest request, CancellationToken cancellationToken = default)
+        public async Task<CreateReportResponse> CreateReportAsync(CreateReportRequest request, CancellationToken cancellationToken = default)
         {
             var reporterId = GetLoggedInUserId();
 
@@ -100,7 +100,7 @@ namespace Report.Service.Services
 
             await unitOfWork.ReportRepo.AddAsync(report);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-          return await AnalyzeReportAsync(report.Id, cancellationToken);
+          return  mapper.Map<CreateReportResponse>(report);
 
 
         }

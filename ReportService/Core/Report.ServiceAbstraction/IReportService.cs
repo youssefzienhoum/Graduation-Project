@@ -9,7 +9,7 @@ namespace Report.ServiceAbstraction
 {
     public  interface IReportService
     {
-        Task<ReportDetailsResponse> CreateReportAsync(CreateReportRequest request,CancellationToken cancellationToken=default );
+        Task<CreateReportResponse> CreateReportAsync(CreateReportRequest request,CancellationToken cancellationToken=default );
 
         Task<ReportDetailsResponse> GetReportByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
