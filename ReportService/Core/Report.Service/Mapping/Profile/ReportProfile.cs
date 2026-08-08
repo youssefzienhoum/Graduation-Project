@@ -23,6 +23,10 @@ namespace Report.Service.Mapping.Profile
                     opt => opt.MapFrom(src => src.Attachments))
                 .ForCtorParam("Analysis",
                     opt => opt.MapFrom(src => src.Analysis));
+            CreateMap<Report.Domain.Entities.Report.Report, CreateReportResponse>().ForCtorParam("Id",
+                    opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("Status",
+                    opt => opt.MapFrom(src => src.Status.ToString()));
 
             CreateMap<ReportAttachment, ReportAttachmentResponse>()
                 .ForCtorParam("Type",
