@@ -58,5 +58,6 @@ namespace Report.Service.Mapping
             return double.TryParse(confidence.TrimEnd('%'), System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out var value) ? value : 0;
         }
+
     }
    }

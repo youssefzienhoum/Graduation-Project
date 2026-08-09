@@ -30,8 +30,9 @@ namespace Report.Service.Mapping.Profile
 
             CreateMap<ReportAttachment, ReportAttachmentResponse>()
                 .ForCtorParam("Type",
-                    opt => opt.MapFrom(src => src.Type.ToString()));
-
+                    opt => opt.MapFrom(src => src.Type.ToString()))
+                  .ForCtorParam("Url", opt => opt.MapFrom(src =>
+                         $"http://127.0.0.1:9000/reportimage/{src.Url}"));
             CreateMap<AiAnalysis, AiAnalysisResponse>()
                 .ForCtorParam("Severity",
                     opt => opt.MapFrom(src => src.Severity.ToString()));

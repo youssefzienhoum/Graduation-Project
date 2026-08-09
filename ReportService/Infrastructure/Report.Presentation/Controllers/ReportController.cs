@@ -19,7 +19,7 @@ namespace Report.Presentation.Controllers
         [HttpPost("create")]
         [Authorize]
         [RequestSizeLimit(20_000_000)]
-        public async Task<ReportDetailsResponse> Create([FromForm] CreateReportRequest request, CancellationToken cancellationToken)
+        public async Task<CreateReportResponse> Create([FromForm] CreateReportRequest request, CancellationToken cancellationToken)
         {
             var result = await reportService.CreateReportAsync(request, cancellationToken);
             return result;
