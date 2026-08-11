@@ -1,4 +1,4 @@
-﻿using Issue.Domain.Entities.Report;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,8 +29,8 @@ namespace Issue.Domain.Entities.Issue
         public ICollection<StatusHistory> StatusHistory { get; set; } = new List<StatusHistory>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
-        public ICollection<AiAnalysis> aiAnalyses { get; set; } =new List<AiAnalysis>();
-        public ICollection<ReportAttachment> reportAttachments { get; set; } = new List<ReportAttachment>();
+        public ICollection<AiAnalysis> AiAnalyses { get; set; } =new List<AiAnalysis>();
+        public ICollection<IssueAttachment> IssueAttachments { get; set; } = new List<IssueAttachment>();
 
 
     }

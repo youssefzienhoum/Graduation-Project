@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Issue.Domain.Entities.Issue
 {
-    public class ReportAttachment : BaseEntity<Guid>
+    public class IssueAttachment : BaseEntity<Guid>
     {
-        public ReportAttachmentType Type { get; set; }
+        public IssueAttachmentType Type { get; set; }
         public string Url { get; set; } = null!;
 
         public Guid IssueId { get; set; }
         public Issue Issue { get; set; } = null!;
- ;
+ 
     }
 }

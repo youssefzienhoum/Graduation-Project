@@ -14,10 +14,7 @@ namespace Issue.Persistence.DependencyInjection
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ReportDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("ReportConnection"));
-            });
+         
             services.AddDbContext<AuthDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("AuthSqlConnection"));

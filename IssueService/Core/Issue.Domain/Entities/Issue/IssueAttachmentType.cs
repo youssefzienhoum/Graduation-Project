@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Issue.Domain.Entities.Issue
 {
-    public  enum ReportAttachmentType
+    public  enum IssueAttachmentType
     {
         Photo,
         Voice
