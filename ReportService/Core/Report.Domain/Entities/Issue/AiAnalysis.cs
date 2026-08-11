@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Domain.Entities.Report
+namespace Report.Domain.Entities.Issue
+
 {
     public class AiAnalysis : BaseEntity<Guid>
     {
-        public Guid ReportId { get; set; }
-        public Report Report { get; set; } = null!;
 
         public string ProblemName { get; set; } = null!;
         public string? ProblemArabic { get; set; }
 
         public double Confidence { get; set; }
 
-        public SeverityLevel Severity { get; set; }
+        public string Severity { get; set; } = null!;
 
         public string Recommendation { get; set; } = string.Empty;
 
@@ -26,7 +25,6 @@ namespace Report.Domain.Entities.Report
 
         public string ModelVersion { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
 

@@ -31,8 +31,8 @@ public static class PersistenceServiceExtensions
         });
 
 
-        services.AddScoped<IReportREpo, ReportRepo>();
-        services.AddScoped<IIsuueRepo, IssueRepo>();
+       
+        services.AddScoped<IIssueRepo, IssueRepo>();
 
 
         return services;

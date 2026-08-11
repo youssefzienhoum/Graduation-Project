@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Report.Domain.Entities.Report
+namespace Issue.Domain.Entities.Issue
 {
     public  enum ReportAttachmentType
     {

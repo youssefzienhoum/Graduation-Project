@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Report.Domain.Contracts;
-using Report.Domain.Entities.Report;
+using Report.Domain.Entities.Issue;
 using Report.Persistence.Context;
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Report.Persistence.Repository
 {
-    public class ReportRepo(ReportDbContext reportDb) : IReportRepo
+    public class ReportRepo(IssueDbContext issueDb) : IReportRepo
     {
-        public async Task<Domain.Entities.Report.Report> AddAsync(Domain.Entities.Report.Report report)
+        public async Task<Issue> AddAsync(Issue issue)
         {
-            await reportDb.Reports.AddAsync(report);
+            await issueDb.issues.AddAsync(issue);
            
-            return report;
+            return issue;
         }
 
         public async Task DeleteAsync(Guid id)
@@ -25,23 +25,23 @@ namespace Report.Persistence.Repository
             if (report is null)
                 throw new Exception("Report not found");
 
-            reportDb.Reports.Remove(report);
+            issueDb.issues.Remove(report);
 
         }
 
-        public async Task<IEnumerable<Domain.Entities.Report.Report>> GetAllAsync()
+        public async Task<IEnumerable<Issue>> GetAllAsync()
         {
 
            return await Query().ToListAsync();
         }
 
-        public async Task<Domain.Entities.Report.Report?> GetByIdAsync(Guid id)
+        public async Task<Issue> GetByIdAsync(Guid id)
         {
             return await Query().FirstOrDefaultAsync(r => r.Id == id);
 
         }
 
-        public async Task<IEnumerable<Domain.Entities.Report.Report>> GetByReporterIdAsync(Guid reporterId)
+        public async Task<IEnumerable<Issue>> GetByReporterIdAsync(Guid reporterId)
         {
 
             return await Query().Where(r => r.ReporterId == reporterId).ToListAsync();
@@ -51,18 +51,18 @@ namespace Report.Persistence.Repository
 
       
 
-        public async Task UpdateAsync(Domain.Entities.Report.Report report)
+        public async Task UpdateAsync(Issue issue)
         {
-            reportDb.Reports.Update(report);
+            issueDb.issues.Update(issue);
            
             
         }
-        private IQueryable<Domain.Entities.Report.Report> Query()
+        private IQueryable<Issue> Query()
         {
-            return reportDb.Reports
-                .Include(r => r.Location)
-                .Include(r => r.Attachments)
-                .Include(r => r.Analysis);
+            return issueDb.issues
+                .Include(r => r.LocationId)
+                .Include(r => r.reportAttachments)
+                .Include(r => r.aiAnalyses);
         }
     }
 

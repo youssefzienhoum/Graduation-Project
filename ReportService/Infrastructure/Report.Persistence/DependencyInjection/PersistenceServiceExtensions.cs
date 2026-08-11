@@ -12,7 +12,7 @@ namespace Report.Persistence.DependencyInjection
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ReportDbContext>(options =>
+            services.AddDbContext<IssueDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("SQLConnection"));
             });

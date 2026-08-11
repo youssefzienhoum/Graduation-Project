@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Map.Domain.Contarcts
 {
-    public interface IIsuueRepo
+    public interface IIssueRepo
     {
         Task<Issue.Domain.Entities.Issue.Issue?> GetByIdAsync(Guid id);
 

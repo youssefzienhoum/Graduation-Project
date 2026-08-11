@@ -1,4 +1,4 @@
-﻿using Report.Domain.Entities.Report;
+﻿using Report.Domain.Entities.Issue;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,7 @@
-﻿using Report.Domain.Contracts;
-using Report.Domain.Entities.Report;
+﻿
+using Report.Domain.Contracts;
+using Report.Domain.Entities.Issue;
+
 using Report.Persistence.Context;
 using System;
 using System.Collections.Generic;
@@ -9,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Report.Persistence.Repository
 {
-    public class ReportAttachmentRepo(ReportDbContext reportDb) : IReportAttachmentRepo
+    public class ReportAttachmentRepo(IssueDbContext issueDbContext) : IReportAttachmentRepo
     {
         public async Task AddAsync(ReportAttachment attachment)
         {
-            await reportDb.AddAsync(attachment);
+            await issueDbContext.AddAsync(attachment);
         }
 
         public async Task Delete(Guid id)
@@ -21,18 +23,18 @@ namespace Report.Persistence.Repository
             var attachment = await GetByIdAsync(id ) ;
             if (attachment is null)
                 throw new Exception("Attachment not found");
-            reportDb.ReportAttachments.Remove(attachment);
+            issueDbContext.ReportAttachments.Remove(attachment);
 
         }
 
         public async Task<ReportAttachment?> GetByIdAsync(Guid id)
         {
-            return await reportDb.ReportAttachments.FindAsync(id);
+            return await issueDbContext.ReportAttachments.FindAsync(id);
         }
 
-        public Task<IEnumerable<ReportAttachment>> GetByReportIdAsync(Guid reportId)
+        public Task<IEnumerable<ReportAttachment>> GetByReportIdAsync(Guid issueid)
         {
-            return Task.FromResult<IEnumerable<ReportAttachment>>(reportDb.ReportAttachments.Where(a => a.ReportId == reportId).ToList());
+            return Task.FromResult<IEnumerable<ReportAttachment>>(issueDbContext.ReportAttachments.Where(a => a.IssueId == issueid ).ToList());
         }
 
       

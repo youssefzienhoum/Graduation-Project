@@ -1,5 +1,5 @@
 ﻿using Issue.Domain.Entities.Issue;
-using Map.Domain.Entities.REPORT;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

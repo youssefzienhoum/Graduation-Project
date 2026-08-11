@@ -1,4 +1,5 @@
 ﻿using Map.Domain.Contarcts;
+using Map.ServiceAbsraction;
 using Map.Shared;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Map.Service
 {
-    public class MapService(IIsuueRepo issueRepo , IReportREpo reportRepo) : Map.ServiceAbsraction.IMapSerevice
+    public class MapService(IIssueRepo issueRepo ) : IMapSerevice
     {
         public async Task<MapResponseDto> SearchForIssueInMapAsync(Guid IssueId , CancellationToken cancellationToken)
         {
@@ -17,10 +18,8 @@ namespace Map.Service
             if (issue is null)
                 throw new KeyNotFoundException("Issue not found.");
 
-            var report = await reportRepo.GetByIdAsync(issue.ReportId);
+    
 
-            if (report is null ||report.Location is null)
-                throw new KeyNotFoundException("Report location not found.");
 
             return new MapResponseDto
             {
