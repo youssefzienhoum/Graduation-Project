@@ -12,7 +12,7 @@ namespace Map.Shared
     public class MapResponseDto
     {
         public Guid IssueId { get; set; }
-        public Guid ReportId { get; set; }
+       
         public string Longitde { get; set; }
         public  string Latitude { get; set; }
         public IssuePriority priority { get; set; }

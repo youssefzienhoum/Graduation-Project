@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Report.Domain.Entities.Report;
 using Report.Shared.DTOS.Client;
 using Report.Shared.DTOS.Report;
 using System.Linq;
