@@ -9,7 +9,7 @@ using Report.Domain.Entities.Issue;
 
 namespace Report.Domain.Contracts
 {
-    public interface IReportRepo
+    public interface IIssueRepo
     {
         Task<Issue> AddAsync(Issue issue); 
         Task<Issue> GetByIdAsync(Guid id); 

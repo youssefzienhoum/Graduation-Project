@@ -20,9 +20,10 @@ namespace Issue.Domain.Entities.Issue
         public Guid? AssignedExpertId { get; set; } // expert assigned to the issue
         public RepairSchedule? RepairSchedule { get; set; }
         public IssueFeedback? Feedback { get; set; }
-    
-        public Guid? LocationId { get; set; }
-        public GPSLocation GPSLocation { get; set; }
+
+        public Guid GPSLocationId { get; set; }
+
+        public GPSLocation GPSLocation { get; set; } = null!;
 
         public ICollection<ExpertReviews> ExpertReviews { get; set; } = new List<ExpertReviews>();
         public ICollection<ResolutionActions> ResolutionActions { get; set; } = new List<ResolutionActions>();

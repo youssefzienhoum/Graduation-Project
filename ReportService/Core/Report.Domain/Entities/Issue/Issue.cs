@@ -18,13 +18,13 @@ namespace Report.Domain.Entities.Issue
         public IssuePriority Priority { get; set; } = IssuePriority.Medium;
         public Guid ReporterId { get; set; } // user who reported the issue
         public Guid? AssignedExpertId { get; set; } // expert assigned to the issue
-     
-    
-        public Guid? LocationId { get; set; }
-        public GPSLocation GPSLocation { get; set; }
-        public ICollection<AiAnalysis> aiAnalyses { get; set; } =new List<AiAnalysis>();
-        public ICollection<ReportAttachment> reportAttachments { get; set; } = new List<ReportAttachment>();
 
+        public Guid GPSLocationId { get; set; }
+
+        public GPSLocation GPSLocation { get; set; } = null!;
+
+        public ICollection<AiAnalysis> AiAnalyses { get; set; } = new List<AiAnalysis>();
+        public ICollection<IssueAttachment> IssueAttachments { get; set; } = new List<IssueAttachment>();
 
     }
 }

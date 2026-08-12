@@ -12,18 +12,66 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issue.Persistence.Context.Migrations
 {
     [DbContext(typeof(IssueDbContext))]
-    [Migration("20260802165600_intioal")]
-    partial class intioal
+    [Migration("20260812150320_Initial123")]
+    partial class Initial123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.20")
+                .HasAnnotation("ProductVersion", "8.0.26")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.AiAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Confidence")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Explanation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("IssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ModelVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProblemArabic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProblemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Recommendation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RepairSteps")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("AiAnalysis");
+                });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Comment", b =>
                 {
@@ -87,6 +135,28 @@ namespace Issue.Persistence.Context.Migrations
                     b.ToTable("ExpertReviews");
                 });
 
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.GPSLocation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GPSLocation");
+                });
+
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Issue", b =>
                 {
                     b.Property<Guid>("Id")
@@ -102,6 +172,9 @@ namespace Issue.Persistence.Context.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
+
+                    b.Property<Guid>("GPSLocationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -124,7 +197,36 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GPSLocationId")
+                        .IsUnique();
+
                     b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueAttachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("IssueAttachment");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueFeedback", b =>
@@ -316,6 +418,13 @@ namespace Issue.Persistence.Context.Migrations
                     b.ToTable("StatusHistories");
                 });
 
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.AiAnalysis", b =>
+                {
+                    b.HasOne("Issue.Domain.Entities.Issue.Issue", null)
+                        .WithMany("AiAnalyses")
+                        .HasForeignKey("IssueId");
+                });
+
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Comment", b =>
                 {
                     b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
@@ -331,6 +440,28 @@ namespace Issue.Persistence.Context.Migrations
                 {
                     b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
                         .WithMany("ExpertReviews")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.Issue", b =>
+                {
+                    b.HasOne("Issue.Domain.Entities.Issue.GPSLocation", "GPSLocation")
+                        .WithOne("Issue")
+                        .HasForeignKey("Issue.Domain.Entities.Issue.Issue", "GPSLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GPSLocation");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueAttachment", b =>
+                {
+                    b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
+                        .WithMany("IssueAttachments")
                         .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -406,13 +537,23 @@ namespace Issue.Persistence.Context.Migrations
                     b.Navigation("Issue");
                 });
 
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.GPSLocation", b =>
+                {
+                    b.Navigation("Issue")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Issue", b =>
                 {
+                    b.Navigation("AiAnalyses");
+
                     b.Navigation("Comments");
 
                     b.Navigation("ExpertReviews");
 
                     b.Navigation("Feedback");
+
+                    b.Navigation("IssueAttachments");
 
                     b.Navigation("Notifications");
 

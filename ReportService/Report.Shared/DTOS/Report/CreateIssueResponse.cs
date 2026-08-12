@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace Report.Shared.DTOS.Report
 {
-    public record  ReportAttachmentResponse(Guid Id,
-        string Type,
-        string Url,
-        DateTime CreatedAt)
+    public  record CreateIssueResponse(Guid Id,
+    string? Description,
+    string Status,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt,
+    Guid ReporterId
+        )
     {
     }
 }

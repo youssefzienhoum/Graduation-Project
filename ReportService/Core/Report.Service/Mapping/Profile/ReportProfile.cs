@@ -10,7 +10,7 @@ namespace Report.Service.Mapping.Profile
     {
         public ReportProfile()
         {
-            CreateMap<Issue, ReportDetailsResponse>()
+            CreateMap<Issue, IssueDetailsResponse>()
                 .ForCtorParam("Id",
                     opt => opt.MapFrom(src => src.Id))
                 .ForCtorParam("Status",
@@ -23,12 +23,12 @@ namespace Report.Service.Mapping.Profile
                     opt => opt.MapFrom(src => src.reportAttachments))
                 .ForCtorParam("Analysis",
                     opt => opt.MapFrom(src => src.aiAnalyses));
-            CreateMap<Issue, CreateReportResponse>().ForCtorParam("Id",
+            CreateMap<Issue, CreateIssueResponse>().ForCtorParam("Id",
                     opt => opt.MapFrom(src => src.Id))
                 .ForCtorParam("Status",
                     opt => opt.MapFrom(src => src.Status.ToString()));
 
-            CreateMap<ReportAttachment, ReportAttachmentResponse>()
+            CreateMap<ReportAttachment, IssueAttachmentResponse>()
                 .ForCtorParam("Type",
                     opt => opt.MapFrom(src => src.Type.ToString()))
                   .ForCtorParam("Url", opt => opt.MapFrom(src =>

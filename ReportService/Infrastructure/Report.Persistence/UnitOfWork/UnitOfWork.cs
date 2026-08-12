@@ -12,9 +12,9 @@ namespace Report.Persistence.UnitOfWork
 {
     public class Unitofwork(IssueDbContext issueDb) : IUnitOfWork
     {
-        public IReportRepo ReportRepo { get; }= new ReportRepo(issueDb);
+        public IIssueRepo issueRepo { get; }= new IssueRepo(issueDb);
 
-        public IReportAttachmentRepo ReportAttachmentRepo { get; } = new ReportAttachmentRepo(issueDb);
+        public IIssueAttachmentRepo issueAttachmentRepo { get; } = new IssueAttachmentRepo(issueDb);
 
     
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Report.Persistence.Repository
 {
-    public class ReportRepo(IssueDbContext issueDb) : IReportRepo
+    public class IssueRepo(IssueDbContext issueDb) : IIssueRepo
     {
         public async Task<Issue> AddAsync(Issue issue)
         {
@@ -60,9 +60,9 @@ namespace Report.Persistence.Repository
         private IQueryable<Issue> Query()
         {
             return issueDb.issues
-                .Include(r => r.LocationId)
-                .Include(r => r.reportAttachments)
-                .Include(r => r.aiAnalyses);
+                .Include(r => r.GPSLocation)
+                .Include(r => r.IssueAttachments)
+                .Include(r => r.AiAnalyses);
         }
     }
 

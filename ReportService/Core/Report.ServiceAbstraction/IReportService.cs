@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Report.ServiceAbstraction
 {
-    public  interface IReportService
+    public  interface IIssueService
     {
-        Task<CreateReportResponse> CreateReportAsync(CreateReportRequest request,CancellationToken cancellationToken=default );
+        Task<CreateIssueResponse> CreateIssueAsync(CreateIssueRequest request,CancellationToken cancellationToken=default );
 
-        Task<ReportDetailsResponse> GetReportByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        //Task<ReportDetailsResponse> GetIssueByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<ReportDetailsResponse>> GetAllReportsAsync(CancellationToken cancellationToken = default);
+        //Task<IEnumerable<ReportDetailsResponse>> GetAllIssuesAsync(CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<ReportDetailsResponse>> GetMyReportsAsync(CancellationToken cancellationToken = default);
+        //Task<IEnumerable<ReportDetailsResponse>> GetMyIssuesAsync(CancellationToken cancellationToken = default);
 
-        Task<ReportDetailsResponse> AnalyzeReportAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IssueDetailsResponse> AnalyzeIssueAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task DeleteReportAsync(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteIssueAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

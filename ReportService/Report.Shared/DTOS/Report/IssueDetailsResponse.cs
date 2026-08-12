@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Report.Shared.DTOS.Report
 {
-    public  record  ReportDetailsResponse(
+    public  record  IssueDetailsResponse(
      Guid Id,
     string? Description,
     string Status,
@@ -16,7 +16,7 @@ namespace Report.Shared.DTOS.Report
     Guid ReporterId,
     double? Latitude,
     double? Longitude,
-    List<ReportAttachmentResponse> Attachments,
+    List<IssueAttachmentResponse> Attachments,
     AiAnalysisResponse? Analysis
      )
     {

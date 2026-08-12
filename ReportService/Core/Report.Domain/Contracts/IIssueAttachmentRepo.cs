@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Report.Domain.Contracts
 {
-    public interface IReportAttachmentRepo
+    public interface IIssueAttachmentRepo
     {
-        Task<ReportAttachment?> GetByIdAsync(Guid id);
+        Task<IssueAttachment?> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<ReportAttachment>> GetByReportIdAsync(Guid reportId);
+        Task<IEnumerable<IssueAttachment>> GetByIssueIdAsync(Guid issueid);
 
-        Task AddAsync(ReportAttachment attachment);
+        Task AddAsync(IssueAttachment attachment);
 
         Task Delete(Guid id);
 

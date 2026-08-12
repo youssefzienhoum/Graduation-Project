@@ -6,28 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Issue.Persistence.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class intioal : Migration
+    public partial class Initial123 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Issues",
+                name: "GPSLocation",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Priority = table.Column<int>(type: "int", nullable: false),
-                    ReporterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AssignedExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Issues", x => x.Id);
+                    table.PrimaryKey("PK_GPSLocation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,6 +36,58 @@ namespace Issue.Persistence.Context.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaintenanceTeams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Issues",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    ReporterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AssignedExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    GPSLocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Issues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Issues_GPSLocation_GPSLocationId",
+                        column: x => x.GPSLocationId,
+                        principalTable: "GPSLocation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AiAnalysis",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProblemName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProblemArabic = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Confidence = table.Column<double>(type: "float", nullable: false),
+                    Severity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Recommendation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Explanation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RepairSteps = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModelVersion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AiAnalysis", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AiAnalysis_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -82,6 +129,27 @@ namespace Issue.Persistence.Context.Migrations
                     table.PrimaryKey("PK_ExpertReviews", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ExpertReviews_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IssueAttachment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueAttachment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IssueAttachment_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "Id",
@@ -131,29 +199,6 @@ namespace Issue.Persistence.Context.Migrations
                         principalTable: "Issues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StatusHistories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChangedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StatusHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StatusHistories_Issues_IssueId",
-                        column: x => x.IssueId,
-                        principalTable: "Issues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,6 +260,34 @@ namespace Issue.Persistence.Context.Migrations
                         onDelete: ReferentialAction.SetNull);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "StatusHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChangedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StatusHistories_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AiAnalysis_IssueId",
+                table: "AiAnalysis",
+                column: "IssueId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_IssueId",
                 table: "Comments",
@@ -226,9 +299,20 @@ namespace Issue.Persistence.Context.Migrations
                 column: "IssueId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_IssueAttachment_IssueId",
+                table: "IssueAttachment",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_issueFeedbacks_IssueId",
                 table: "issueFeedbacks",
                 column: "IssueId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_GPSLocationId",
+                table: "Issues",
+                column: "GPSLocationId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -267,10 +351,16 @@ namespace Issue.Persistence.Context.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AiAnalysis");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "ExpertReviews");
+
+            migrationBuilder.DropTable(
+                name: "IssueAttachment");
 
             migrationBuilder.DropTable(
                 name: "issueFeedbacks");
@@ -292,6 +382,9 @@ namespace Issue.Persistence.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "Issues");
+
+            migrationBuilder.DropTable(
+                name: "GPSLocation");
         }
     }
 }

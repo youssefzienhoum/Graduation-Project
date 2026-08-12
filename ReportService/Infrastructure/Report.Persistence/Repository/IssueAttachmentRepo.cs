@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Report.Persistence.Repository
 {
-    public class ReportAttachmentRepo(IssueDbContext issueDbContext) : IReportAttachmentRepo
+    public class IssueAttachmentRepo(IssueDbContext issueDbContext) : IIssueAttachmentRepo
     {
-        public async Task AddAsync(ReportAttachment attachment)
+        public async Task AddAsync(IssueAttachment attachment)
         {
             await issueDbContext.AddAsync(attachment);
         }
@@ -23,19 +23,21 @@ namespace Report.Persistence.Repository
             var attachment = await GetByIdAsync(id ) ;
             if (attachment is null)
                 throw new Exception("Attachment not found");
-            issueDbContext.ReportAttachments.Remove(attachment);
+            issueDbContext.issueAttachments.Remove(attachment);
 
         }
 
-        public async Task<ReportAttachment?> GetByIdAsync(Guid id)
+        public async Task<IssueAttachment?> GetByIdAsync(Guid id)
         {
-            return await issueDbContext.ReportAttachments.FindAsync(id);
+            return await issueDbContext.issueAttachments.FindAsync(id);
         }
 
-        public Task<IEnumerable<ReportAttachment>> GetByReportIdAsync(Guid issueid)
+        public Task<IEnumerable<IssueAttachment>> GetByIssueIdAsync(Guid issueid)
         {
-            return Task.FromResult<IEnumerable<ReportAttachment>>(issueDbContext.ReportAttachments.Where(a => a.IssueId == issueid ).ToList());
+            return Task.FromResult<IEnumerable<IssueAttachment>>(issueDbContext.issueAttachments.Where(a => a.IssueId == issueid).ToList());
         }
+
+     
 
       
     }
