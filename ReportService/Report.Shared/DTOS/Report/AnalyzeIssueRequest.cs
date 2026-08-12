@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace Report.Shared.DTOS.Report
 {
-    public  record  CreateIssueRequest(AiAnalysisResponse AiAnalysisResponse ,string? Description,
-        string? Latitude,
-        string? Longitude
-        )
+    public  record  AnalyzeIssueRequest(IFormFile Photo)
     {
     }
 }
-
-
-

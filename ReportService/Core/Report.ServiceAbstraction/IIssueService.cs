@@ -1,4 +1,5 @@
-﻿using Report.Shared.DTOS.Report;
+﻿using Microsoft.AspNetCore.Http;
+using Report.Shared.DTOS.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Report.ServiceAbstraction
 
         //Task<IEnumerable<ReportDetailsResponse>> GetMyIssuesAsync(CancellationToken cancellationToken = default);
 
-        Task<IssueDetailsResponse> AnalyzeIssueAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<AiAnalysisResponse> AnalyzeIssueAsync(IFormFile photo, CancellationToken cancellationToken = default);
 
         Task DeleteIssueAsync(Guid id, CancellationToken cancellationToken = default);
     }

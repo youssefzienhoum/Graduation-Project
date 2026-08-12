@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Report.Domain.Entities.Issue;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Report.Shared.DTOS.Report
 {
     public  record CreateIssueResponse(Guid Id,
     string? Description,
-    string Status,
+    IssueStatus Status,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
     Guid ReporterId

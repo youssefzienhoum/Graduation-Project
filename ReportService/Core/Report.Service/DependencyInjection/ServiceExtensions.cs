@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Report.Service.Services;
 using Report.ServiceAbstraction;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace Report.Service.DependencyInjection
     {
         public static IServiceCollection AddReportService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Mapping.Profile.ReportProfile).Assembly));
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Mapping.Profile.IssueProfile).Assembly));
         
-            //services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IIssueService, IssueService>();
             return services;
         }
     }
