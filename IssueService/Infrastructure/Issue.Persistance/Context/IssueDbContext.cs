@@ -14,6 +14,8 @@ namespace Issue.Persistence.Context
     {
         public DbSet<Issue.Domain.Entities.Issue.Issue> Issues { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<IssueShared> Shares { get; set; }
+        public DbSet<IssueVote> Votes { get; set; }
         public DbSet<IssueFeedback> issueFeedbacks { get; set; } = null!;
         public DbSet<StatusHistory> StatusHistories { get; set; } = null!;
         public DbSet<ResolutionActions> ResolutionActions { get; set; } = null!;

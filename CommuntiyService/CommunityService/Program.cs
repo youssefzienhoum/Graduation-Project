@@ -1,9 +1,11 @@
 
-using Map.Persistence.DedpendeancyInjection;
-using Map.Service.DependanceInjection;
+using CommanLib.DependencyInjection;
+using Community.Clinets.DependancyInjection;
+using Community.Service;
 using Microsoft.OpenApi.Models;
-
-namespace Map
+using StackExchange.Redis;
+ 
+namespace CommunityService
 {
     public class Program
     {
@@ -14,11 +16,12 @@ namespace Map
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddPersistenceServices(builder.Configuration);
-            builder.Services.AddServices();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSignalR();
+            builder.Services.AddTokenService(builder.Configuration);
+            builder.Services.AddClientService(builder.Configuration);
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -38,21 +41,23 @@ namespace Map
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
+{
     {
+        new OpenApiSecurityScheme
         {
-            new OpenApiSecurityScheme
+            Reference = new OpenApiReference
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        Array.Empty<string>()
+    }
+});
             });
-
+            // Program.cs
+            builder.Services.AddSingleton<IConnectionMultiplexer>(
+                ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -63,10 +68,11 @@ namespace Map
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
-
+            app.MapHub<CommunityHub>("/hubs/community");
             app.MapControllers();
 
             app.Run();

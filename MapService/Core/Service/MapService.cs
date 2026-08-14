@@ -1,5 +1,6 @@
 ﻿using Map.Domain.Contarcts;
 using Map.Shared;
+using Report.Domain.Entities.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,14 +36,25 @@ namespace Map.Service
         public async Task<IEnumerable<MapResponseDto>> ShowIssueInMapAsync(CancellationToken cancellationToken)
         {
             var issues = await issueRepo.GetAllAsync();
+            if(!issues.Any())
+                throw new KeyNotFoundException("No issues found."); 
+
+            var reportids =  issues
+                .Select(x => x.ReportId)
+                .Distinct()
+                .ToList();
+            var reports = await reportRepo.GetAllAsync(reportids , cancellationToken);
+
             var result = new List<MapResponseDto>();
+            var reportsById = reports.ToDictionary(r => r.Id);
+
             foreach (var issue in issues)
             {
-                var report = await reportRepo.GetByIdAsync(issue.ReportId);
+                if (!reportsById.TryGetValue(issue.ReportId, out var report))
+                    continue;
 
-                if (report is null || report.Location is null)
-
-                  throw new KeyNotFoundException("Report location not found.");
+                if (report.Location is null)
+                    continue;
 
                 result.Add(new MapResponseDto
                 {
@@ -53,6 +65,7 @@ namespace Map.Service
                     Longitde = report.Location.Longitude
                 });
             }
+
 
             return result;
         }

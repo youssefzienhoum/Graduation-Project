@@ -11,11 +11,12 @@ namespace Map.Persistence.Repo
 {
     public class ReportRepo (Issue.Persistence.Context.ReportDbContext reportDb) : IReportREpo
     {
-        public async Task<IEnumerable<Issue.Domain.Entities.Report.Report>> GetAllAsync()
+        public async Task<IEnumerable<Issue.Domain.Entities.Report.Report>> GetAllAsync(IEnumerable<Guid> ids , CancellationToken cancellationToken)
         {
 
             return 
                 await reportDb.Reports
+                .Where(x => ids.Contains(x.Id))
                 .Include(x=>x.Location)
                 .ToListAsync();
         }

@@ -10,6 +10,6 @@ namespace Map.Domain.Contarcts
     public interface IReportREpo
     {
         Task<Issue.Domain.Entities.Report.Report?> GetByIdAsync(Guid id);
-        Task<IEnumerable<Issue.Domain.Entities.Report.Report>> GetAllAsync();
+        Task<IEnumerable<Issue.Domain.Entities.Report.Report>> GetAllAsync(IEnumerable<Guid> ids , CancellationToken cancellationToken = default);
     }
 }

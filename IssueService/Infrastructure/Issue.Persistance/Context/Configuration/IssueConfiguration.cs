@@ -56,6 +56,13 @@ namespace Issue.Persistence.Context.Configuration
                 .WithOne(n => n.RelatedIssue)
                 .HasForeignKey(n => n.RelatedIssueId)
                 .OnDelete(DeleteBehavior.SetNull);
+            builder.HasMany(i => i.Votes)
+                .WithOne(v => v.Issue)
+                .HasForeignKey(v => v.IssueId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(i => i.Shares)
+                .WithOne(s => s.Issue)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

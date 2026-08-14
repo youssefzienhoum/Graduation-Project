@@ -28,6 +28,8 @@ namespace Issue.Domain.Entities.Issue
         public ICollection<StatusHistory> StatusHistory { get; set; } = new List<StatusHistory>();
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        public ICollection<IssueVote> Votes { get; set; } = new List<IssueVote>();
+        public ICollection<IssueShared> Shares { get; set; } = new List<IssueShared>(); 
 
     }
 }
