@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Map.Persistence.Repo;
 
-public class IssueRepo(Issue.Persistence.Context.IssueDbContext issueDbContext) : IIsuueRepo
+public class IssueRepo(Issue.Persistence.Context.IssueDbContext issueDbContext) : IIssueRepo
 {
     public async Task<IEnumerable<Issue.Domain.Entities.Issue.Issue>> GetAllAsync()
     {
-        return await issueDbContext
-                                .Issues.ToListAsync();
+        return await issueDbContext.Issues
+              .Include(x => x.GPSLocation)
+              .ToListAsync();
     }
 
     public async Task<Issue.Domain.Entities.Issue.Issue?> GetByIdAsync(Guid id)
     {
-        return await issueDbContext.Issues
-                        .FirstOrDefaultAsync(x=>x.Id == id);
+        return await issueDbContext.Issues.Include(x => x.GPSLocation).FirstOrDefaultAsync(x=>x.Id == id);
     }
 }

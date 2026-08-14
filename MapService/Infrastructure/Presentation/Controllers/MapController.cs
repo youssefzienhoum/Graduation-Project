@@ -1,4 +1,5 @@
 ﻿using Map.ServiceAbsraction;
+using Map.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,14 +16,14 @@ namespace Map.Presentation.Controllers
     {
         [HttpGet]
         [Route("ShowIssueInMap")]
-        public async Task<IEnumerable<Map.Shared.MapResponseDto>> ShowIssueInMap( CancellationToken cancellationToken)
+        public async Task<IEnumerable<MapResponseDto>> ShowIssueInMap( CancellationToken cancellationToken)
         {
             var result = await mapService.ShowIssueInMapAsync(cancellationToken);
             return result;
         }
         [HttpGet]
         [Route("SearchForIssueInMap")]
-        public async Task<Map.Shared.MapResponseDto> SearchForIssueInMap([FromQuery] Guid IssueId, CancellationToken cancellationToken)
+        public async Task<MapResponseDto> SearchForIssueInMap([FromQuery] Guid IssueId, CancellationToken cancellationToken)
         {
             var result = await mapService.SearchForIssueInMapAsync(IssueId, cancellationToken);
             return result;

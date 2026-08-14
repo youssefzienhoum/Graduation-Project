@@ -1,4 +1,6 @@
-﻿using Map.Domain.Contarcts;
+﻿using AutoMapper;
+using Map.Domain.Contarcts;
+using Map.ServiceAbsraction;
 using Map.Shared;
 using Report.Domain.Entities.Report;
 using System;
@@ -9,65 +11,36 @@ using System.Threading.Tasks;
 
 namespace Map.Service
 {
-    public class MapService(IIsuueRepo issueRepo , IReportREpo reportRepo) : Map.ServiceAbsraction.IMapSerevice
+    public class MapService(IIssueRepo issueRepo,IMapper mapper ) : IMapSerevice
     {
-        public async Task<MapResponseDto> SearchForIssueInMapAsync(Guid IssueId , CancellationToken cancellationToken)
+        public async Task<MapResponseDto> SearchForIssueInMapAsync(Guid IssueId, CancellationToken cancellationToken)
         {
             var issue = await issueRepo.GetByIdAsync(IssueId);
 
-            if (issue is null)
-                throw new KeyNotFoundException("Issue not found.");
-
-            var report = await reportRepo.GetByIdAsync(issue.ReportId);
-
-            if (report is null ||report.Location is null)
-                throw new KeyNotFoundException("Report location not found.");
-
-            return new MapResponseDto
+            if (issue == null)
             {
-                IssueId = issue.Id,
-                priority = issue.Priority,
-                ReportId = issue.ReportId,
-                Latitude = report.Location.Latitude,
-                Longitde = report.Location.Longitude
-            };
+                throw new KeyNotFoundException("Issue not found");
+            }
+
+            var result = mapper.Map<MapResponseDto>(issue);
+
+            return result;
+
+
+
         }
 
         public async Task<IEnumerable<MapResponseDto>> ShowIssueInMapAsync(CancellationToken cancellationToken)
         {
-            var issues = await issueRepo.GetAllAsync();
-            if(!issues.Any())
-                throw new KeyNotFoundException("No issues found."); 
-
-            var reportids =  issues
-                .Select(x => x.ReportId)
-                .Distinct()
-                .ToList();
-            var reports = await reportRepo.GetAllAsync(reportids , cancellationToken);
-
-            var result = new List<MapResponseDto>();
-            var reportsById = reports.ToDictionary(r => r.Id);
-
-            foreach (var issue in issues)
+           var issues = await issueRepo.GetAllAsync();
+            if(issues == null || !issues.Any())
             {
-                if (!reportsById.TryGetValue(issue.ReportId, out var report))
-                    continue;
-
-                if (report.Location is null)
-                    continue;
-
-                result.Add(new MapResponseDto
-                {
-                    IssueId = issue.Id,
-                    priority = issue.Priority,
-                    ReportId = issue.ReportId,
-                    Latitude = report.Location.Latitude,
-                    Longitde = report.Location.Longitude
-                });
-            }
-
-
+                throw new KeyNotFoundException("No issues found");
+            }   
+            var result = mapper.Map<IEnumerable<MapResponseDto>>(issues);
             return result;
+
+
         }
     }
 }

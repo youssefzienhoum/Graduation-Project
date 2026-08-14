@@ -4,6 +4,7 @@ using Issue.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issue.Persistence.Context.Migrations
 {
     [DbContext(typeof(IssueDbContext))]
-    partial class IssueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260812150320_Initial123")]
+    partial class Initial123
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,51 +256,6 @@ namespace Issue.Persistence.Context.Migrations
                     b.ToTable("issueFeedbacks");
                 });
 
-            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueShared", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("IssueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IssueId");
-
-                    b.ToTable("Shares");
-                });
-
-            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueVote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("IssueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IssueId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("Issue.Domain.Entities.Issue.MaintenanceTeam", b =>
                 {
                     b.Property<Guid>("Id")
@@ -522,28 +480,6 @@ namespace Issue.Persistence.Context.Migrations
                     b.Navigation("Issue");
                 });
 
-            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueShared", b =>
-                {
-                    b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
-                        .WithMany("Shares")
-                        .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Issue");
-                });
-
-            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueVote", b =>
-                {
-                    b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
-                        .WithMany("Votes")
-                        .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Issue");
-                });
-
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Notification", b =>
                 {
                     b.HasOne("Issue.Domain.Entities.Issue.Issue", "RelatedIssue")
@@ -625,11 +561,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.Navigation("ResolutionActions");
 
-                    b.Navigation("Shares");
-
                     b.Navigation("StatusHistory");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.MaintenanceTeam", b =>
