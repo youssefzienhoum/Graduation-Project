@@ -69,7 +69,6 @@ namespace CommunityService
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.MapHub<CommunityHub>("/hubs/community");

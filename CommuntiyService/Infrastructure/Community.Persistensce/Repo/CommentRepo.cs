@@ -33,6 +33,18 @@ namespace Community.Persistence.Repo
                 .FirstOrDefaultAsync(x => x.Id == CommentId, cancellationToken);
         }
 
+        public async Task<IEnumerable<Comment>> GetByIssueIdAsync(Guid issueId, int page,
+                int pageSize, CancellationToken cancellationToken = default)
+        {
+            return await dbContext.Comments
+                .AsNoTracking()
+                .Where(x => x.IssueId == issueId)
+                .OrderByDescending(x => x.CreatedAt)
+                .Skip((page -1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+        }   
+
         public async Task<int> GetCountByIssueIdAsync(Guid issueId, CancellationToken cancellationToken = default)
         {
             return await dbContext.Comments

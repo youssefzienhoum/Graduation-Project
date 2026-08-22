@@ -55,7 +55,7 @@ public class CountService(
 
     public async Task<long> IncreamentCommentAsync(Guid issueId )
     {
-        var newValue = await Db.StringIncrementAsync(ShareKey(issueId));
+        var newValue = await Db.StringIncrementAsync(CommentKey(issueId));
         await Db.KeyExpireAsync(CommentKey(issueId), CacheTtl);
         return newValue;
     }
