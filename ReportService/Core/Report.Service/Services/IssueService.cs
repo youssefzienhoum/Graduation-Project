@@ -63,6 +63,15 @@ namespace Report.Service.Services
 
         public async Task<CreateIssueResponse> CreateIssueAsync(CreateIssueRequest request, CancellationToken cancellationToken = default)
         {
+            var priority = GetPriority(request.AiAnalysisResponse.Severity);
+            if (priority is IssuePriority.Low or IssuePriority.Unknown)
+            {
+                await storageClient.DeleteAsync(request.AiAnalysisResponse.FilePath);
+
+                throw new InvalidOperationException(
+                    "Issue was not created because the detected problem's priority is too low to report.");
+            }
+
             var reporterId = GetLoggedInUserId();
 
             var issue = mapper.Map<Issue>(request);
@@ -78,17 +87,14 @@ namespace Report.Service.Services
             issue.AiAnalyses.Add(
                 mapper.Map<AiAnalysis>(request.AiAnalysisResponse)
             );
-         
-            issue.Priority=GetPriority(request.AiAnalysisResponse.Severity);
 
-
+            issue.Priority = priority;
+            issue.Title = request.AiAnalysisResponse.ProblemArabic;
+            issue.Description=request.AiAnalysisResponse.Explanation;
             await unitOfWork.issueRepo.AddAsync(issue);
-
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return mapper.Map<CreateIssueResponse>(issue);
-        
-
         }
 
         public async Task DeleteIssueAsync(Guid id, CancellationToken cancellationToken = default)
