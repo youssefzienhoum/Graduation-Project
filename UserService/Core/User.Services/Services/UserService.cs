@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CommanLib.EventNotification.EmailEvent;
+using CommanLib.EventNotification.UserEvent;
 using MassTransit;
+using MassTransit.Transports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -8,6 +10,7 @@ using System;
 
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using User.Domain.Contract;
 using User.Domain.Entities;
@@ -80,7 +83,9 @@ namespace User.Services.Services
             }
 
             await userRepo.UpdateAsync(user);
+            await publish.Publish(new UserUpdatedIntegrationEvent(user.Id, user.FullName));
         }
+
 
         private async Task<AppUser> GetLoggedInUserAsync()
         {
@@ -113,9 +118,16 @@ namespace User.Services.Services
             await userRepo.SaveChangesAsync();
             await publish.Publish(new AccountEvent(user.Email, user.FullName));
 
+        }
 
+        public async Task<UserDetailsResponse> GetUserDetailsAsync(Guid id)
+        {
+       var user= await userRepo.GetByIdAsync(id);
+            if (user == null) {
+                throw new Exception("User not found");
+            }
+            return mapper.Map<UserDetailsResponse>(user);
 
-            ;
         }
     }
 }

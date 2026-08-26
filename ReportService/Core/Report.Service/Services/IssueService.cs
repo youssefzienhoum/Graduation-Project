@@ -91,8 +91,6 @@ namespace Report.Service.Services
 
         }
 
-       
-
         public async Task DeleteIssueAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var issue = await unitOfWork.issueRepo.GetByIdAsync(id)
@@ -107,8 +105,6 @@ namespace Report.Service.Services
 
 
         }
-
-      
 
         private Guid GetLoggedInUserId()
         {

@@ -1,4 +1,6 @@
-﻿using Issue.Persistence.Context;
+﻿using Issue.Domain.Contract;
+using Issue.Persistence.Context;
+using Issue.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,8 @@ namespace Issue.Persistence.DependencyInjection
             });
 
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
 
             return services;

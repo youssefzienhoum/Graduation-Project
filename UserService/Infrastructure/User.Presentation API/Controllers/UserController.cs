@@ -23,6 +23,13 @@ namespace User.Presentation_API.Controllers
             return Ok(userDetails);
         }
 
+        [HttpGet("GetUser/{userid}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserDetails([FromRoute] Guid  userid) {
+            var user = await userService.GetUserDetailsAsync(userid);
+            return Ok(user);
+
+        }
 
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
