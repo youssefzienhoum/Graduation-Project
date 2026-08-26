@@ -29,8 +29,7 @@ namespace Report.Service.Services
 
             await using var stream = photo.OpenReadStream();
             var uploadResult = await storageClient.UploadAsync(
-                new StreamPart(stream, photo.FileName, photo.ContentType),
-                "reportimage");
+                new StreamPart(stream, photo.FileName, photo.ContentType),"reportimage");
 
             await using var analysisStream = photo.OpenReadStream();
 
@@ -51,8 +50,8 @@ namespace Report.Service.Services
 
             return new AiAnalysisResponse(
                 FilePath: uploadResult.filePath,
-                ProblemName: prediction.Problem,
-                ProblemArabic: prediction.ProblemCode,
+                ProblemName: prediction.ProblemCode,
+                ProblemArabic: prediction.Problem,
                 Confidence: AiAnalysisMapper.ParseConfidence(prediction.Confidence),
                 Severity: prediction.Severity,
                 Recommendation: prediction.Recommendation,
