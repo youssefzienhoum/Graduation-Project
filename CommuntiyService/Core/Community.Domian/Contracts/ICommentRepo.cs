@@ -18,7 +18,11 @@ namespace Community.Domain.Contracts
         Task<Comment?> GetByIdAsync(
             Guid CommentId,
             CancellationToken cancellationToken = default);
-
+        Task<IEnumerable<Comment>> GetByIssueIdAsync(
+            Guid issueId,
+            int page,
+            int pageSize,
+            CancellationToken cancellationToken = default);
         Task AddAsync(
             Comment comment,
             CancellationToken cancellationToken = default);

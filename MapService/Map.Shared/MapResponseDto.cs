@@ -15,7 +15,12 @@ namespace Map.Shared
        
         public string Longitde { get; set; }
         public  string Latitude { get; set; }
+        public string? PhotoUrl { get; set; }
+        public int MyProperty { get; set; }
+        public DateTime CreatedAt { get; set; }
         public IssuePriority priority { get; set; }
+        public IssueStatus Status { get; set; }
+        public string title { get; set; }
 
     }
        

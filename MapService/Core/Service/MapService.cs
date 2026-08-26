@@ -2,7 +2,6 @@
 using Map.Domain.Contarcts;
 using Map.ServiceAbsraction;
 using Map.Shared;
-using Report.Domain.Entities.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +32,10 @@ namespace Map.Service
         public async Task<IEnumerable<MapResponseDto>> ShowIssueInMapAsync(CancellationToken cancellationToken)
         {
            var issues = await issueRepo.GetAllAsync();
-            if(issues == null || !issues.Any())
-            {
-                throw new KeyNotFoundException("No issues found");
-            }   
+            //if(issues == null || !issues.Any())
+            //{
+            //    throw new KeyNotFoundException("No issues found");
+            //}   
             var result = mapper.Map<IEnumerable<MapResponseDto>>(issues);
             return result;
 
