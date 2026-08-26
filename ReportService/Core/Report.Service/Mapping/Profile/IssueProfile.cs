@@ -31,10 +31,8 @@ namespace Report.Service.Mapping.Profile
 
 
             CreateMap<AiPredictionResponse, AiAnalysis>()
-                .ForMember(dest => dest.ProblemName,
-                    opt => opt.MapFrom(src => src.ProblemCode ?? string.Empty))
-                .ForMember(dest => dest.ProblemArabic,
-                    opt => opt.MapFrom(src => src.Problem ?? string.Empty))
+               .ForMember(dest => dest.ProblemName, opt => opt.MapFrom(src => src.ProblemCode ?? string.Empty))
+                .ForMember(dest => dest.ProblemArabic, opt => opt.MapFrom(src => src.Problem ?? string.Empty))
                 .ForMember(dest => dest.Confidence,
                     opt => opt.MapFrom(src =>
                         AiAnalysisMapper.ParseConfidence(src.Confidence)))
