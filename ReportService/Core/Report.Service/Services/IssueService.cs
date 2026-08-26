@@ -141,7 +141,7 @@ namespace Report.Service.Services
                 // High
                 "عالية" => IssuePriority.High,
                 "متوسطة" => IssuePriority.Medium,
-                "منخفضة" => IssuePriority.High,
+                "منخفضة" => IssuePriority.Medium,
 
                 // Low
                 "بسيطة" => IssuePriority.Low,

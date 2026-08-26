@@ -9,7 +9,9 @@ namespace Report.Service.Mapping.Profile
     public class IssueProfile : AutoMapper.Profile
     {
         public IssueProfile()
+
         {
+            CreateMap<Issue, CreateIssueResponse>();
             CreateMap<CreateIssueRequest, Issue>()
            .ForMember(dest => dest.ReporterId,
                opt => opt.Ignore())
