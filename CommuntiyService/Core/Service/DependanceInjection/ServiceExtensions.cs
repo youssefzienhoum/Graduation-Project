@@ -1,4 +1,6 @@
-﻿using Community.ServiceAbstraction;
+﻿using AutoMapper;
+using Community.Service.Maaping;
+using Community.ServiceAbstraction;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,9 @@ namespace Community.Service.DependanceInjection
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<ICountService,CountService>();
+            services.AddScoped<IcommunityService, CommunityService>();
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Communitymap).Assembly));
+
 
             return services;
         }
