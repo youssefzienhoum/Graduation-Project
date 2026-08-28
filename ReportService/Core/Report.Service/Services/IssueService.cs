@@ -90,6 +90,7 @@ namespace Report.Service.Services
             issue.Priority = priority;
             issue.Title = request.AiAnalysisResponse.ProblemArabic;
             issue.Description=request.AiAnalysisResponse.Explanation;
+            issue.Status = IssueStatus.Diagnosed;
             await unitOfWork.issueRepo.AddAsync(issue);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -14,7 +14,7 @@ namespace Report.Persistence.Repository
     {
         public async Task<Issue> AddAsync(Issue issue)
         {
-            await issueDb.issues.AddAsync(issue);
+            await issueDb.Issues.AddAsync(issue);
            
             return issue;
         }
@@ -25,7 +25,7 @@ namespace Report.Persistence.Repository
             if (report is null)
                 throw new Exception("Report not found");
 
-            issueDb.issues.Remove(report);
+            issueDb.Issues.Remove(report);
 
         }
 
@@ -53,13 +53,13 @@ namespace Report.Persistence.Repository
 
         public async Task UpdateAsync(Issue issue)
         {
-            issueDb.issues.Update(issue);
+            issueDb.Issues.Update(issue);
            
             
         }
         private IQueryable<Issue> Query()
         {
-            return issueDb.issues
+            return issueDb.Issues
                 .Include(r => r.GPSLocation)
                 .Include(r => r.IssueAttachments)
                 .Include(r => r.AiAnalyses);

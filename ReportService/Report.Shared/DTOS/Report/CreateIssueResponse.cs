@@ -11,7 +11,6 @@ namespace Report.Shared.DTOS.Report
     string? Description,
     IssueStatus Status,
     DateTime CreatedAt,
-    DateTime? UpdatedAt,
     Guid ReporterId
         )
     {

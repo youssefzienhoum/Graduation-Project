@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issue.Persistence.Context.Migrations
 {
     [DbContext(typeof(IssueDbContext))]
-    [Migration("20260812150320_Initial123")]
-    partial class Initial123
+    [Migration("20260828143709_UPDATE")]
+    partial class UPDATE
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("AiAnalysis");
+                    b.ToTable("AiAnalyses");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Comment", b =>
@@ -154,7 +154,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GPSLocation");
+                    b.ToTable("GPSLocations");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Issue", b =>
@@ -226,7 +226,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("IssueAttachment");
+                    b.ToTable("IssueAttachments");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueFeedback", b =>
@@ -253,7 +253,52 @@ namespace Issue.Persistence.Context.Migrations
                     b.HasIndex("IssueId")
                         .IsUnique();
 
-                    b.ToTable("issueFeedbacks");
+                    b.ToTable("IssueFeedbacks");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueShared", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("Shares");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueVote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IssueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.MaintenanceTeam", b =>
@@ -309,7 +354,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("RelatedIssueId");
 
-                    b.ToTable("notifications");
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.RepairSchedule", b =>
@@ -418,6 +463,46 @@ namespace Issue.Persistence.Context.Migrations
                     b.ToTable("StatusHistories");
                 });
 
+            modelBuilder.Entity("Issue.Domain.Entities.ReadModels.ExpertInboxReadModel", b =>
+                {
+                    b.Property<Guid>("IssueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AssignedExpertName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("IssueId");
+
+                    b.ToTable("ExpertInboxReadModels");
+                });
+
             modelBuilder.Entity("Issue.Domain.Entities.Issue.AiAnalysis", b =>
                 {
                     b.HasOne("Issue.Domain.Entities.Issue.Issue", null)
@@ -474,6 +559,28 @@ namespace Issue.Persistence.Context.Migrations
                     b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
                         .WithOne("Feedback")
                         .HasForeignKey("Issue.Domain.Entities.Issue.IssueFeedback", "IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueShared", b =>
+                {
+                    b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
+                        .WithMany("Shares")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueVote", b =>
+                {
+                    b.HasOne("Issue.Domain.Entities.Issue.Issue", "Issue")
+                        .WithMany("Votes")
+                        .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -561,7 +668,11 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.Navigation("ResolutionActions");
 
+                    b.Navigation("Shares");
+
                     b.Navigation("StatusHistory");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.MaintenanceTeam", b =>

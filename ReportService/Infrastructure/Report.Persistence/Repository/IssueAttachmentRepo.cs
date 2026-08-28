@@ -23,18 +23,18 @@ namespace Report.Persistence.Repository
             var attachment = await GetByIdAsync(id ) ;
             if (attachment is null)
                 throw new Exception("Attachment not found");
-            issueDbContext.issueAttachments.Remove(attachment);
+            issueDbContext.IssueAttachments.Remove(attachment);
 
         }
 
         public async Task<IssueAttachment?> GetByIdAsync(Guid id)
         {
-            return await issueDbContext.issueAttachments.FindAsync(id);
+            return await issueDbContext.IssueAttachments.FindAsync(id);
         }
 
         public Task<IEnumerable<IssueAttachment>> GetByIssueIdAsync(Guid issueid)
         {
-            return Task.FromResult<IEnumerable<IssueAttachment>>(issueDbContext.issueAttachments.Where(a => a.IssueId == issueid).ToList());
+            return Task.FromResult<IEnumerable<IssueAttachment>>(issueDbContext.IssueAttachments.Where(a => a.IssueId == issueid).ToList());
         }
 
      

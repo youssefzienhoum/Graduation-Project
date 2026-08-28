@@ -6,13 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Issue.Persistence.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial123 : Migration
+    public partial class UPDATE : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GPSLocation",
+                name: "ExpertInboxReadModels",
+                columns: table => new
+                {
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    ThumbnailUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AssignedExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AssignedExpertName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpertInboxReadModels", x => x.IssueId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GPSLocations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -22,7 +41,7 @@ namespace Issue.Persistence.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GPSLocation", x => x.Id);
+                    table.PrimaryKey("PK_GPSLocations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,15 +76,15 @@ namespace Issue.Persistence.Context.Migrations
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Issues_GPSLocation_GPSLocationId",
+                        name: "FK_Issues_GPSLocations_GPSLocationId",
                         column: x => x.GPSLocationId,
-                        principalTable: "GPSLocation",
+                        principalTable: "GPSLocations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AiAnalysis",
+                name: "AiAnalyses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -82,9 +101,9 @@ namespace Issue.Persistence.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AiAnalysis", x => x.Id);
+                    table.PrimaryKey("PK_AiAnalyses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AiAnalysis_Issues_IssueId",
+                        name: "FK_AiAnalyses_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "Id");
@@ -136,7 +155,7 @@ namespace Issue.Persistence.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IssueAttachment",
+                name: "IssueAttachments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -147,9 +166,9 @@ namespace Issue.Persistence.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IssueAttachment", x => x.Id);
+                    table.PrimaryKey("PK_IssueAttachments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IssueAttachment_Issues_IssueId",
+                        name: "FK_IssueAttachments_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "Id",
@@ -157,7 +176,7 @@ namespace Issue.Persistence.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "issueFeedbacks",
+                name: "IssueFeedbacks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -168,9 +187,9 @@ namespace Issue.Persistence.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_issueFeedbacks", x => x.Id);
+                    table.PrimaryKey("PK_IssueFeedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_issueFeedbacks_Issues_IssueId",
+                        name: "FK_IssueFeedbacks_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "Id",
@@ -178,7 +197,7 @@ namespace Issue.Persistence.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "notifications",
+                name: "Notifications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -192,9 +211,9 @@ namespace Issue.Persistence.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_notifications", x => x.Id);
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_notifications_Issues_RelatedIssueId",
+                        name: "FK_Notifications_Issues_RelatedIssueId",
                         column: x => x.RelatedIssueId,
                         principalTable: "Issues",
                         principalColumn: "Id",
@@ -261,6 +280,26 @@ namespace Issue.Persistence.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Shares",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shares", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shares_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StatusHistories",
                 columns: table => new
                 {
@@ -283,9 +322,29 @@ namespace Issue.Persistence.Context.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Votes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IssueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Votes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Votes_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_AiAnalysis_IssueId",
-                table: "AiAnalysis",
+                name: "IX_AiAnalyses_IssueId",
+                table: "AiAnalyses",
                 column: "IssueId");
 
             migrationBuilder.CreateIndex(
@@ -299,13 +358,13 @@ namespace Issue.Persistence.Context.Migrations
                 column: "IssueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IssueAttachment_IssueId",
-                table: "IssueAttachment",
+                name: "IX_IssueAttachments_IssueId",
+                table: "IssueAttachments",
                 column: "IssueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_issueFeedbacks_IssueId",
-                table: "issueFeedbacks",
+                name: "IX_IssueFeedbacks_IssueId",
+                table: "IssueFeedbacks",
                 column: "IssueId",
                 unique: true);
 
@@ -316,8 +375,8 @@ namespace Issue.Persistence.Context.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_notifications_RelatedIssueId",
-                table: "notifications",
+                name: "IX_Notifications_RelatedIssueId",
+                table: "Notifications",
                 column: "RelatedIssueId");
 
             migrationBuilder.CreateIndex(
@@ -342,31 +401,45 @@ namespace Issue.Persistence.Context.Migrations
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shares_IssueId",
+                table: "Shares",
+                column: "IssueId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StatusHistories_IssueId",
                 table: "StatusHistories",
                 column: "IssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_IssueId_UserId",
+                table: "Votes",
+                columns: new[] { "IssueId", "UserId" },
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AiAnalysis");
+                name: "AiAnalyses");
 
             migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "ExpertInboxReadModels");
+
+            migrationBuilder.DropTable(
                 name: "ExpertReviews");
 
             migrationBuilder.DropTable(
-                name: "IssueAttachment");
+                name: "IssueAttachments");
 
             migrationBuilder.DropTable(
-                name: "issueFeedbacks");
+                name: "IssueFeedbacks");
 
             migrationBuilder.DropTable(
-                name: "notifications");
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "RepairSchedules");
@@ -375,7 +448,13 @@ namespace Issue.Persistence.Context.Migrations
                 name: "ResolutionActions");
 
             migrationBuilder.DropTable(
+                name: "Shares");
+
+            migrationBuilder.DropTable(
                 name: "StatusHistories");
+
+            migrationBuilder.DropTable(
+                name: "Votes");
 
             migrationBuilder.DropTable(
                 name: "MaintenanceTeams");
@@ -384,7 +463,7 @@ namespace Issue.Persistence.Context.Migrations
                 name: "Issues");
 
             migrationBuilder.DropTable(
-                name: "GPSLocation");
+                name: "GPSLocations");
         }
     }
 }

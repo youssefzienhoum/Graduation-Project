@@ -23,15 +23,13 @@ namespace Issue.Service.Services
 
         public async Task<ExpertInboxResponse?> GetAllInboxAsync(CancellationToken cancellationToken = default)
         {
-            var spec = new IssueExpertInBoxSpecification();
-            var issues = await unitOfWork.GetRepository<Issue.Domain.Entities.Issue.Issue, Guid>().GetAllAsync(spec,cancellationToken);
-            var user = await
-            return issues;
+            throw new NotImplementedException();
         }
 
         public async Task<CaseReviewResponse> GetCaseReviewAsync(Guid issueId, CancellationToken cancellationToken = default)
         {
             var issue = await unitOfWork.GetRepository<Issue.Domain.Entities.Issue.Issue, Guid>().GetByIdAsync(new IssueExpertInBoxSpecification(issueId),cancellationToken);
+            throw new NotImplementedException();
         }
 
         public Task<ExpertInboxResponse> GetInboxAsync(Guid expertId, CancellationToken cancellationToken = default)
