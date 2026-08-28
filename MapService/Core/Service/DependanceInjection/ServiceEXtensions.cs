@@ -13,7 +13,8 @@ public static class ServiceExtensions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IMapSerevice, MapService>();
-        
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Mapping.Profile.MapProfile).Assembly));
+
 
 
 

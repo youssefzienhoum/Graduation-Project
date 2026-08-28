@@ -1,5 +1,6 @@
-﻿using Issue.Domain.Entities.Issue;
+﻿
 
+using Map.Domain.Entities.ISSUE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,9 @@ namespace Map.Shared
         public string Longitde { get; set; }
         public  string Latitude { get; set; }
         public string? PhotoUrl { get; set; }
-        public int MyProperty { get; set; }
         public DateTime CreatedAt { get; set; }
-        public IssuePriority priority { get; set; }
-        public IssueStatus Status { get; set; }
+        public string priority { get; set; }
+        public string Status { get; set; }
         public string title { get; set; }
 
     }
