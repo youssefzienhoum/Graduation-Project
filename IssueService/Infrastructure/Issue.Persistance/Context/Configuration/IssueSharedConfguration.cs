@@ -17,6 +17,9 @@ namespace Issue.Persistence.Context.Configuration
                 .IsRequired();
             builder.Property(x => x.UserId)
                 .IsRequired();
+            builder.HasOne(i => i.Issue)
+                .WithMany(s => s.Shares)
+                .OnDelete(DeleteBehavior.Cascade); ;
 
         }
     }

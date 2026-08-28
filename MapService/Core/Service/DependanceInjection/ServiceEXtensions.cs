@@ -1,4 +1,5 @@
-﻿using Map.ServiceAbsraction;
+﻿using Map.Service.Mapping.Profile;
+using Map.ServiceAbsraction;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(MapProfile).Assembly));
+
         services.AddScoped<IMapSerevice, MapService>();
         
 
