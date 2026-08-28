@@ -1,12 +1,10 @@
 ﻿using Issue.Domain.Entities.Issue;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Issue.Persistence.Context.Configuration
+namespace Issue.Persistence.Context.Configuration;
+
+public class IssueSharedConfiguration : IEntityTypeConfiguration<IssueShared>
 {
     public class IssueSharedConfguration : IEntityTypeConfiguration<IssueShared>
     {
@@ -17,10 +15,10 @@ namespace Issue.Persistence.Context.Configuration
                 .IsRequired();
             builder.Property(x => x.UserId)
                 .IsRequired();
-            builder.HasOne(i => i.Issue)
-                .WithMany(s => s.Shares)
-                .OnDelete(DeleteBehavior.Cascade); ;
 
-        }
+        builder.HasOne(x => x.Issue)
+            .WithMany(x => x.Shares)
+            .HasForeignKey(x => x.IssueId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

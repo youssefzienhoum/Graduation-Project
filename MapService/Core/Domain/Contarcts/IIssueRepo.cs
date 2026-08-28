@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Map.Domain.Entities.ISSUE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace Map.Domain.Contarcts
 {
     public interface IIssueRepo
     {
-        Task<Issue.Domain.Entities.Issue.Issue?> GetByIdAsync(Guid id);
+        Task<Issue> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<Issue.Domain.Entities.Issue.Issue>> GetAllAsync();
+        Task<IEnumerable<Issue>> GetAllAsync();
     }
 }

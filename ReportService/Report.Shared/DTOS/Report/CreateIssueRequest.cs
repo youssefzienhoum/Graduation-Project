@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Report.Shared.DTOS.Report
 {
-    public  record  CreateIssueRequest(AiAnalysisResponse AiAnalysisResponse ,string? Description,
+    public  record  CreateIssueRequest(AiAnalysisResponse AiAnalysisResponse ,
         string? Latitude,
         string? Longitude
         )

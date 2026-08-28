@@ -67,7 +67,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("AiAnalysis");
+                    b.ToTable("AiAnalyses");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Comment", b =>
@@ -151,7 +151,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GPSLocation");
+                    b.ToTable("GPSLocations");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.Issue", b =>
@@ -223,7 +223,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("IssueAttachment");
+                    b.ToTable("IssueAttachments");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueFeedback", b =>
@@ -250,7 +250,7 @@ namespace Issue.Persistence.Context.Migrations
                     b.HasIndex("IssueId")
                         .IsUnique();
 
-                    b.ToTable("issueFeedbacks");
+                    b.ToTable("IssueFeedbacks");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.IssueShared", b =>
@@ -351,7 +351,7 @@ namespace Issue.Persistence.Context.Migrations
 
                     b.HasIndex("RelatedIssueId");
 
-                    b.ToTable("notifications");
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.RepairSchedule", b =>
@@ -458,6 +458,46 @@ namespace Issue.Persistence.Context.Migrations
                     b.HasIndex("IssueId");
 
                     b.ToTable("StatusHistories");
+                });
+
+            modelBuilder.Entity("Issue.Domain.Entities.ReadModels.ExpertInboxReadModel", b =>
+                {
+                    b.Property<Guid>("IssueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AssignedExpertName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("IssueId");
+
+                    b.ToTable("ExpertInboxReadModels");
                 });
 
             modelBuilder.Entity("Issue.Domain.Entities.Issue.AiAnalysis", b =>

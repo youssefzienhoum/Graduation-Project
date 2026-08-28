@@ -1,28 +1,31 @@
 ﻿using Issue.Domain.Entities.Issue;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Issue.Persistence.Context.Configuration
+namespace Issue.Persistence.Context.Configuration;
+
+public class IssueVoteConfiguration : IEntityTypeConfiguration<IssueVote>
 {
-    public class IssueVoteConfiguration : IEntityTypeConfiguration<IssueVote>
+    public void Configure(EntityTypeBuilder<IssueVote> builder)
     {
-        public void Configure(EntityTypeBuilder<IssueVote> builder)
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.IssueId)
+            .IsRequired();
+
+        builder.Property(x => x.UserId)
+            .IsRequired();
+
+        builder.HasOne(x => x.Issue)
+            .WithMany(x => x.Votes)
+            .HasForeignKey(x => x.IssueId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(x => new
         {
-            builder
-                .HasKey(iv => iv.Id);
-            builder
-                .Property(x=>x.IssueId)
-                .IsRequired();
-            builder.Property(x => x.UserId)
-                .IsRequired();
-            builder
-                .HasIndex(x => new { x.IssueId, x.UserId })
-                .IsUnique();
-        }
+            x.IssueId,
+            x.UserId
+        })
+        .IsUnique();
     }
 }

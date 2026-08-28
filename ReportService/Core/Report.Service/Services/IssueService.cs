@@ -29,8 +29,7 @@ namespace Report.Service.Services
 
             await using var stream = photo.OpenReadStream();
             var uploadResult = await storageClient.UploadAsync(
-                new StreamPart(stream, photo.FileName, photo.ContentType),
-                "reportimage");
+                new StreamPart(stream, photo.FileName, photo.ContentType),"reportimage");
 
             await using var analysisStream = photo.OpenReadStream();
 
@@ -51,8 +50,8 @@ namespace Report.Service.Services
 
             return new AiAnalysisResponse(
                 FilePath: uploadResult.filePath,
-                ProblemName: prediction.Problem,
-                ProblemArabic: prediction.ProblemCode,
+                ProblemName: prediction.ProblemCode,
+                ProblemArabic: prediction.Problem,
                 Confidence: AiAnalysisMapper.ParseConfidence(prediction.Confidence),
                 Severity: prediction.Severity,
                 Recommendation: prediction.Recommendation,
@@ -63,6 +62,15 @@ namespace Report.Service.Services
 
         public async Task<CreateIssueResponse> CreateIssueAsync(CreateIssueRequest request, CancellationToken cancellationToken = default)
         {
+            var priority = GetPriority(request.AiAnalysisResponse.Severity);
+            if (priority is IssuePriority.Low or IssuePriority.Unknown)
+            {
+                await storageClient.DeleteAsync(request.AiAnalysisResponse.FilePath);
+
+                throw new InvalidOperationException(
+                    "Issue was not created because the detected problem's priority is too low to report.");
+            }
+
             var reporterId = GetLoggedInUserId();
 
             var issue = mapper.Map<Issue>(request);
@@ -78,20 +86,16 @@ namespace Report.Service.Services
             issue.AiAnalyses.Add(
                 mapper.Map<AiAnalysis>(request.AiAnalysisResponse)
             );
-         
-            issue.Priority=GetPriority(request.AiAnalysisResponse.Severity);
 
-
+            issue.Priority = priority;
+            issue.Title = request.AiAnalysisResponse.ProblemArabic;
+            issue.Description=request.AiAnalysisResponse.Explanation;
+            issue.Status = IssueStatus.Diagnosed;
             await unitOfWork.issueRepo.AddAsync(issue);
-
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return mapper.Map<CreateIssueResponse>(issue);
-        
-
         }
-
-       
 
         public async Task DeleteIssueAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -107,8 +111,6 @@ namespace Report.Service.Services
 
 
         }
-
-      
 
         private Guid GetLoggedInUserId()
         {
@@ -139,7 +141,7 @@ namespace Report.Service.Services
                 // High
                 "عالية" => IssuePriority.High,
                 "متوسطة" => IssuePriority.Medium,
-                "منخفضة" => IssuePriority.High,
+                "منخفضة" => IssuePriority.Medium,
 
                 // Low
                 "بسيطة" => IssuePriority.Low,
