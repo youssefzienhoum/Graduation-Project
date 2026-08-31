@@ -9,8 +9,9 @@ namespace Map.Domain.Contarcts
 {
     public interface IIssueRepo
     {
-        Task<Issue> GetByIdAsync(Guid id);
+        Task<Issue> GetByIdAsync(Guid id   );
 
-        Task<IEnumerable<Issue>> GetAllAsync();
+        Task<IEnumerable<Issue>> GetAllAsync(int pageSize, int page ,CancellationToken cancellationToken);
+        Task<IEnumerable<Issue>> GetByTitle(string title, int pagesize, int page, CancellationToken cancellationToken);
     }
 }
