@@ -57,7 +57,7 @@ namespace CommunityService
             });
             // Program.cs
             builder.Services.AddSingleton<IConnectionMultiplexer>(
-                ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
+                ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
