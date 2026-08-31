@@ -1,7 +1,9 @@
 
 using CommanLib.DependencyInjection;
 using Community.Clinets.DependancyInjection;
+using Community.Persistence.DependanceInjection;
 using Community.Service;
+using Community.Service.DependanceInjection;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
  
@@ -20,6 +22,8 @@ namespace CommunityService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSignalR();
+            builder.Services.AddServices();
+            builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddTokenService(builder.Configuration);
             builder.Services.AddClientService(builder.Configuration);
             builder.Services.AddSwaggerGen(options =>

@@ -15,6 +15,7 @@ namespace Map.Presentation.Controllers
     public class MapController(IMapSerevice mapService) : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         [Route("ShowIssueInMap")]
         public async Task<IEnumerable<MapResponseDto>> ShowIssueInMap( CancellationToken cancellationToken)
         {
@@ -22,6 +23,7 @@ namespace Map.Presentation.Controllers
             return result;
         }
         [HttpGet]
+        [Authorize]
         [Route("SearchForIssueInMap")]
         public async Task<MapResponseDto> SearchForIssueInMap([FromQuery] Guid IssueId, CancellationToken cancellationToken)
         {

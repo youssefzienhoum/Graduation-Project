@@ -6,15 +6,15 @@ namespace Issue.Persistence.Context.Configuration;
 
 public class IssueSharedConfiguration : IEntityTypeConfiguration<IssueShared>
 {
-    public void Configure(EntityTypeBuilder<IssueShared> builder)
+    public class IssueSharedConfguration : IEntityTypeConfiguration<IssueShared>
     {
-        builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.IssueId)
-            .IsRequired();
-
-        builder.Property(x => x.UserId)
-            .IsRequired();
+        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<IssueShared> builder)
+        {
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.IssueId)
+                .IsRequired();
+            builder.Property(x => x.UserId)
+                .IsRequired();
 
         builder.HasOne(x => x.Issue)
             .WithMany(x => x.Shares)

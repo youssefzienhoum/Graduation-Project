@@ -61,9 +61,7 @@ namespace Issue.Persistence.Context.Configuration
                 .WithOne(v => v.Issue)
                 .HasForeignKey(v => v.IssueId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(i => i.Shares)
-                .WithOne(s => s.Issue)
-                .OnDelete(DeleteBehavior.Cascade);
+            
           
            
             builder.HasMany(i => i.IssueAttachments)

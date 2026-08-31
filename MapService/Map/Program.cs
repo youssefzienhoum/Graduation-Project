@@ -17,10 +17,10 @@ namespace Map
             builder.Services.AddControllers();
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddServices();
-            builder.Services.AddTokenService(builder.Configuration);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddTokenService(builder.Configuration);
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -65,12 +65,10 @@ namespace Map
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
-
+            
             app.Run();
         }
     }
