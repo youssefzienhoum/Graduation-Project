@@ -17,9 +17,12 @@ namespace Map.Presentation.Controllers
         [HttpGet]
         [Authorize]
         [Route("ShowIssueInMap")]
-        public async Task<IEnumerable<MapResponseDto>> ShowIssueInMap( CancellationToken cancellationToken)
+        public async Task<IEnumerable<MapResponseDto>> ShowIssueInMap( 
+            [FromQueryAttribute] int pageSize,
+            [FromQuery] int page,
+            CancellationToken cancellation)
         {
-            var result = await mapService.ShowIssueInMapAsync(cancellationToken);
+            var result = await mapService.ShowIssueInMapAsync(pageSize ,page ,cancellation);
             return result;
         }
         [HttpGet]
@@ -28,6 +31,14 @@ namespace Map.Presentation.Controllers
         public async Task<MapResponseDto> SearchForIssueInMap([FromQuery] Guid IssueId, CancellationToken cancellationToken)
         {
             var result = await mapService.SearchForIssueInMapAsync(IssueId, cancellationToken);
+            return result;
+        }
+        [HttpGet]
+        [Authorize]
+        [Route("SearchForIssueByTitleInMap")]
+        public async Task<IEnumerable<MapResponseDto>> SearchForIssueByTitleInMap([FromQuery] string title, [FromQuery] int pageSize, [FromQuery] int page, CancellationToken cancellationToken)
+        {
+            var result = await mapService.SearchForIssueByTitleInMapAsync(title, pageSize, page, cancellationToken);
             return result;
         }
 

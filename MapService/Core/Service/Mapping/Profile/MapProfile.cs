@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Map.Domain.Entities.ISSUE;
 using Map.Shared;
+using System.Data.SqlTypes;
 
 namespace Map.Service.Mapping.Profile
 {
@@ -47,7 +48,7 @@ namespace Map.Service.Mapping.Profile
                 // CreatedAt
                 .ForMember(
                     dest => dest.CreatedAt,
-                    opt => opt.MapFrom(src => src.CreatedAt)
+                    opt => opt.MapFrom(src => DateTime.SpecifyKind(src.CreatedAt, DateTimeKind.Utc))
                )
 
                 // Priority: enum -> string
@@ -59,7 +60,7 @@ namespace Map.Service.Mapping.Profile
                 // Status: enum -> string
                 .ForMember(
                     dest => dest.Status,
-                    opt => opt.MapFrom(src => src.Status)
+                    opt => opt.MapFrom(src => src.Status.ToString())
                 )
 
                 // Title
