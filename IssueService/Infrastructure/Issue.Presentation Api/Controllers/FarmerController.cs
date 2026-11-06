@@ -18,7 +18,7 @@ namespace Issue.Presentation_Api.Controllers
     public class FarmerController(IFarmerService farmerService): ControllerBase
     {
         [HttpGet("issues")]
-        [Authorize(Roles = "Farmer")]
+        [Authorize]
         
 
         public async Task<IActionResult> GetAllIssuesAsync([FromQuery] IssueFilteration issueFilteration, CancellationToken cancellationToken = default)
@@ -27,7 +27,7 @@ namespace Issue.Presentation_Api.Controllers
             return Ok(issues);
         }
         [HttpGet("issues/{reporterId}")]
-        [Authorize(Roles = "Farmer")]
+        [Authorize]
         
 
         public async Task<IActionResult> GetAllIssuesByReporterIdAsync([FromQuery] IssueFilteration issueFilteration,CancellationToken cancellationToken = default)
@@ -37,9 +37,7 @@ namespace Issue.Presentation_Api.Controllers
         }
 
         [HttpPost("{issueId:guid}/complete")]
-        [ProducesResponseType(typeof(CompleteStausReponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [Authorize]
         public async Task<ActionResult<CompleteStausReponse>> CompleteIssueAsync(
     Guid issueId, CancellationToken cancellationToken)
         {
@@ -53,8 +51,8 @@ namespace Issue.Presentation_Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UncompleteIssueAsync(Guid issueId, CancellationToken cancellationToken)
         {
-            await farmerService.UncompleteIssueAsync(issueId, cancellationToken);
-            return NoContent();
+            var result = await farmerService.UncompleteIssueAsync(issueId, cancellationToken);
+            return Ok(result);
         }
         [HttpGet("{issueId}/tracking")]
         [Authorize]

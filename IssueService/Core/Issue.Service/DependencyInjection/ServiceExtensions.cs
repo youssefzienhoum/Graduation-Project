@@ -5,6 +5,7 @@ using Issue.Service.Consumer;
 using Issue.Service.Jop;
 using Issue.Service.Services;
 using Issue.ServiceAbstraction.Expert;
+using Issue.ServiceAbstraction.Farmer;
 using Issue.ServiceAbstraction.Jop;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,8 @@ namespace Issue.Service.DependencyInjection
             services.AddScoped<IExpertService, ExpertService>();
             services.AddScoped<IAssignExpertServices, AssignExpertServices>();
             services.AddScoped<IConsumer<IssueCreatedEvent>, IssueCreatedConsumer>();
-            services.AddScoped<ExpertAssignmentReconciliationJob>();
+            services.AddScoped< ExpertAssignmentReconciliationJob>();
+            services.AddScoped<IFarmerService, FarmerService>();
 
             services.AddMassTransit(x =>
             {
