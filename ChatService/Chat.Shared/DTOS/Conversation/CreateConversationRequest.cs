@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chat.Shared.DTOS.Conversation
 {
-    public  record CreateConversationRequest( Guid IssueId, Guid ExpertId)
+    public record CreateConversationRequest(Guid ExpertId)
     {
     }
 }

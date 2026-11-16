@@ -13,9 +13,16 @@ namespace Chat.Persistence.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<ConversationParticipant> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasIndex(x => new
+            {
+                x.ConversationId,
+                x.UserId
+            }).IsUnique();
+            builder.Property(x => x.DisplayName).IsRequired().HasMaxLength(100);    
+            builder.Property(x => x.ProfileImageUrl).HasMaxLength(500);
             builder.Property(x => x.Role).IsRequired();
             builder.Property(x => x.UserId).IsRequired();
+            
             builder.Property(x => x.ConversationId).IsRequired();
         }
     }

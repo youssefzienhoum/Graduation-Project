@@ -29,11 +29,11 @@ namespace Chat.Persistence.Repository
                 query = query.Where(specification.Criteria);
             }
 
-            // sort 
-            //if (specification.OrderBy is not null)
-            //    query = query.OrderBy(specification.OrderBy);
-            //else if (specification.OrderByDesc is not null)
-            //    query = query.OrderByDescending(specification.OrderByDesc);
+           // sort
+            if (specification.OrderBy is not null)
+                query = query.OrderBy(specification.OrderBy);
+            else if (specification.OrderByDesc is not null)
+                query = query.OrderByDescending(specification.OrderByDesc);
 
 
 

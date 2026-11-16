@@ -16,12 +16,12 @@ namespace Issue.Client.DependencyInjection
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddIssueClient(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddChatClient(this IServiceCollection services,IConfiguration configuration)
         {
 
             services.AddScoped<IMediaStorageGrpcClient, MediaStorageGrpcClient>();
             services.AddScoped<IUserGrpcClient,UserGrpcClient>();
-            services.AddGrpcClient<UserClinet.Grpc.UserGRPcService.UserGRPcServiceClient>(
+            services.AddGrpcClient<UserGRPcService.UserGRPcServiceClient>(
                 options =>
                 {
                     options.Address = new Uri(

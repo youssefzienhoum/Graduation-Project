@@ -7,9 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DependancyInjection\" />
-    <Folder Include="ServiceAbstraction\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="Google.Protobuf" Version="3.36.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.85.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.85.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Chat.Shared\Chat.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Grpc\Protos\media.proto" GrpcServices="Client" />
+	 <Protobuf Include="Grpc\Protos\user.proto" GrpcServices="Client" />
+	  
   </ItemGroup>
 
 </Project>

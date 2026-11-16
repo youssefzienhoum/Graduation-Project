@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chat.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,8 @@ namespace Chat.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ConversationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
                     JoinedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LeftAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -113,9 +115,10 @@ namespace Chat.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConversationParticipants_ConversationId",
+                name: "IX_ConversationParticipants_ConversationId_UserId",
                 table: "ConversationParticipants",
-                column: "ConversationId");
+                columns: new[] { "ConversationId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MessageAttachments_MessageId",

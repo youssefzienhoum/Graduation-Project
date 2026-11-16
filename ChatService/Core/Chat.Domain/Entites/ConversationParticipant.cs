@@ -12,6 +12,10 @@ namespace Chat.Domain.Entites
 
         public Guid UserId { get; set; }
 
+        public string DisplayName { get; set; } = null!;
+
+        public string? ProfileImageUrl { get; set; }
+
         public ParticipantRole Role { get; set; }
 
         public DateTime JoinedAt { get; set; }

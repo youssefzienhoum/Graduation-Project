@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Core\Chat.Service\Chat.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

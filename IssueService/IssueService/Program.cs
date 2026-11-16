@@ -31,8 +31,8 @@ namespace IssueService
                 builder.Configuration);
 
             // Clients
-            builder.Services.AddIssueClient(
-                builder.Configuration);
+            //builder.Services.AddIssueClient(
+            //    builder.Configuration);
 
             // Services
             builder.Services.AddServiced(

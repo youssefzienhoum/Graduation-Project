@@ -12,7 +12,7 @@ using UserService.Grpc;
 
 namespace Issue.Client.Grpc.Services;
 
-public class UserGrpcClient(UserClinet.Grpc.UserGRPcService.UserGRPcServiceClient client,ExpertService.ExpertServiceClient Expertclient  ) : IUserGrpcClient
+public class UserGrpcClient(UserGRPcService.UserGRPcServiceClient client,ExpertService.ExpertServiceClient Expertclient  ) : IUserGrpcClient
 {
     public async Task<IReadOnlyCollection<Guid>> GetAllExpertIdsAsync(CancellationToken cancellationToken = default)
     {

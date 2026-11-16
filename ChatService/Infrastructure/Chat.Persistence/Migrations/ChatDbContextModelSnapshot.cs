@@ -54,6 +54,11 @@ namespace Chat.Persistence.Migrations
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime>("JoinedAt")
                         .HasColumnType("datetime2");
 
@@ -63,6 +68,10 @@ namespace Chat.Persistence.Migrations
                     b.Property<DateTime?>("LeftAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -71,7 +80,8 @@ namespace Chat.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConversationId");
+                    b.HasIndex("ConversationId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("ConversationParticipants");
                 });

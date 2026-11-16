@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client\Chat.Client\Chat.Client.csproj" />
     <ProjectReference Include="..\Chat.ServiceAbstraction\Chat.ServiceAbstraction.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="MappingProfile\" />
     <Folder Include="Dependencyinjection\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
   </ItemGroup>
 
 </Project>

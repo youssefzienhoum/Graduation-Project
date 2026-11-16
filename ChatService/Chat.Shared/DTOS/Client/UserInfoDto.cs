@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Chat.Shared.DTOS.Client
 {
-    public  record MediaUploadResponse(string FileName,
-    string FileUrl,
-    string ContentType,
-    long FileSize)
+    public record UserInfoDto(
+     Guid UserId,
+    string? Name,
+    string? ProfileImageUrl
+    )
     {
     }
 }
