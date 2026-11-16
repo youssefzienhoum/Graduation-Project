@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Localization.Persistence.Context
 {
-    internal class TranslationDbContext( DbContextOptions<TranslationDbContext> options)
+    public class TranslationDbContext( DbContextOptions<TranslationDbContext> options)
     : DbContext(options)
     {
 
-        public DbSet<Language> Languages => Set<Language>();
-        public DbSet<TranslationKey> TranslationKeys => Set<TranslationKey>();
-        public DbSet<TranslationValue> TranslationValues => Set<TranslationValue>();
-        public DbSet<TranslationBundle> TranslationBundles => Set<TranslationBundle>();
+        public DbSet<Language> Languages { get; set; } = null!;
+        public DbSet<TranslationKey> TranslationKeys { get; set; } = null!;
+        public DbSet<TranslationValue> TranslationValues { get; set; } = null!;
+        public DbSet<TranslationBundle> TranslationBundles { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
