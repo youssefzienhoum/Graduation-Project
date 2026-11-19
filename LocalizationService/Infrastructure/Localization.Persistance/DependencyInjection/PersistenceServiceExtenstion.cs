@@ -1,4 +1,6 @@
-﻿using Localization.Persistence.Context;
+﻿using Localization.Domain.Contract;
+using Localization.Persistence.Context;
+using Localization.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,7 @@ namespace Localization.Persistence.DependencyInjection
             {
                 options.UseSqlServer(configuration.GetConnectionString("SQLConnection"));
             });
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
 
         }

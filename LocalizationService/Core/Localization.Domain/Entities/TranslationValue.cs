@@ -21,6 +21,8 @@ namespace Localization.Domain.Entities
 
         public TranslationKey Key { get; set; } = null!;
 
+        public bool IsMachineTranslated { get; set; }
+        public bool IsReviewed { get; set; }
         public Language Language { get; set; } = null!;
     }
 }

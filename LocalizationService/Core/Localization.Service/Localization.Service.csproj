@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.8.25" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.25" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LocalisationService\Core\Localisation.Domian\Localisation.Domian.csproj" />
+    <ProjectReference Include="..\Localization.ServiceAbstraction\Localization.ServiceAbstraction.csproj" />
+  </ItemGroup>
+
 </Project>

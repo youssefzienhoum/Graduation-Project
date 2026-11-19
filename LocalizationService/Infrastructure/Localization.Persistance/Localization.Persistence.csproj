@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Localization.Domain\Localization.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\Localization.Service\Localization.Service.csproj" />
   </ItemGroup>
 
 </Project>

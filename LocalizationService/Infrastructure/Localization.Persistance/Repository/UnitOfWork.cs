@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Localization.Persistence.Repository
 {
-    internal class UnitOfWork(TranslationDbContext dbContext) : IUnitOfWork
+    public class UnitOfWork(TranslationDbContext dbContext) : IUnitOfWork
     {
         private readonly Dictionary<string, object> repositories = [];
 

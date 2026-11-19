@@ -35,6 +35,7 @@ namespace Localization.Persistence.Context.Configuration
 
             builder.Property(x => x.IsDefault)
                 .HasDefaultValue(false);
+            builder.Property(x => x.TranslationStatus).IsRequired();
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
@@ -44,7 +45,10 @@ namespace Localization.Persistence.Context.Configuration
 
             builder.HasIndex(x => x.IsDefault);
 
+            
+
             // Language -> TranslationValues (1:M)
+
             builder.HasMany(x => x.Translations)
                 .WithOne(x => x.Language)
                 .HasForeignKey(x => x.LanguageId)

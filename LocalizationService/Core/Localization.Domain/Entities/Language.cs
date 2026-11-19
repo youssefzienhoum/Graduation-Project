@@ -19,6 +19,7 @@ namespace Localization.Domain.Entities
         public bool IsEnabled { get; set; } = true;
 
         public bool IsDefault { get; set; }
+        public TranslationJobStatus TranslationStatus { get; set; } = TranslationJobStatus.Pending;
 
 
         public ICollection<TranslationValue> Translations { get; set; }

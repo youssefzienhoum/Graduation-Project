@@ -27,12 +27,15 @@ namespace Localization.Persistence.Context.Configuration
             builder.Property(x => x.UpdatedAt)
                 .IsRequired();
 
+            builder.Property(x => x.IsMachineTranslated).HasDefaultValue(false);
+            builder.Property(x => x.IsReviewed).HasDefaultValue(false);
             builder.HasIndex(x => new
             {
                 x.KeyId,
                 x.LanguageId
             }).IsUnique();
 
+            
             builder.HasOne(x => x.Key)
                 .WithMany(x => x.Translations)
                 .HasForeignKey(x => x.KeyId)
