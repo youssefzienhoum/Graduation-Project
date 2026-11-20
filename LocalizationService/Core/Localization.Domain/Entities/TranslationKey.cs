@@ -15,7 +15,7 @@ namespace Localization.Domain.Entities
 
         public string? Description { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+      
 
         public ICollection<TranslationValue> Translations { get; set; }
             = new List<TranslationValue>();
