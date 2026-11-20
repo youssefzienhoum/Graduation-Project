@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CommanLib\CommanLib\CommanLib.csproj" />
     <ProjectReference Include="..\Infrastructure\Localization.Persistance\Localization.Persistence.csproj" />
     <ProjectReference Include="..\Infrastructure\Localization.Presentation Api\Localization.Presentation Api.csproj" />
   </ItemGroup>

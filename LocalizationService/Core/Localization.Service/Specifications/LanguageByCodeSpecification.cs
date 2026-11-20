@@ -10,29 +10,27 @@ namespace Localization.Service.Specifications;
 
     public sealed class LanguageByCodeSpecification : BaseSpecification<Language>
     {
-        public LanguageByCodeSpecification(string code)
+        public LanguageByCodeSpecification(string code) : base(c=> c.Code == code)
         {
-            Criteria = l => l.Code == code;
+            
         }
     }
 
     public sealed class DefaultLanguageSpecification : BaseSpecification<Language>
     {
-        public DefaultLanguageSpecification()
+        public DefaultLanguageSpecification(bool IsDefault) : base(c => (c.IsDefault == IsDefault))
         {
-            Criteria = l => l.IsDefault;
+            
         }
     }
     public sealed class SourceValuesMissingInTargetSpecification : BaseSpecification<TranslationValue>
     {
-        public SourceValuesMissingInTargetSpecification(Guid sourceLanguageId, Guid targetLanguageId, int batchSize)
-        {
-            Criteria = v =>
-                v.LanguageId == sourceLanguageId &&
+        public SourceValuesMissingInTargetSpecification(Guid sourceLanguageId, Guid targetLanguageId, int batchSize) :base(v=> v.LanguageId == sourceLanguageId &&
                 v.Value != "" &&
-                !v.Key.Translations.Any(t => t.LanguageId == targetLanguageId);
+                !v.Key.Translations.Any(t => t.LanguageId == targetLanguageId))
+    {
 
-            OrderBy = v => v.KeyId;          // deterministic batches
+        AddOrderBy(v => v.KeyId);
             ApplyPaging(0, batchSize);
         }
     }
