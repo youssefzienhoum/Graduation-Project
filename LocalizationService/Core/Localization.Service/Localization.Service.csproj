@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\LocalisationService\Core\Localisation.Domian\Localisation.Domian.csproj" />
     <ProjectReference Include="..\Localization.ServiceAbstraction\Localization.ServiceAbstraction.csproj" />
   </ItemGroup>
 

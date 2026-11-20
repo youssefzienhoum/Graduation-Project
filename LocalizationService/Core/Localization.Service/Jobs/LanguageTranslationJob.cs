@@ -47,7 +47,7 @@ public class LanguageTranslationJob(
 
         try
         {
-            var source = await languages.GetByIdAsync(new DefaultLanguageSpecification(), ct)
+            var source = await languages.GetByIdAsync(new DefaultLanguageSpecification(target.IsDefault), ct)
                 ?? throw new InvalidOperationException("No default language is configured.");
 
             target.TranslationStatus = TranslationJobStatus.InProgress;

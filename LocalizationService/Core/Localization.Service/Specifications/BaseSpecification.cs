@@ -10,6 +10,10 @@ namespace Localization.Service.Specifications;
 
 public class BaseSpecification<TEntity> : ISpecification<TEntity> where TEntity : class
 {
+    protected BaseSpecification(Expression<Func<TEntity, bool>> expression)
+    {
+        Criteria = expression;
+    }
     public Expression<Func<TEntity, bool>> Criteria { get; protected set; } = null!;
     public ICollection<Expression<Func<TEntity, object>>> Includes { get; } = new List<Expression<Func<TEntity, object>>>();
     public ICollection<Func<IQueryable<TEntity>, IQueryable<TEntity>>> IncludeChains { get; } = new List<Func<IQueryable<TEntity>, IQueryable<TEntity>>>();
@@ -25,5 +29,11 @@ public class BaseSpecification<TEntity> : ISpecification<TEntity> where TEntity 
         Take = take;
         IsPaginated = true;
     }
+    protected void AddOrderBy(Expression<Func<TEntity, object>> ordertby) =>
+            OrderBy = ordertby;
+
+
+    protected void AddOrderByDesc(Expression<Func<TEntity, object>> expression) =>
+        OrderByDesc = expression;
 }
 

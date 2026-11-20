@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Localization.Service.Azur;
 using Localization.Service.Jobs;
+using Localization.ServiceAbstraction;
 using Localization.ServiceAbstraction.Azur;
 using Localization.ServiceAbstraction.Jobs;
 using Microsoft.Extensions.Configuration;
@@ -51,6 +52,8 @@ namespace Localization.Service.DependencyInjection
                 ITranslationJobScheduler,
                 HangfireTranslationJobScheduler>();
             services.AddScoped<ILanguageTranslationJob, LanguageTranslationJob>();
+            services.AddScoped<ITranslationProvider, AzureTranslationProvider>();
+            services.AddScoped<ILanguageService, LanguageService>();
             return services;
         }
     }
